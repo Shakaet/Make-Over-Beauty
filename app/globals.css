@@ -24,3 +24,31 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Marquee animation and utilities */
+@keyframes marquee-x {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Container establishes perspective for smooth text */
+.marquee { position: relative; }
+
+/* Track is twice the width so it can loop seamlessly */
+.marquee-track {
+  display: inline-flex;
+  width: 200%;
+  align-items: center;
+  animation: marquee-x 22s linear infinite;
+}
+
+/* Pause on hover for readability */
+.mask-edge:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* Subtle edge fade so text doesn't hard cut at edges */
+.mask-edge {
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
