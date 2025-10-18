@@ -1,21 +1,33 @@
-import React from 'react'
+"use client"
+import React, { useEffect, useState } from 'react'
 
 
 
 const Nav = () => {
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => {
+      setIsScrolled(window.scrollY > 10)
+    }
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   return (
     <nav>
      
 
-      {/* Main navigation */}
-      <div className="border-b border-black/10 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/70">
+      {/* Main navigation - transparent at top, colored when scrolled */}
+      <div className={`${isScrolled ? 'fixed top-0 inset-x-0 bg-[#ffdcdc] backdrop-blur border-b border-black/10 shadow-sm' : 'absolute inset-x-0 top-0 bg-transparent mt-12'} z-30 transition-colors` }>
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="h-16 flex items-center justify-between">
             {/* Logo */}
-            <a href="#" className="text-2xl tracking-[0.35em] font-semibold uppercase">LILAC</a>
+            <a href="#" className="text-2xl tracking-[0.35em] font-semibold uppercase text-black">LILAC</a>
 
             {/* Menu */}
-            <ul className="hidden md:flex items-center gap-8 text-sm">
+            <ul className="hidden md:flex items-center gap-8 text-sm text-black">
               {['Home','About','Shop','Blog','Gallery','Pages'].map((item) => (
                 <li key={item}>
                   <a href="#" className="inline-flex items-center gap-1 hover:text-black/80 transition-colors">
