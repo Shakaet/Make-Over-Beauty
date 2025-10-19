@@ -3,6 +3,7 @@ import "./globals.css";
 import Nav from "./component/Nav";
 import LowerBanner from "./component/LowerBanner";
 import Top from "./component/Top";
+import Splash from "./component/Splash";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,6 +33,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Splash />
         <Top props={ANNOUNCEMENTS}></Top>
         <Nav></Nav>
         

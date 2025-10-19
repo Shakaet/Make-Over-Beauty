@@ -1,8 +1,8 @@
 "use client"	
 import React, { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import img1 from "../../app/images/banner1.jpg"
-import img2 from "../../app/images/banner2.jpg"
+import img1 from "../images/banner1.jpg"
+import img2 from "../images/banner2.jpg"
 
 // Local banner images placed in /public. Replace with your own files.
 // Example files: /public/banner-1.jpg, banner-2.jpg

@@ -61,3 +61,37 @@ body {
   background-position: center;
   background-repeat: no-repeat;
 }
+
+/* Splash overlay */
+.splash-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffdcdc;
+  color: #0a0a0a;
+  animation: splashFade 3s ease forwards;
+}
+
+.splash-text {
+  font-weight: 800;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  font-size: clamp(28px, 8vw, 72px);
+  animation: splashPop 3s ease both;
+}
+
+@keyframes splashPop {
+  0% { transform: scale(0.9); opacity: 0; }
+  40% { transform: scale(1.06); opacity: 1; }
+  70% { transform: scale(1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes splashFade {
+  0% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
+}
