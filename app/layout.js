@@ -20,12 +20,19 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+
+  const ANNOUNCEMENTS = [
+    "Black Friday: 10% off storewide",
+    "Free shipping on orders above $75",
+    "Vegan • Cruelty‑free • Clean beauty",
+    "New arrivals in skincare & haircare",
+  ]
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Top></Top>
+        <Top props={ANNOUNCEMENTS}></Top>
         <Nav></Nav>
         
         {children}

@@ -52,3 +52,12 @@ body {
   -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
   mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
 }
+
+/* Home page full-bleed background image */
+.home-bg {
+  min-height: 100vh;
+  background-image: url("./images/bgNN.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
