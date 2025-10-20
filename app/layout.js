@@ -33,7 +33,7 @@ export default function RootLayout({ children }) {
         suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Splash />
+        {/* <Splash /> */}
         <Top props={ANNOUNCEMENTS}></Top>
         <Nav></Nav>
         
