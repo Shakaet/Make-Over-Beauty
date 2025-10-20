@@ -28,9 +28,9 @@ export default function Home() {
       <PureSimple></PureSimple>
       <TredingProduct></TredingProduct>
       <Top props={ANNOUNCEMENTS}></Top>
-      <ImportedProduct></ImportedProduct>
+      {/* <ImportedProduct></ImportedProduct>
       <Testimonial></Testimonial>
-      <ProductCategory></ProductCategory>
+      <ProductCategory></ProductCategory> */}
     </div>
   );
 }
