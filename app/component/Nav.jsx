@@ -17,10 +17,10 @@ const Nav = () => {
 
   return (
     <nav>
-     
+        
 
-      {/* Main navigation - transparent at top, colored when scrolled */}
-      <div className={`${isScrolled ? 'fixed top-0 inset-x-0 bg-[#ffdcdc] backdrop-blur border-b border-black/10 shadow-sm' : 'absolute inset-x-0 top-0 bg-transparent mt-12'} z-30 transition-colors` }>
+      {/* Main navigation - transparent when scrolled */}
+      <div className={`${isScrolled ? 'fixed top-0 inset-x-0 bg-transparent' : 'absolute inset-x-0 top-0 bg-[#ffdcdc] mt-10 border-b border-black/10 shadow-sm'} z-30 transition-colors` }>
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="h-16 flex items-center justify-between">
             {/* Logo */}

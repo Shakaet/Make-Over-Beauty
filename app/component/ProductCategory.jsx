@@ -1,144 +1,81 @@
 "use client"
-import React, { useMemo, useState } from 'react'
-import Image from 'next/image'
+import React, { useMemo, useState } from "react"
+import Image from "next/image"
 
-import img1 from '../images/makeup1.jpeg'
-import img2 from '../images/makeup2.png'
-import img3 from '../images/makeup3.webp'
-import img4 from '../images/makeuo4.webp'
-import img5 from '../images/makeup5.jpeg'
-import hero from '../images/banner1.jpg'
+import img1 from "../images/makeup1.jpeg"
+import img2 from "../images/makeup2.png"
+import img3 from "../images/makeup3.webp"
+import img4 from "../images/makeuo4.webp"
+import img5 from "../images/makeup5.jpeg"
+import hero from "../images/makeup2.png"
 
 const ALL_PRODUCTS = [
   {
-    id: 'p-1',
-    name: 'Anti-Aging Face Cream',
-    price: '$5.00 – $10.00',
+    id: "p-1",
+    name: "Anti-Aging Face Cream",
+    price: "$5.00 – $10.00",
     rating: 4,
-    category: 'Skin Care',
+    category: "Skin Care",
     primary: img2,
     secondary: img1,
   },
   {
-    id: 'p-2',
-    name: 'Moisturizing Curl Activator…',
-    price: '$11.00',
+    id: "p-2",
+    name: "Moisturizing Curl Activator…",
+    price: "$11.00",
     rating: 5,
-    category: 'Body Care',
+    category: "Body Care",
     primary: img3,
     secondary: img4,
   },
   {
-    id: 'p-3',
-    name: 'Face Moisturizer & Face Wash',
-    price: '$11.05',
+    id: "p-3",
+    name: "Face Moisturizer & Face Wash",
+    price: "$11.05",
     rating: 4,
-    category: 'Moisturizer',
+    category: "Moisturizer",
     primary: img5,
     secondary: img2,
   },
   {
-    id: 'p-4',
-    name: 'Soothing Sun Cream',
-    price: '$6.00 – $13.00',
+    id: "p-4",
+    name: "Soothing Sun Cream",
+    price: "$6.00 – $13.00",
     rating: 4,
-    category: 'Skin Care',
+    category: "Skin Care",
     primary: img1,
     secondary: img5,
   },
   {
-    id: 'p-5',
-    name: 'Natural Butt Lifting Cream',
-    price: '$4.00 – $20.00',
+    id: "p-5",
+    name: "Natural Butt Lifting Cream",
+    price: "$4.00 – $20.00",
     rating: 4,
-    category: 'Body Care',
+    category: "Body Care",
     primary: img3,
     secondary: img1,
   },
   {
-    id: 'p-6',
-    name: 'Eye And Lip Wrinkle Cream',
-    price: '$5.00 – $8.00',
+    id: "p-6",
+    name: "Eye And Lip Wrinkle Cream",
+    price: "$5.00 – $8.00",
     rating: 4,
-    category: 'Skin Care',
+    category: "Skin Care",
     primary: img4,
     secondary: img2,
   },
   {
-    id: 'p-7',
-    name: 'Under‑Eye Bags Removal…',
-    price: '$6.00',
+    id: "p-7",
+    name: "Under-Eye Bags Removal…",
+    price: "$6.00",
     rating: 3,
-    category: 'Moisturizer',
+    category: "Moisturizer",
     primary: img1,
     secondary: img3,
-  },
-  {
-    id: 'p-4',
-    name: 'Soothing Sun Cream',
-    price: '$6.00 – $13.00',
-    rating: 4,
-    category: 'Skin Care',
-    primary: img1,
-    secondary: img5,
-  },
-  {
-    id: 'p-5',
-    name: 'Natural Butt Lifting Cream',
-    price: '$4.00 – $20.00',
-    rating: 4,
-    category: 'Body Care',
-    primary: img3,
-    secondary: img1,
-  },
-  {
-    id: 'p-6',
-    name: 'Eye And Lip Wrinkle Cream',
-    price: '$5.00 – $8.00',
-    rating: 4,
-    category: 'Skin Care',
-    primary: img4,
-    secondary: img2,
-  },
-  {
-    id: 'p-7',
-    name: 'Under‑Eye Bags Removal…',
-    price: '$6.00',
-    rating: 3,
-    category: 'Moisturizer',
-    primary: img1,
-    secondary: img3,
-  },
-  {
-    id: 'p-6',
-    name: 'Eye And Lip Wrinkle Cream',
-    price: '$5.00 – $8.00',
-    rating: 4,
-    category: 'Skin Care',
-    primary: img4,
-    secondary: img2,
-  },
-    {
-    id: 'p-5',
-    name: 'Natural Butt Lifting Cream',
-    price: '$4.00 – $20.00',
-    rating: 4,
-    category: 'Body Care',
-    primary: img3,
-    secondary: img1,
-  },
-    {
-    id: 'p-5',
-    name: 'Natural Butt Lifting Cream',
-    price: '$4.00 – $20.00',
-    rating: 4,
-    category: 'Body Care',
-    primary: img3,
-    secondary: img1,
   },
 ]
 
-const TABS = ['All Product', 'Skin Care', 'Body Care', 'Moisturizer']
+const TABS = ["All Product", "Skin Care", "Body Care", "Moisturizer"]
 
 function Rating({ value }) {
   return (
@@ -173,16 +110,27 @@ const ProductRow = ({ product }) => {
 }
 
 const ProductCategory = () => {
-  const [active, setActive] = useState('Skin Care')
+  const [active, setActive] = useState("Skin Care")
 
-  const filtered = useMemo(() => {
-    if (active === 'All Product') return ALL_PRODUCTS.slice(0,6)
-    return ALL_PRODUCTS.filter((p) => p.category === active)
+  const visible = useMemo(() => {
+    // Step 1: filter by category
+    let base =
+      active === "All Product"
+        ? ALL_PRODUCTS
+        : ALL_PRODUCTS.filter((p) => p.category === active)
+
+    // Step 2: যদি product কম হয় তবে repeat করে 6টা পূর্ণ করো
+    const result = []
+    if (base.length === 0) return result
+    for (let i = 0; i < 6; i++) {
+      result.push(base[i % base.length])
+    }
+    return result
   }, [active])
 
-  const visible = useMemo(() => filtered.slice(0, 6), [filtered])
-  const leftList = useMemo(() => visible.slice(0, Math.ceil(visible.length / 2)), [visible])
-  const rightList = useMemo(() => visible.slice(Math.ceil(visible.length / 2)), [visible])
+  // Step 3: দুই কলামে ভাগ করা
+  const leftList = useMemo(() => visible.slice(0, 3), [visible])
+  const rightList = useMemo(() => visible.slice(3, 6), [visible])
 
   return (
     <section className="bg-[#f5f1ec] py-14 px-4">
@@ -197,7 +145,9 @@ const ProductCategory = () => {
             <div className="mt-auto max-w-md text-white drop-shadow">
               <h3 className="text-3xl sm:text-4xl font-extrabold">Care Collections</h3>
               <p className="mt-3 text-sm opacity-90">Vivulum ut tempor sem leo, a ultricies quam aliquam eget.</p>
-              <button className="mt-6 inline-flex items-center gap-2 bg-white/90 text-stone-900 px-5 py-2 text-xs uppercase tracking-[0.25em]">View All</button>
+              <button className="mt-6 inline-flex items-center gap-2 bg-white/90 text-stone-900 px-5 py-2 text-xs uppercase tracking-[0.25em]">
+                View All
+              </button>
             </div>
           </div>
         </div>
@@ -210,7 +160,9 @@ const ProductCategory = () => {
                 key={t}
                 onClick={() => setActive(t)}
                 className={`px-4 py-2 rounded-full text-sm font-medium ring-1 ring-black/10 transition-colors ${
-                  active === t ? 'bg-[#efe2cc] text-[#0a0a0a]' : 'bg-white text-stone-700 hover:bg-stone-50'
+                  active === t
+                    ? "bg-[#efe2cc] text-[#0a0a0a]"
+                    : "bg-white text-stone-700 hover:bg-stone-50"
                 }`}
               >
                 {t}
@@ -220,13 +172,13 @@ const ProductCategory = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10">
             <div>
-              {leftList.map((p) => (
-                <ProductRow key={p.id} product={p} />
+              {leftList.map((p, i) => (
+                <ProductRow key={`${p.id}-${i}`} product={p} />
               ))}
             </div>
             <div>
-              {rightList.map((p) => (
-                <ProductRow key={p.id} product={p} />
+              {rightList.map((p, i) => (
+                <ProductRow key={`${p.id}-${i}`} product={p} />
               ))}
             </div>
           </div>

@@ -21,7 +21,7 @@ import ProductCategory from "./component/ProductCategory";
       ]
 export default function Home() {
   return (
-    <div className="home-bg">
+    <div className="home-bg bg-fixed bg-cover bg-center bg-no-repeat">
       <Banner></Banner>
       <LowerBanner></LowerBanner>
       <ReadMore></ReadMore>
