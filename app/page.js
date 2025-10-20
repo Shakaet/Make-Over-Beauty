@@ -5,9 +5,9 @@ import ReadMore from "./component/ReadMore";
 import PureSimple from "./component/PureSimple";
 import TredingProduct from "./component/TredingProduct";
 import Top from "./component/Top";
-// import ImportedProduct from "./component/ImportedProduct";
-// import Testimonial from "./component/Testimonial";
-// import ProductCategory from "./component/ProductCategory";
+import ImportedProduct from "./component/ImportedProduct";
+import Testimonial from "./component/Testimonial";
+import ProductCategory from "./component/ProductCategory";
 
 
  const ANNOUNCEMENTS = [
@@ -28,9 +28,9 @@ export default function Home() {
       <PureSimple></PureSimple>
       <TredingProduct></TredingProduct>
       <Top props={ANNOUNCEMENTS}></Top>
-      {/* <ImportedProduct></ImportedProduct>
+      <ImportedProduct></ImportedProduct>
       <Testimonial></Testimonial>
-      <ProductCategory></ProductCategory> */}
+      <ProductCategory></ProductCategory>
     </div>
   );
 }
