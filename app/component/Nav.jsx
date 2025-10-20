@@ -28,7 +28,7 @@ const Nav = () => {
       {(() => {
         const scrolled = mounted && isScrolled
         return (
-          <div className={`${scrolled ? 'fixed top-0 inset-x-0 bg-transparent' : 'absolute inset-x-0 top-0 bg-[#ffdcdc] mt-10 border-b border-black/10 shadow-sm'} z-30 transition-colors`}>
+          <div className={`${scrolled ? 'fixed top-0 inset-x-0 opacity-40 bg-gray-100 ' : 'absolute inset-x-0 top-0 bg-[#ffdcdc] mt-10 border-b border-black/10 shadow-sm'} z-30 transition-colors`}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
               <div className="h-16 flex items-center justify-between">
                 {/* Logo */}
