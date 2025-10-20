@@ -2,12 +2,12 @@
 import React, { useMemo, useState } from "react"
 import Image from "next/image"
 
-import img1 from "../images/makeup1.jpeg"
-import img2 from "../images/makeup2.png"
-import img3 from "../images/makeup3.webp"
-import img4 from "../images/makeuo4.webp"
-import img5 from "../images/makeup5.jpeg"
-import hero from "../images/makeup2.png"
+import img1 from "/public/images/makeup1.jpeg"
+import img2 from "/public/images/makeup2.png"
+import img3 from "/public/images/makeup3.webp"
+import img4 from "/public/images/makeuo4.webp"
+import img5 from "/public/images/makeup5.jpeg"
+import hero from "/public/images/makeup2.png"
 
 const ALL_PRODUCTS = [
   {

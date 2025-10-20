@@ -56,7 +56,7 @@ body {
 /* Home page full-bleed background image */
 .home-bg {
   min-height: 100vh;
-  background-image: url("./images/bgNN.jpg");
+  background-image: url("../public/images/bgNN.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

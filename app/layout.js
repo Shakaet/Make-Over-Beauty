@@ -1,7 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Nav from "./component/Nav";
-import LowerBanner from "./component/LowerBanner";
 import Top from "./component/Top";
 import Splash from "./component/Splash";
 
