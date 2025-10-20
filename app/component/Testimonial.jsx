@@ -32,6 +32,7 @@ const Testimonial = () => {
               {/* 16:9 responsive box */}
               <div className="relative w-full pt-[56.25%]">
                 <video
+                  suppressHydrationWarning
                   src={v.src}
                   className="absolute inset-0 h-full w-full object-cover"
                   autoPlay

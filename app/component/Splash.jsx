@@ -3,6 +3,11 @@ import React, { useEffect, useState } from 'react'
 
 const Splash = () => {
   const [shouldRender, setShouldRender] = useState(true)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -17,6 +22,7 @@ const Splash = () => {
     return () => clearTimeout(timer)
   }, [])
 
+  if (!mounted) return null
   if (!shouldRender) return null
 
   return (
