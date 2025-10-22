@@ -8,6 +8,10 @@ import Top from "./component/Top";
 import ImportedProduct from "./component/ImportedProduct";
 import Testimonial from "./component/Testimonial";
 import ProductCategory from "./component/ProductCategory";
+import MarqueLogo from "./component/MarqueLogo";
+import WhatsPeopleSay from "./component/WhatsPeopleSay";
+import NewsUpdates from "./component/NewsUpdates";
+import TagUs from "./component/TagUs";
 
 
  const ANNOUNCEMENTS = [
@@ -31,6 +35,10 @@ export default function Home() {
       <ImportedProduct></ImportedProduct>
       <Testimonial></Testimonial>
       <ProductCategory></ProductCategory>
+      <MarqueLogo></MarqueLogo>
+      <WhatsPeopleSay></WhatsPeopleSay>
+      <NewsUpdates></NewsUpdates>
+      <TagUs></TagUs>
     </div>
   );
 }
