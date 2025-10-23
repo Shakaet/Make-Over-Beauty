@@ -33,7 +33,7 @@ export default function Home() {
       <TredingProduct></TredingProduct>
       <Top props={ANNOUNCEMENTS}></Top>
       <ImportedProduct></ImportedProduct>
-      <Testimonial></Testimonial>
+      <Testimonial title={`TESTIMONIAL`} des={`Our Clients Reviews`}></Testimonial>
       <ProductCategory></ProductCategory>
       <MarqueLogo></MarqueLogo>
       <WhatsPeopleSay></WhatsPeopleSay>

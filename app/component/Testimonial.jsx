@@ -17,13 +17,13 @@ const VIDEOS = [
   
   
 
-const Testimonial = () => {
+const Testimonial = ({title,des}) => {
   return (
     <section className=" py-16 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-10">
-          <p className="text-xs font-semibold tracking-widest text-gray-600 mb-3">TESTIMONIAL</p>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900">Our Clients Reviews</h2>
+          <p className="text-xs font-semibold tracking-widest text-gray-600 mb-3">{title}</p>
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900">{des}</h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
