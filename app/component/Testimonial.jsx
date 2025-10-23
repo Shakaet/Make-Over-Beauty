@@ -1,23 +1,14 @@
 import React from 'react'
 
-const VIDEOS = [
-    {
-      id: 1,
-      src: 'https://videos.pexels.com/video-files/4154241/4154241-uhd_4096_2160_25fps.mp4', // Makeup brush close-up
-    },
-    {
-      id: 2,
-      src: 'https://videos.pexels.com/video-files/3886376/3886376-uhd_4096_2160_25fps.mp4', // Skincare product application
-    },
-    {
-      id: 3,
-      src: 'https://videos.pexels.com/video-files/3181791/3181791-uhd_3840_2160_25fps.mp4', // Beauty model with glowing skin
-    },
-  ];
+const DEFAULT_VIDEOS = [
+  'https://videos.pexels.com/video-files/4154241/4154241-uhd_4096_2160_25fps.mp4',
+  'https://videos.pexels.com/video-files/3886376/3886376-uhd_4096_2160_25fps.mp4',
+  'https://videos.pexels.com/video-files/3181791/3181791-uhd_3840_2160_25fps.mp4',
+]
   
   
 
-const Testimonial = ({title,des}) => {
+const Testimonial = ({ title, des, videos }) => {
   return (
     <section className=" py-16 px-4">
       <div className="max-w-7xl mx-auto">
@@ -27,13 +18,13 @@ const Testimonial = ({title,des}) => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-          {VIDEOS.map((v) => (
-            <div key={v.id} className="relative overflow-hidden rounded-xl ring-1 ring-black/5 bg-black/10">
+          {(videos?.length ? videos : DEFAULT_VIDEOS).map((src, idx) => (
+            <div key={idx} className="relative overflow-hidden rounded-xl ring-1 ring-black/5 bg-black/10">
               {/* 16:9 responsive box */}
               <div className="relative w-full pt-[56.25%]">
                 <video
                   suppressHydrationWarning
-                  src={v.src}
+                  src={src}
                   className="absolute inset-0 h-full w-full object-cover"
                   autoPlay
                   muted

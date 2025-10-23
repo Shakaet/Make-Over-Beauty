@@ -30,15 +30,20 @@ const CenterPanel = () => (
   </div>
 );
 
-const TagUs = () => {
+const TagUs = ({ images }) => {
+  const left = images && images.length >= 2 ? images.slice(0, 2) : [
+    '/images/cream.png', '/images/makeup3.webp'
+  ]
+  const right = images && images.length >= 2 ? images.slice(-2) : [
+    '/images/makeuo4.webp', '/images/makeup5.jpeg'
+  ]
   return (
     <section className="w-full bg-white">
       {/* Grid Layout */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7">
         {/* Left images */}
-        {/* <TileImage src="/images/makeup1.jpeg" alt="Skincare closeup" /> */}
-        <TileImage src="/images/cream.png" alt="Cream texture" />
-        <TileImage src="/images/makeup3.webp" alt="Face roller" />
+        <TileImage src={left[0]} alt="Left image 1" />
+        <TileImage src={left[1]} alt="Left image 2" />
 
         {/* Center panel (full width on small, 1 col on md, 3 cols on lg) */}
         <div className="col-span-2 sm:col-span-3 md:col-span-1 lg:col-span-3">
@@ -46,9 +51,8 @@ const TagUs = () => {
         </div>
 
         {/* Right images */}
-        {/* <TileImage src="/images/makeup5.jpg" alt="Makeup swatch" /> */}
-        <TileImage src="/images/makeuo4.webp" alt="Serum bottle" />
-        <TileImage src="/images/makeup5.jpeg" alt="Hand applying serum" />
+        <TileImage src={right[0]} alt="Right image 1" />
+        <TileImage src={right[1]} alt="Right image 2" />
       </div>
     </section>
   );
