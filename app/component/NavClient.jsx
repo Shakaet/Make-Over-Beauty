@@ -45,7 +45,7 @@ const NavClient = () => {
                             </svg>
                           </button>
                           {/* Dropdown */}
-                          <div className="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity duration-150 absolute left-0 top-full mt-3 w-56 bg-[#ffdcdc] text-black border border-black/10 shadow-xl z-40">
+                          <div className="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-opacity duration-150 absolute left-0 top-full mt-1 w-56 bg-[#ffdcdc] text-black border border-black/10 shadow-xl z-40">
                             <ul className="py-2">
                               <li>
                                 <Link href="/pages/history" className="block px-4 py-2 hover:bg-black/5">Our History</Link>
