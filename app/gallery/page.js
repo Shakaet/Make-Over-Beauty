@@ -4,6 +4,9 @@ import ProductGalary from './ProductGalary'
 import Testimonial from '../component/Testimonial'
 import TagUs from '../component/TagUs'
 import GalaryImages from './GalaryImages'
+import FeatureCards from './FeatureCards'
+import GalleryStats from './GalleryStats'
+import ExploreCta from './ExploreCta'
 import Category from './Category'
 import GalleryClient from './GalleryClient'
 
@@ -19,6 +22,10 @@ const page = () => {
           </div>
             <GalleryClient />
         </section>
+
+        <FeatureCards />
+        <GalleryStats />
+        <ExploreCta />
     </div>
   )
 }
