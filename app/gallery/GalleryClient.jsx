@@ -23,9 +23,9 @@ function getCategoryData(category) {
     case 'Selected List':
       return {
         videos: [
-          'https://videos.pexels.com/video-files/2698866/2698866-uhd_2560_1440_25fps.mp4',
-          'https://videos.pexels.com/video-files/3689088/3689088-uhd_2560_1440_25fps.mp4',
-          'https://videos.pexels.com/video-files/3757195/3757195-uhd_4096_2160_24fps.mp4',
+          'https://videos.pexels.com/video-files/3181791/3181791-uhd_3840_2160_25fps.mp4',
+          'https://videos.pexels.com/video-files/4154241/4154241-uhd_4096_2160_25fps.mp4',
+          'https://videos.pexels.com/video-files/3886376/3886376-uhd_4096_2160_25fps.mp4',
         ],
         tagImages: ['/images/makeup5.jpeg','/images/cream.png','/images/makeup3.webp','/images/makeuo4.webp'],
         galleryImages: ['/images/cream.png','/images/makeup3.webp','/images/download.jpeg','/images/makeup5.jpeg','/images/makeup2.png','/images/makeup1.jpeg'],
@@ -33,9 +33,9 @@ function getCategoryData(category) {
     case 'Skincare':
       return {
         videos: [
-          'https://videos.pexels.com/video-files/3181791/3181791-uhd_3840_2160_25fps.mp4',
           'https://videos.pexels.com/video-files/3886376/3886376-uhd_4096_2160_25fps.mp4',
           'https://videos.pexels.com/video-files/4154241/4154241-uhd_4096_2160_25fps.mp4',
+          'https://videos.pexels.com/video-files/3181791/3181791-uhd_3840_2160_25fps.mp4',
         ],
         tagImages: ['/images/cream.png','/images/makeup5.jpeg','/images/makeup3.webp','/images/makeuo4.webp'],
         galleryImages: ['/images/cream.png','/images/download.jpeg','/images/makeup3.webp','/images/makeup5.jpeg','/images/makeup2.png','/images/makeup1.jpeg'],
@@ -43,8 +43,8 @@ function getCategoryData(category) {
     case 'Makeup':
       return {
         videos: [
-          'https://videos.pexels.com/video-files/3757195/3757195-uhd_4096_2160_24fps.mp4',
-          'https://videos.pexels.com/video-files/2698866/2698866-uhd_2560_1440_25fps.mp4',
+          'https://videos.pexels.com/video-files/4154241/4154241-uhd_4096_2160_25fps.mp4',
+          'https://videos.pexels.com/video-files/3181791/3181791-uhd_3840_2160_25fps.mp4',
           'https://videos.pexels.com/video-files/3886376/3886376-uhd_4096_2160_25fps.mp4',
         ],
         tagImages: ['/images/makeup5.jpeg','/images/makeuo4.webp','/images/makeup3.webp','/images/cream.png'],
@@ -53,9 +53,9 @@ function getCategoryData(category) {
     case 'Haircare':
       return {
         videos: [
-          'https://videos.pexels.com/video-files/3689088/3689088-uhd_2560_1440_25fps.mp4',
-          'https://videos.pexels.com/video-files/2698866/2698866-uhd_2560_1440_25fps.mp4',
           'https://videos.pexels.com/video-files/4154241/4154241-uhd_4096_2160_25fps.mp4',
+          'https://videos.pexels.com/video-files/3886376/3886376-uhd_4096_2160_25fps.mp4',
+          'https://videos.pexels.com/video-files/3181791/3181791-uhd_3840_2160_25fps.mp4',
         ],
         tagImages: ['/images/makeuo4.webp','/images/makeup3.webp','/images/cream.png','/images/makeup5.jpeg'],
         galleryImages: ['/images/download.jpeg','/images/makeup5.jpeg','/images/cream.png','/images/makeup3.webp','/images/makeup1.jpeg','/images/makeup2.png'],
