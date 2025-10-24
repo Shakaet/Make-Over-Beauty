@@ -1,16 +1,22 @@
 import React from 'react'
 import Heading from '../../component/Heading'
+import BeautyDestination from './BeautyDestination'
+import HarbalCosmetics from './HarbalCosmetics'
+import WhatsPeopleSay from '@/app/component/WhatsPeopleSay'
+import MarqueLogo from '@/app/component/MarqueLogo'
+import PremiumCound from './PremiumCound'
+import NewsUpdates from '@/app/component/NewsUpdates'
 
 const Page = () => {
   return (
-    <div>
+    <div className="home-bg bg-fixed bg-cover bg-center bg-no-repeat">
       <Heading />
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 text-black/80">
-        <h3 className="text-2xl font-semibold mb-4">Our Story</h3>
-        <p>
-          This is the History page placeholder. Add your content here.
-        </p>
-      </div>
+      <BeautyDestination></BeautyDestination>
+      <HarbalCosmetics></HarbalCosmetics>
+      <WhatsPeopleSay></WhatsPeopleSay>
+      <MarqueLogo></MarqueLogo>
+      <NewsUpdates></NewsUpdates>
+      <PremiumCound></PremiumCound>
     </div>
   )
 }
