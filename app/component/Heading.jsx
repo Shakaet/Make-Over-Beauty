@@ -36,10 +36,10 @@ const Heading = ({ title: titleProp, breadcrumb: breadcrumbProp, image = bgImage
         {/* Soft warm overlay to match brand look */}
         <div className="absolute inset-0 bg-[#f3eadf]/85" />
 
-        <div className="relative z-10 h-full max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-center text-center">
+        <div className="z-10 relative flex justify-center items-center mx-auto px-4 sm:px-6 max-w-7xl h-full text-center">
           <div>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-black mb-4 tracking-tight">{title}</h1>
-            <p className="uppercase tracking-[0.35em] text-xs sm:text-sm text-black/70">
+            <h1 className="mb-4 font-extrabold text-black text-4xl sm:text-5xl md:text-6xl tracking-tight">{title}</h1>
+            <p className="text-black/70 text-xs sm:text-sm uppercase tracking-[0.35em]">
               {crumbs.join(' / ')}
             </p>
           </div>
