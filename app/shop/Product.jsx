@@ -102,7 +102,7 @@ const products = [
 ]
 const Product = () => {
   const [currentPage, setCurrentPage] = useState(1)
-  const productsPerPage = 6
+  const productsPerPage = 8
 
   const totalPages = Math.ceil(products.length / productsPerPage)
 

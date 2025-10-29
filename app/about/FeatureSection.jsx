@@ -9,8 +9,8 @@ const FeatureSection = () => {
             <img
               src='https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/about-2-693x1024.jpg'
               alt='f1'
-              width={800}
-              height={600}
+              width={700}
+              height={500}
               style={{ objectFit: 'cover' }}
               className='hover:scale-95 hover:transition-transform'
             />
@@ -19,15 +19,15 @@ const FeatureSection = () => {
             <img
               src='https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/about-3-693x1024.jpg'
               alt='f2'
-              width={800}
-              height={600}
+              width={700}
+              height={500}
               style={{ objectFit: 'cover' }}
               className='hover:scale-95 hover:transition-transform'
             />
           </div>
         </div>
 
-        <div className='pl-6'>
+        <div className='pl-5'>
           <p className='text-gray-500 text-xs uppercase'>Intense Hydration</p>
           <h2 className='font-bold text-3xl'>Restore Skin Moisture</h2>
           <p className='mt-3 text-gray-600'>

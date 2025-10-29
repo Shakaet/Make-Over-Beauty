@@ -24,7 +24,7 @@ const members = [
 const Team = () => {
   return (
     <section className='py-16'>
-      <div className='mx-auto p-6 max-w-7xl'>
+      <div className='mx-auto px-22 sm:px-26'>
         <p className='text-gray-500 text-xs text-center'>Our Team</p>
         <h2 className='mt-2 font-bold text-3xl text-center'>
           Cosmetic Experts
