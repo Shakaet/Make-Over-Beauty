@@ -1,16 +1,20 @@
 import React from 'react'
 import Heading from '../../component/Heading'
+import Faq from './Faq'
+import FaqCard from './FaqCard'
+import NewsUpdates from '@/app/component/NewsUpdates'
+import TagUs from '@/app/component/TagUs'
+import JoinUs from './JoinUs'
 
 const Page = () => {
   return (
-    <div>
+    <div className='home-bg bg-fixed bg-cover bg-center bg-no-repeat'>
       <Heading />
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 text-black/80">
-        <h3 className="text-2xl font-semibold mb-4">Frequently Asked Questions</h3>
-        <p>
-          This is the FAQ page placeholder. Add your FAQs here.
-        </p>
-      </div>
+      <Faq />
+      <FaqCard></FaqCard>
+      <NewsUpdates></NewsUpdates>
+      <JoinUs></JoinUs>
+      <TagUs></TagUs>
     </div>
   )
 }
