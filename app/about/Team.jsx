@@ -1,5 +1,7 @@
 'use client'
 
+// import { Autoplay, Pagination } from 'swiper/modules'
+// import { Autoplay, Pagination } from 'swiper' // <-- fix here
 import { Autoplay, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
@@ -100,3 +102,6 @@ const Team = () => {
 }
 
 export default Team
+
+
+
