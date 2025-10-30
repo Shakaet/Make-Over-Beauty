@@ -91,18 +91,11 @@ const Page = () => {
   return (
     <div className='bg-cover bg-no-repeat bg-center bg-fixed home-bg'>
       <Heading />
-      <section className='relative bg-[#f7efe6] px-4 py-10 sm:px-10 lg:px-16'>
-        <div className='grid grid-cols-1 lg:grid-cols-4 gap-10'>
-          <div className='lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-8 lg:order-2'>
-            {currentPosts.length > 0 ? (
-              currentPosts.map(post => <BlogCard key={post.id} post={post} />)
-            ) : (
-              <p className='text-center text-gray-600 col-span-full'>
-                No posts found.
-              </p>
-            )}
-          </div>
-          <div className='lg:order-1'>
+
+      <section className='relative bg-[#f7efe6] px-4 py-10 sm:px-8 md:px-10 lg:px-16 xl:px-20'>
+        <div className='grid gap-8 lg:gap-12 lg:grid-cols-4'>
+          {/* Sidebar */}
+          <aside className='order-2 lg:order-1 lg:col-span-1'>
             <SidebarBlog
               posts={posts}
               selectedCategories={selectedCategories}
@@ -111,18 +104,33 @@ const Page = () => {
               toggleTag={toggleTag}
               onImageClick={handleImageClick}
             />
-          </div>
-        </div>
+          </aside>
 
-        <div className='flex justify-center mt-10'>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-          />
+          {/* Main Content */}
+          <main className='order-1 lg:order-2 lg:col-span-3'>
+            <div className='lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-8 '>
+              {currentPosts.length > 0 ? (
+                currentPosts.map(post => <BlogCard key={post.id} post={post} />)
+              ) : (
+                <p className='col-span-full text-center text-gray-600 text-base sm:text-lg'>
+                  No posts found.
+                </p>
+              )}
+            </div>
+
+            {/* Pagination */}
+            <div className='flex justify-center mt-10'>
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            </div>
+          </main>
         </div>
       </section>
 
+      {/* Modal */}
       {showModal && (
         <ImageModal image={modalImage} onClose={() => setShowModal(false)} />
       )}

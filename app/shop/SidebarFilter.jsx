@@ -2,21 +2,40 @@
 
 import React, { useState, useEffect } from 'react'
 
-const SidebarFilter = ({ products }) => {
+const SidebarFilter = ({
+  products,
+  searchTerm,
+  setSearchTerm,
+  selectedCategories,
+  setSelectedCategories,
+  priceRange,
+  setPriceRange
+}) => {
   const prices = products.map(p => p.price ?? p.lowprice ?? 0) // get prices
   const minPrice = Math.min(...prices)
   const maxPrice = Math.max(...prices)
+  const [localMaxPrice, setLocalMaxPrice] = useState(maxPrice)
 
-  const [priceRange, setPriceRange] = useState([minPrice, maxPrice])
-
-  // Update price range if products change
+  // Reset price range if products change
   useEffect(() => {
     setPriceRange([minPrice, maxPrice])
+    setLocalMaxPrice(maxPrice)
   }, [minPrice, maxPrice])
+
+  const handleCategoryChange = category => {
+    if (selectedCategories.includes(category)) {
+      setSelectedCategories(
+        selectedCategories.filter(item => item !== category)
+      )
+    } else {
+      setSelectedCategories([...selectedCategories, category])
+    }
+  }
 
   const handlePriceChange = e => {
     const value = Number(e.target.value)
     setPriceRange([priceRange[0], value])
+    setLocalMaxPrice(value)
   }
 
   return (
@@ -30,6 +49,8 @@ const SidebarFilter = ({ products }) => {
           type='text'
           placeholder='Search products…'
           className='p-2 border border-gray-400 rounded-md focus:outline-none w-full'
+          value={searchTerm}
+          onChange={e => setSearchTerm(e.target.value)}
         />
       </div>
 
@@ -42,7 +63,11 @@ const SidebarFilter = ({ products }) => {
           {Array.from(new Set(products.map(p => p.category))).map(category => (
             <li key={category}>
               <label>
-                <input type='checkbox' />{' '}
+                <input
+                  type='checkbox'
+                  checked={selectedCategories.includes(category)}
+                  onChange={() => handleCategoryChange(category)}
+                />
                 <span className='ml-2'>
                   {category} (
                   {products.filter(p => p.category === category).length})
@@ -63,7 +88,7 @@ const SidebarFilter = ({ products }) => {
             type='range'
             min={minPrice}
             max={maxPrice}
-            value={priceRange[1]}
+            value={localMaxPrice}
             onChange={handlePriceChange}
             className='w-full'
           />
@@ -77,7 +102,10 @@ const SidebarFilter = ({ products }) => {
             </span>
           </div>
         </div>
-        <button className='bg-[#f0e3cd] mt-4 py-2 rounded-md w-full'>
+        <button
+          className='bg-[#f0e3cd] mt-4 py-2 rounded-md w-full'
+          onClick={() => setPriceRange([minPrice, localMaxPrice])}
+        >
           Filter
         </button>
       </div>

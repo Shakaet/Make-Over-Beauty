@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import ProductCard from './ProductCard'
 import SidebarFilter from './SidebarFilter'
 import Pagination from '../component/Pagination'
@@ -9,8 +9,8 @@ const products = [
   {
     id: 1,
     name: 'Anti-Age Face Serum',
-    lowprice: 420.0,
-    highprice: 600.0,
+    lowprice: 340.0,
+    highprice: 480.0,
     imagePrimary:
       'https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-9.jpg',
     imageSecondary:
@@ -100,24 +100,68 @@ const products = [
     category: 'Serums'
   }
 ]
+
 const Product = () => {
   const [currentPage, setCurrentPage] = useState(1)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [selectedCategories, setSelectedCategories] = useState([])
+  const [priceRange, setPriceRange] = useState([0, 10000])
+  const [sortOption, setSortOption] = useState('default')
   const productsPerPage = 8
 
-  const totalPages = Math.ceil(products.length / productsPerPage)
+  // Filter products based on search, categories, and price
+  const filteredProducts = useMemo(() => {
+    let filtered = products.filter(product => {
+      // search filter
+      const matchesSearch = product.name
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
 
+      // category filter
+      const matchesCategory =
+        selectedCategories.length === 0 ||
+        selectedCategories.includes(product.category)
+
+      // price filter
+      const price = product.highprice ?? product.lowprice
+      const matchesPrice = price >= priceRange[0] && price <= priceRange[1]
+
+      return matchesSearch && matchesCategory && matchesPrice
+    })
+
+    // Sort filtered products
+    switch (sortOption) {
+      case 'price-low-high':
+        filtered.sort(
+          (a, b) => (a.lowprice ?? a.highprice) - (b.lowprice ?? b.highprice)
+        )
+        break
+      case 'price-high-low':
+        filtered.sort(
+          (a, b) => (b.lowprice ?? b.highprice) - (a.lowprice ?? a.highprice)
+        )
+        break
+      case 'popularity':
+        filtered.sort((a, b) => b.rating - a.rating)
+        break
+      default:
+        break
+    }
+
+    return filtered
+  }, [searchTerm, selectedCategories, priceRange, sortOption])
+
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage)
   const indexOfLastProduct = currentPage * productsPerPage
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage
-  const currentProducts = products.slice(
+  const currentProducts = filteredProducts.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   )
 
   return (
     <div className='gap-10 grid lg:grid-cols-4'>
-      <SidebarFilter products={products} />
-
-      <div className='lg:col-span-3'>
+      <div className='lg:order-2 lg:col-span-3'>
         <img
           className='mb-8 w-full h-48 object-cover'
           src='https://wdtlilac.wpengine.com/wp-content/uploads/2023/03/Slider-1A.jpg'
@@ -125,13 +169,18 @@ const Product = () => {
         />
         <div className='flex justify-between items-center mb-8'>
           <div className='text-gray-500 text-sm'>
-            Showing 1–6 of {products.length} results
+            Showing {currentProducts.length} of {filteredProducts.length}{' '}
+            results
           </div>
-          <select className='p-2 border border-gray-300 rounded-md text-sm'>
-            <option>Default sorting</option>
-            <option>Sort by price: low to high</option>
-            <option>Sort by price: high to low</option>
-            <option>Sort by popularity</option>
+          <select
+            className='p-2 border border-gray-300 rounded-md text-sm'
+            value={sortOption}
+            onChange={e => setSortOption(e.target.value)}
+          >
+            <option value='default'>Default sorting</option>
+            <option value='price-low-high'>Sort by price: low to high</option>
+            <option value='price-high-low'>Sort by price: high to low</option>
+            <option value='popularity'>Sort by popularity</option>
           </select>
         </div>
 
@@ -148,6 +197,17 @@ const Product = () => {
             onPageChange={page => setCurrentPage(page)}
           />
         </div>
+      </div>
+      <div className='lg:order-1'>
+        <SidebarFilter
+          products={products}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          selectedCategories={selectedCategories}
+          setSelectedCategories={setSelectedCategories}
+          priceRange={priceRange}
+          setPriceRange={setPriceRange}
+        />
       </div>
     </div>
   )

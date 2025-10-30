@@ -7,7 +7,7 @@ const ImageModal = ({ image, onClose }) => {
         <img
           src={image}
           alt='Gallery'
-          className='shadow-lg rounded-lg max-w-[90vw] max-h-[80vh]'
+          className='shadow-lg rounded-sm max-w-[90vw] max-h-[80vh]'
         />
         <button
           className='top-2 right-2 absolute bg-white px-3 py-1 rounded text-black cursor-pointer'
