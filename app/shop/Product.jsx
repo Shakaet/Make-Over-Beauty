@@ -1,113 +1,133 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import ProductCard from './ProductCard'
 import SidebarFilter from './SidebarFilter'
 import Pagination from '../component/Pagination'
 
-const products = [
-  {
-    id: 1,
-    name: 'Anti-Age Face Serum',
-    lowprice: 340.0,
-    highprice: 480.0,
-    imagePrimary:
-      'https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-9.jpg',
-    imageSecondary:
-      'https://wdtlilac.wpengine.com/wp-content/uploads/2023/01/shop-9.1.jpg',
-    rating: 4.5,
-    category: 'Serums'
-  },
-  {
-    id: 2,
-    name: 'Anti-Aging Face Cream',
-    lowprice: 225.0,
-    highprice: 410.0,
-    imagePrimary:
-      'https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-18.jpg',
-    imageSecondary:
-      'https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-18.1.jpg',
-    rating: 4.0,
-    category: 'Creams'
-  },
-  {
-    id: 3,
-    name: 'Anti-Blemish Facial Serum',
-    lowprice: 340.0,
-    highprice: 480.0,
-    imagePrimary:
-      'https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-9.jpg',
-    imageSecondary:
-      'https://wdtlilac.wpengine.com/wp-content/uploads/2023/01/shop-9.1.jpg',
-    rating: 3.5,
-    category: 'Serums'
-  },
-  {
-    id: 4,
-    name: 'Anti-Wrinkle Retinol Serum',
-    lowprice: 250.0,
-    imagePrimary:
-      'https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-18.jpg',
-    imageSecondary:
-      'https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-18.1.jpg',
-    rating: 5.0,
-    category: 'Serums'
-  },
-  {
-    id: 5,
-    name: 'Detangling Hair Spray',
-    lowprice: 350.0,
-    highprice: 410.0,
-    imagePrimary:
-      'https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-9.jpg',
-    imageSecondary:
-      'https://wdtlilac.wpengine.com/wp-content/uploads/2023/01/shop-9.1.jpg',
-    rating: 4.2,
-    category: 'Hair Care'
-  },
-  {
-    id: 6,
-    name: 'Dry Skin Moisturizing Body Lotion',
-    lowprice: 380.0,
-    imagePrimary:
-      'https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-18.jpg',
-    imageSecondary:
-      'https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-18.1.jpg',
-    rating: 4.8,
-    category: 'Lotions'
-  },
-  {
-    id: 7,
-    name: 'Anti-Blemish Facial Serum',
-    lowprice: 400.0,
-    highprice: 480.0,
-    imagePrimary:
-      'https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-9.jpg',
-    imageSecondary:
-      'https://wdtlilac.wpengine.com/wp-content/uploads/2023/01/shop-9.1.jpg',
-    rating: 4.1,
-    category: 'Serums'
-  },
-  {
-    id: 8,
-    name: 'Anti-Wrinkle Retinol Serum',
-    lowprice: 500.0,
-    imagePrimary:
-      'https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-18.jpg',
-    imageSecondary:
-      'https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-18.1.jpg',
-    rating: 3.9,
-    category: 'Serums'
-  }
-]
+// const products = [
+//   {
+//     id: 1,
+//     name: 'Anti-Age Face Serum',
+//     lowprice: 340.0,
+//     highprice: 480.0,
+//     imagePrimary:
+//       'https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-9.jpg',
+//     imageSecondary:
+//       'https://wdtlilac.wpengine.com/wp-content/uploads/2023/01/shop-9.1.jpg',
+//     rating: 4.5,
+//     category: 'Serums'
+//   },
+//   {
+//     id: 2,
+//     name: 'Anti-Aging Face Cream',
+//     lowprice: 225.0,
+//     highprice: 410.0,
+//     imagePrimary:
+//       'https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-18.jpg',
+//     imageSecondary:
+//       'https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-18.1.jpg',
+//     rating: 4.0,
+//     category: 'Creams'
+//   },
+//   {
+//     id: 3,
+//     name: 'Anti-Blemish Facial Serum',
+//     lowprice: 340.0,
+//     highprice: 480.0,
+//     imagePrimary:
+//       'https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-9.jpg',
+//     imageSecondary:
+//       'https://wdtlilac.wpengine.com/wp-content/uploads/2023/01/shop-9.1.jpg',
+//     rating: 3.5,
+//     category: 'Serums'
+//   },
+//   {
+//     id: 4,
+//     name: 'Anti-Wrinkle Retinol Serum',
+//     lowprice: 250.0,
+//     imagePrimary:
+//       'https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-18.jpg',
+//     imageSecondary:
+//       'https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-18.1.jpg',
+//     rating: 5.0,
+//     category: 'Serums'
+//   },
+//   {
+//     id: 5,
+//     name: 'Detangling Hair Spray',
+//     lowprice: 350.0,
+//     highprice: 410.0,
+//     imagePrimary:
+//       'https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-9.jpg',
+//     imageSecondary:
+//       'https://wdtlilac.wpengine.com/wp-content/uploads/2023/01/shop-9.1.jpg',
+//     rating: 4.2,
+//     category: 'Hair Care'
+//   },
+//   {
+//     id: 6,
+//     name: 'Dry Skin Moisturizing Body Lotion',
+//     lowprice: 380.0,
+//     imagePrimary:
+//       'https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-18.jpg',
+//     imageSecondary:
+//       'https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-18.1.jpg',
+//     rating: 4.8,
+//     category: 'Lotions'
+//   },
+//   {
+//     id: 7,
+//     name: 'Anti-Blemish Facial Serum',
+//     lowprice: 400.0,
+//     highprice: 480.0,
+//     imagePrimary:
+//       'https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-9.jpg',
+//     imageSecondary:
+//       'https://wdtlilac.wpengine.com/wp-content/uploads/2023/01/shop-9.1.jpg',
+//     rating: 4.1,
+//     category: 'Serums'
+//   },
+//   {
+//     id: 8,
+//     name: 'Anti-Wrinkle Retinol Serum',
+//     lowprice: 500.0,
+//     imagePrimary:
+//       'https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-18.jpg',
+//     imageSecondary:
+//       'https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-18.1.jpg',
+//     rating: 3.9,
+//     category: 'Serums'
+//   }
+// ]
 
 const Product = () => {
+  const [products, setProducts] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategories, setSelectedCategories] = useState([])
   const [priceRange, setPriceRange] = useState([0, 10000])
   const [sortOption, setSortOption] = useState('default')
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   const productsPerPage = 8
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const res = await fetch('/data/products.json')
+        if (!res.ok) throw new Error('Failed to load posts')
+        const data = await res.json()
+        setProducts(data)
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchPosts()
+  }, [])
 
   // Filter products based on search, categories, and price
   const filteredProducts = useMemo(() => {
@@ -158,6 +178,22 @@ const Product = () => {
     indexOfFirstProduct,
     indexOfLastProduct
   )
+
+  if (loading) {
+    return (
+      <div className='flex justify-center items-center bg-[#f7efe6] min-h-screen text-gray-700'>
+        <p>Loading posts...</p>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className='flex justify-center items-center bg-[#f7efe6] min-h-screen text-red-500'>
+        <p>Error: {error}</p>
+      </div>
+    )
+  }
 
   return (
     <div className='gap-10 grid lg:grid-cols-4'>

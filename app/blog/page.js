@@ -1,52 +1,41 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Heading from '../component/Heading'
 import SidebarBlog from './SidebarBlog'
 import Pagination from '../component/Pagination'
 import BlogCard from './BlogCard'
 import ImageModal from '../component/ImageModal'
 
-const posts = [
-  {
-    id: 1,
-    title: 'Making CBD-Infused Pastries And Cupcakes',
-    date: 'Jun 24, 2023',
-    excerpt: 'Nibh tellus molestie nunc non blandit massa...',
-    categories: ['Sun Protection'],
-    tags: ['Sensitive'],
-    image: 'https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/blog-1.jpg'
-  },
-  {
-    id: 2,
-    title: 'Natural And Detergent-Free Handmade Soap',
-    date: 'Jun 24, 2023',
-    excerpt: 'Feugiat tempor nec nisi pretium fusce id...',
-    categories: ['Enlarged Pores', 'Dryness'],
-    tags: ['Normal', 'Combination'],
-    image: 'https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/blog-2.jpg'
-  },
-  {
-    id: 3,
-    title: 'Fine And Smooth Organic Face Pack',
-    date: 'Oct 29, 2025',
-    excerpt:
-      'Dempor nec feugiat nisl pretium fusce id. Nibh tellus molestie nunc non blandit...',
-    categories: ['Dark Spot', 'Fine Lines'],
-    tags: ['Combination'],
-    image:
-      'https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/blog-3.webp',
-    slug: 'post-title-one'
-  }
-]
+//import posts from '../data/posts.json'
 
 const Page = () => {
+  const [posts, setPosts] = useState([])
   const [selectedCategories, setSelectedCategories] = useState([])
   const [selectedTags, setSelectedTags] = useState([])
   const [showModal, setShowModal] = useState(false)
   const [modalImage, setModalImage] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   const postsPerPage = 6
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const res = await fetch('/data/posts.json')
+        if (!res.ok) throw new Error('Failed to load posts')
+        const data = await res.json()
+        setPosts(data)
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchPosts()
+  }, [])
 
   const handleImageClick = image => {
     setModalImage(image)
@@ -87,6 +76,22 @@ const Page = () => {
     indexOfLastPost - postsPerPage,
     indexOfLastPost
   )
+
+  if (loading) {
+    return (
+      <div className='flex items-center justify-center min-h-screen bg-[#f7efe6] text-gray-700'>
+        <p>Loading posts...</p>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className='flex items-center justify-center min-h-screen bg-[#f7efe6] text-red-500'>
+        <p>Error: {error}</p>
+      </div>
+    )
+  }
 
   return (
     <div className='bg-cover bg-no-repeat bg-center bg-fixed home-bg'>
