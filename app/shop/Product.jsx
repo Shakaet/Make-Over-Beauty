@@ -197,7 +197,16 @@ const Product = () => {
 
   return (
     <div className='gap-10 grid lg:grid-cols-4'>
-      <div className='lg:order-2 lg:col-span-3'>
+      <SidebarFilter
+        products={products}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        selectedCategories={selectedCategories}
+        setSelectedCategories={setSelectedCategories}
+        priceRange={priceRange}
+        setPriceRange={setPriceRange}
+      />
+      <div className='lg:col-span-3'>
         <img
           className='mb-8 w-full h-48 object-cover'
           src='https://wdtlilac.wpengine.com/wp-content/uploads/2023/03/Slider-1A.jpg'
@@ -234,16 +243,37 @@ const Product = () => {
           />
         </div>
       </div>
-      <div className='lg:order-1'>
-        <SidebarFilter
-          products={products}
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          selectedCategories={selectedCategories}
-          setSelectedCategories={setSelectedCategories}
-          priceRange={priceRange}
-          setPriceRange={setPriceRange}
-        />
+      <div className='lg:hidden block lg:order-1 lg:col-span-1 p-4 border border-gray-400 rounded-md'>
+        <h4 className='bg-[#f0e3cd] mb-3 p-2 rounded-md font-semibold'>
+          Recent Products
+        </h4>
+        {products.slice(-3).map(product => (
+          <div key={product.id} className='flex items-start space-x-3 mb-3'>
+            <img
+              src={product.imagePrimary}
+              alt={product.name}
+              className='p-1 border w-16 h-16 object-cover'
+            />
+            <div>
+              <h5 className='font-bold text-sm'>{product.name}</h5>
+              <div>
+                <span className='text-yellow-500'>
+                  {'★'.repeat(Math.floor(product.rating))}
+                </span>
+                <span className='text-yellow-500'>
+                  {'☆'.repeat(5 - Math.floor(product.rating))}
+                </span>
+              </div>
+              <div className='font-bold text-xs'>
+                {product.highprice
+                  ? `$${product.lowprice.toFixed(
+                      2
+                    )} - $${product.highprice.toFixed(2)}`
+                  : `$${product.lowprice.toFixed(2)}`}
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   )
