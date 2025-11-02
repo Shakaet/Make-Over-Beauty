@@ -8,3 +8,9 @@ const Nav = () => {
 }
 
 export default Nav
+
+
+
+
+// npx next-lens@latest api:list
+// npx next-lens@latest page:list
