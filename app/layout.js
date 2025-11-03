@@ -4,6 +4,7 @@ import Nav from "./component/Nav";
 import Top from "./component/Top";
 import Splash from "./component/Splash";
 import Footer from "./component/Footer";
+import AuthProvider from "./provider/AuthProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,13 +35,15 @@ export default function RootLayout({ children }) {
         suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Splash />
+        <AuthProvider>
+          <Splash />
         <Top props={ANNOUNCEMENTS}></Top>
         <Nav></Nav>
         
         {children}
 
         <Footer></Footer>
+        </AuthProvider>
       </body>
     </html>
   );
