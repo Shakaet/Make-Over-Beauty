@@ -1,14 +1,13 @@
-"use client"
-import React, { useState } from "react";
+"use client";
+
+import React, { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { sendPasswordResetEmail } from "firebase/auth";
 import auth from "../firebase/firebase.init";
 
-
-
-const ForgetPass = () => {
+function ForgetPassContent() {
   const searchParams = useSearchParams();
-  const [email, setEmail] = useState(searchParams?.get('email') || "");
+  const [email, setEmail] = useState(searchParams?.get("email") || "");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
@@ -51,12 +50,18 @@ const ForgetPass = () => {
             ✉️
           </div>
         </div>
-        <h3 className="text-2xl font-semibold text-black mb-1">Forgot Password</h3>
-        <p className="text-sm text-gray-600 mb-5">Enter your email and we’ll send you a reset link.</p>
+        <h3 className="text-2xl font-semibold text-black mb-1">
+          Forgot Password
+        </h3>
+        <p className="text-sm text-gray-600 mb-5">
+          Enter your email and we’ll send you a reset link.
+        </p>
 
         <form onSubmit={handleResetPassword} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email address</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Email address
+            </label>
             <input
               type="email"
               value={email}
@@ -67,7 +72,10 @@ const ForgetPass = () => {
             {error && <p className="text-xs text-red-600 mt-1">{error}</p>}
             {message && <p className="text-xs text-green-600 mt-1">{message}</p>}
           </div>
-          <button type="submit" className="w-full rounded-full shadow transition bg-gradient-to-r from-[#E8D8C0] to-[#dec5a4] hover:from-[#dec5a4] hover:to-[#E8D8C0] text-gray-900 font-medium px-6 py-2">
+          <button
+            type="submit"
+            className="w-full rounded-full shadow transition bg-gradient-to-r from-[#E8D8C0] to-[#dec5a4] hover:from-[#dec5a4] hover:to-[#E8D8C0] text-gray-900 font-medium px-6 py-2"
+          >
             Reset Password
           </button>
           <p className="text-xs text-gray-500">We’ll never share your email.</p>
@@ -75,6 +83,12 @@ const ForgetPass = () => {
       </div>
     </div>
   );
-};
+}
 
-export default ForgetPass;
+export default function ForgetPass() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ForgetPassContent />
+    </Suspense>
+  );
+}
