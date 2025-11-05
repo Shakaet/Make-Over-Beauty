@@ -2,7 +2,6 @@
 import React, { useContext, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Context } from '../provider/AuthProvider'
-import Link from 'next/link'
 
 const Login = () => {
 
