@@ -1,0 +1,59 @@
+[
+  {
+    "id": 1,
+    "title": "Making CBD-Infused Pastries And Cupcakes",
+    "date": "June 24, 2023",
+    "excerpt": "Discover how to create delicious pastries and cupcakes infused with CBD, combining taste with wellness benefits. Perfect for at-home baking enthusiasts.",
+    "categories": [
+      "Baking",
+      "CBD Recipes",
+      "Wellness"
+    ],
+    "tags": [
+      "Sensitive",
+      "DIY",
+      "Pastries"
+    ],
+    "image": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/blog-1.jpg",
+    "slug": "cbd-infused-pastries-cupcakes",
+    "content": "CBD-infused pastries are gaining popularity due to their unique combination of flavor and potential health benefits. In this article, we explore step-by-step recipes, tips for perfect texture, and the best ingredients to use..."
+  },
+  {
+    "id": 2,
+    "title": "Natural And Detergent-Free Handmade Soap",
+    "date": "July 10, 2023",
+    "excerpt": "Learn how to craft natural, detergent-free soaps that are gentle on your skin and environmentally friendly. Perfect for skincare enthusiasts and DIY lovers.",
+    "categories": [
+      "Skincare",
+      "DIY",
+      "Natural Products"
+    ],
+    "tags": [
+      "Normal",
+      "Combination",
+      "Eco-friendly"
+    ],
+    "image": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/blog-2.jpg",
+    "slug": "natural-detergent-free-soap",
+    "content": "Handmade soaps without harsh detergents are better for both your skin and the environment. This guide covers essential oils, base ingredients, and molding techniques to create soap bars at home..."
+  },
+  {
+    "id": 3,
+    "title": "Fine And Smooth Organic Face Pack",
+    "date": "October 29, 2025",
+    "excerpt": "Enhance your skincare routine with an organic face pack that reduces dark spots and fine lines while nourishing your skin naturally.",
+    "categories": [
+      "Skincare",
+      "Organic",
+      "Anti-Aging"
+    ],
+    "tags": [
+      "Combination",
+      "Organic",
+      "Face Care"
+    ],
+    "image": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/blog-3.webp",
+    "slug": "organic-face-pack-smooth-skin",
+    "content": "Organic face packs help rejuvenate your skin using natural ingredients. Learn which herbs, oils, and clays work best for different skin types and how to apply them for maximum benefit..."
+  }
+]
