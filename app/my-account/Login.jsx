@@ -1,9 +1,11 @@
 "use client"
-import React, { useContext, useState } from 'react'
+import React, { Suspense, useContext, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Context } from '../provider/AuthProvider'
 
-const Login = () => {
+
+
+function LoginForm(){
 
    let {loginSetup}= useContext(Context)
 
@@ -117,6 +119,15 @@ const Login = () => {
       </form>
     </div>
   )
+}
+const Login = () => {
+  return(
+    <Suspense>
+    <LoginForm></LoginForm>
+   </Suspense>
+  )
+
+  
 }
 
 export default Login
