@@ -4,76 +4,307 @@
     "name": "Anti-Age Face Serum",
     "lowprice": 340,
     "highprice": 480,
-    "imagePrimary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-9.jpg",
-    "imageSecondary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/01/shop-9.1.jpg",
+    "discount": 10,
+    "stock": 0,
     "rating": 4.5,
-    "category": "Serums"
+    "reviews": 142,
+    "category": "Serums",
+    "imagePrimary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-12.jpg",
+    "imageSecondary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-11.jpg",
+    "description": "A lightweight serum enriched with hyaluronic acid and vitamin C that helps reduce fine lines, promote collagen production, and restore youthful glow.",
+    "ingredients": [
+      "Hyaluronic Acid",
+      "Vitamin C",
+      "Niacinamide",
+      "Aloe Vera",
+      "Green Tea Extract"
+    ],
+    "tags": [
+      "anti-aging",
+      "hydrating",
+      "brightening"
+    ],
+    "shippingInfo": [
+      "Free shipping on orders over $50",
+      "30-day hassle-free returns",
+      "Secure payments guaranteed"
+    ]
   },
   {
     "id": 2,
     "name": "Anti-Aging Face Cream",
     "lowprice": 225,
     "highprice": 410,
+    "discount": 15,
+    "stock": 32,
+    "rating": 4.0,
+    "reviews": 95,
+    "category": "Creams",
     "imagePrimary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-18.jpg",
     "imageSecondary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-18.1.jpg",
-    "rating": 4,
-    "category": "Creams"
+    "description": "A rich, nourishing cream designed to firm the skin and diminish wrinkles with natural peptides and collagen boosters.",
+    "ingredients": [
+      "Collagen",
+      "Peptides",
+      "Shea Butter",
+      "Vitamin E",
+      "Rosehip Oil"
+    ],
+    "tags": [
+      "firming",
+      "moisturizing",
+      "anti-aging"
+    ],
+    "shippingInfo": [
+      "Free shipping on orders over $50",
+      "30-day hassle-free returns",
+      "Secure payments guaranteed"
+    ]
   },
   {
     "id": 3,
     "name": "Anti-Blemish Facial Serum",
     "lowprice": 340,
     "highprice": 480,
-    "imagePrimary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-9.jpg",
-    "imageSecondary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/01/shop-9.1.jpg",
+    "discount": 12,
+    "stock": 19,
     "rating": 3.5,
-    "category": "Serums"
+    "reviews": 78,
+    "category": "Serums",
+    "imagePrimary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-1.jpg",
+    "imageSecondary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-10.jpg",
+    "description": "Targets acne and blemishes with a concentrated blend of niacinamide and tea tree oil to clear pores and calm irritation.",
+    "ingredients": [
+      "Niacinamide",
+      "Tea Tree Oil",
+      "Zinc PCA",
+      "Aloe Vera",
+      "Chamomile"
+    ],
+    "tags": [
+      "acne",
+      "clarifying",
+      "soothing"
+    ],
+    "shippingInfo": [
+      "Free shipping on orders over $50",
+      "30-day hassle-free returns",
+      "Secure payments guaranteed"
+    ]
   },
   {
     "id": 4,
     "name": "Anti-Wrinkle Retinol Serum",
     "lowprice": 250,
-    "imagePrimary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-18.jpg",
+    "discount": 20,
+    "stock": 41,
+    "rating": 5.0,
+    "reviews": 220,
+    "category": "Serums",
+    "imagePrimary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-2.jpg",
     "imageSecondary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-18.1.jpg",
-    "rating": 5,
-    "category": "Serums"
+    "description": "An advanced retinol-infused formula that smooths wrinkles, evens skin tone, and enhances cell renewal for visibly younger skin.",
+    "ingredients": [
+      "Retinol",
+      "Vitamin E",
+      "Squalane",
+      "Jojoba Oil",
+      "Hyaluronic Acid"
+    ],
+    "tags": [
+      "anti-wrinkle",
+      "renewal",
+      "retinol"
+    ],
+    "shippingInfo": [
+      "Free shipping on orders over $50",
+      "30-day hassle-free returns",
+      "Secure payments guaranteed"
+    ]
   },
   {
     "id": 5,
     "name": "Detangling Hair Spray",
     "lowprice": 350,
     "highprice": 410,
+    "discount": 8,
+    "stock": 15,
+    "rating": 4.2,
+    "reviews": 56,
+    "category": "Hair Care",
     "imagePrimary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-9.jpg",
     "imageSecondary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/01/shop-9.1.jpg",
-    "rating": 4.2,
-    "category": "Hair Care"
+    "description": "A lightweight detangling mist that softens, hydrates, and smooths frizzy hair while providing protection against heat styling.",
+    "ingredients": [
+      "Argan Oil",
+      "Keratin",
+      "Coconut Water",
+      "Aloe Vera",
+      "Vitamin B5"
+    ],
+    "tags": [
+      "hair care",
+      "detangling",
+      "shine"
+    ],
+    "shippingInfo": [
+      "Free shipping on orders over $50",
+      "30-day hassle-free returns",
+      "Secure payments guaranteed"
+    ]
   },
   {
     "id": 6,
     "name": "Dry Skin Moisturizing Body Lotion",
     "lowprice": 380,
-    "imagePrimary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-18.jpg",
-    "imageSecondary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-18.1.jpg",
+    "discount": 5,
+    "stock": 29,
     "rating": 4.8,
-    "category": "Lotions"
+    "reviews": 164,
+    "category": "Lotions",
+    "imagePrimary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-5.jpg",
+    "imageSecondary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-6.jpg",
+    "description": "Deeply hydrates dry skin with shea butter and coconut oil, leaving it soft, supple, and refreshed all day long.",
+    "ingredients": [
+      "Shea Butter",
+      "Coconut Oil",
+      "Glycerin",
+      "Vitamin E",
+      "Almond Extract"
+    ],
+    "tags": [
+      "moisturizing",
+      "hydrating",
+      "body care"
+    ],
+    "shippingInfo": [
+      "Free shipping on orders over $50",
+      "30-day hassle-free returns",
+      "Secure payments guaranteed"
+    ]
   },
   {
     "id": 7,
-    "name": "Anti-Blemish Facial Serum",
-    "lowprice": 400,
-    "highprice": 480,
-    "imagePrimary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-9.jpg",
-    "imageSecondary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/01/shop-9.1.jpg",
-    "rating": 4.1,
-    "category": "Serums"
+    "name": "Herbal Hair Strengthening Oil",
+    "lowprice": 300,
+    "highprice": 370,
+    "discount": 7,
+    "stock": 20,
+    "rating": 4.6,
+    "reviews": 101,
+    "category": "Hair Care",
+    "imagePrimary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-16.jpg",
+    "imageSecondary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/01/shop-15.jpg",
+    "description": "A herbal oil blend that strengthens hair roots, reduces dandruff, and promotes faster growth with amla and castor oil.",
+    "ingredients": [
+      "Amla",
+      "Castor Oil",
+      "Bhringraj",
+      "Coconut Oil",
+      "Neem Extract"
+    ],
+    "tags": [
+      "herbal",
+      "hair growth",
+      "nourishing"
+    ],
+    "shippingInfo": [
+      "Free shipping on orders over $50",
+      "30-day hassle-free returns",
+      "Secure payments guaranteed"
+    ]
   },
   {
     "id": 8,
-    "name": "Anti-Wrinkle Retinol Serum",
-    "lowprice": 500,
-    "imagePrimary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-18.jpg",
-    "imageSecondary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-18.1.jpg",
-    "rating": 3.9,
-    "category": "Serums"
+    "name": "Vitamin C Brightening Serum",
+    "lowprice": 450,
+    "highprice": 520,
+    "discount": 10,
+    "stock": 18,
+    "rating": 4.7,
+    "reviews": 189,
+    "category": "Serums",
+    "imagePrimary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-7.jpg",
+    "imageSecondary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-9.jpg",
+    "description": "Packed with 15% vitamin C and ferulic acid to reduce dark spots, even skin tone, and give a natural radiant glow.",
+    "ingredients": [
+      "Vitamin C",
+      "Ferulic Acid",
+      "Licorice Root",
+      "Aloe Vera",
+      "Glycerin"
+    ],
+    "tags": [
+      "brightening",
+      "vitamin c",
+      "radiance"
+    ],
+    "shippingInfo": [
+      "Free shipping on orders over $50",
+      "30-day hassle-free returns",
+      "Secure payments guaranteed"
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Lavender Night Body Lotion",
+    "lowprice": 390,
+    "highprice": 450,
+    "discount": 6,
+    "stock": 22,
+    "rating": 4.9,
+    "reviews": 73,
+    "category": "Lotions",
+    "imagePrimary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-12.jpg",
+    "imageSecondary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-4.jpg",
+    "description": "Calming lavender-infused body lotion designed to moisturize deeply while relaxing your senses before bedtime.",
+    "ingredients": [
+      "Lavender Oil",
+      "Shea Butter",
+      "Glycerin",
+      "Vitamin E",
+      "Chamomile Extract"
+    ],
+    "tags": [
+      "relaxing",
+      "body care",
+      "night routine"
+    ],
+    "shippingInfo": [
+      "Free shipping on orders over $50",
+      "30-day hassle-free returns",
+      "Secure payments guaranteed"
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Aloe Hydrating Gel",
+    "lowprice": 320,
+    "highprice": 380,
+    "discount": 5,
+    "stock": 0,
+    "rating": 4.3,
+    "reviews": 90,
+    "category": "Gels",
+    "imagePrimary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-9.jpg",
+    "imageSecondary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-6.jpg",
+    "description": "A cooling and soothing aloe-based gel that hydrates and repairs skin after sun exposure or irritation.",
+    "ingredients": [
+      "Aloe Vera",
+      "Green Tea",
+      "Cucumber Extract",
+      "Panthenol",
+      "Vitamin E"
+    ],
+    "tags": [
+      "hydrating",
+      "soothing",
+      "natural"
+    ],
+    "shippingInfo": [
+      "Free shipping on orders over $50",
+      "30-day hassle-free returns",
+      "Secure payments guaranteed"
+    ]
   }
 ]

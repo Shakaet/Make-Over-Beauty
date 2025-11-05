@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 const BlogCard = ({ post }) => {
   return (
     <article className='bg-[#F7F2EA] pb-10 rounded-sm transition hover:-translate-y-2'>
@@ -20,7 +22,7 @@ const BlogCard = ({ post }) => {
         {post.categories.map((cat, i) => (
           <div
             key={i}
-            className='flex items-center gap-2 text-[11px] text-gray-700 uppercase tracking-wide'
+            className='flex items-center bg-[#B49A7E] px-2 py-1 mr-2 rounded gap-2 text-[11px] text-white uppercase tracking-wide'
           >
             <span>{cat}</span>
           </div>
@@ -39,9 +41,11 @@ const BlogCard = ({ post }) => {
 
       {/* Read More */}
       <div className='mt-5 px-6'>
-        <button className='pb-0.5 border-[#B49A7E] border-b font-semibold text-[#B49A7E] text-sm uppercase tracking-widest'>
+        <Link
+          href={`/blog/single-blog/${post.slug}`}
+          className='pb-0.5 border-[#B49A7E] border-b font-semibold text-[#B49A7E] text-sm uppercase tracking-widest'>
           Read more
-        </button>
+        </Link>
       </div>
 
       {/* Divider */}

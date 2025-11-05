@@ -104,8 +104,10 @@ const Page = () => {
             <SidebarBlog
               posts={posts}
               selectedCategories={selectedCategories}
+              setSelectedCategories={setSelectedCategories}
               toggleCategory={toggleCategory}
               selectedTags={selectedTags}
+              setSelectedTags={selectedTags}
               toggleTag={toggleTag}
               onImageClick={handleImageClick}
             />
