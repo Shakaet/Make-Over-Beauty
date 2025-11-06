@@ -327,7 +327,7 @@ const ProductDetailPage = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                             {related.map(item => (
                                 <div
-                                    key={item.id}
+                                    key={item._id}
                                     onClick={() => router.push(`/product/${item.id}`)}
                                     className="group bg-white/20 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all cursor-pointer"
                                 >
