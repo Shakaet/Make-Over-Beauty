@@ -2,6 +2,23 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+### Environment Setup
+
+Create a `.env.local` file in the root directory and add your Google Maps API key:
+
+```env
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_api_key_here
+```
+
+To get a Google Maps API key:
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select an existing one
+3. Enable the "Maps Embed API"
+4. Create credentials (API Key)
+5. Copy the API key to your `.env.local` file
+
+### Development Server
+
 First, run the development server:
 
 ```bash

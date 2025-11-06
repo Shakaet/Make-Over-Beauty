@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Top = ({props}) => {
+const Top = ({props: announcements = []}) => {
 
     // const ANNOUNCEMENTS = [
     //     "Black Friday: 10% off storewide",
@@ -17,7 +17,7 @@ const Top = ({props}) => {
         <div className="relative overflow-hidden mask-edge">
           <div className="marquee h-10 flex items-center">
             <div className="marquee-track px-4 gap-12">
-              {[...props, ...props].map((text, idx) => (
+              {[...announcements, ...announcements].map((text, idx) => (
                 <span
                   key={idx}
                   className="text-xs sm:text-sm tracking-[0.3em] uppercase whitespace-nowrap"

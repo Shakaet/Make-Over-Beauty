@@ -9,6 +9,7 @@ import GalleryStats from './GalleryStats'
 import ExploreCta from './ExploreCta'
 import Category from './Category'
 import GalleryClient from './GalleryClient'
+import JoinUs from '../pages/faq/JoinUs'
 
 const page = () => {
   return (
@@ -26,6 +27,7 @@ const page = () => {
         <FeatureCards />
         <GalleryStats />
         <ExploreCta />
+        <JoinUs></JoinUs>
     </div>
   )
 }
