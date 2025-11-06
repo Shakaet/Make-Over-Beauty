@@ -5,7 +5,7 @@ const BlogCard = ({ post }) => {
     <article className='bg-[#F7F2EA] pb-10 rounded-sm transition hover:-translate-y-2'>
       {/* Image with side date ribbon */}
       <div className='relative w-full h-72 overflow-hidden'>
-        <img src={post.image} alt={post.title} fill className='object-cover' />
+        <img src={post.image} alt={post.title} fill="true" className='object-cover' />
 
         {/* Date Ribbon */}
         <div className='top-0 left-0 absolute flex items-center h-full'>
@@ -18,7 +18,7 @@ const BlogCard = ({ post }) => {
       </div>
 
       {/* Categories */}
-      <div className='flex gap-5 mt-5 px-6'>
+      <div className='flex mt-5 px-6'>
         {post.categories.map((cat, i) => (
           <div
             key={i}
@@ -42,7 +42,7 @@ const BlogCard = ({ post }) => {
       {/* Read More */}
       <div className='mt-5 px-6'>
         <Link
-          href={`/blog/single-blog/${post.slug}`}
+          href={`/blog/single-blog/${post._id}`}
           className='pb-0.5 border-[#B49A7E] border-b font-semibold text-[#B49A7E] text-sm uppercase tracking-widest'>
           Read more
         </Link>

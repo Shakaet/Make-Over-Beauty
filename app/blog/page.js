@@ -6,6 +6,7 @@ import SidebarBlog from './SidebarBlog'
 import Pagination from '../component/Pagination'
 import BlogCard from './BlogCard'
 import ImageModal from '../component/ImageModal'
+import api from '../libs/axios'
 
 //import posts from '../data/posts.json'
 
@@ -23,12 +24,12 @@ const Page = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await fetch('/data/posts.json')
-        if (!res.ok) throw new Error('Failed to load posts')
-        const data = await res.json()
-        setPosts(data)
+        const res = await api.get('/api/posts/all-post')
+        console.log(res.data)
+        setPosts(res.data.data)
       } catch (err) {
-        setError(err.message)
+        console.error('Error fetching products:', err)
+        setError('Failed to load products.')
       } finally {
         setLoading(false)
       }
@@ -95,29 +96,28 @@ const Page = () => {
 
   return (
     <div className='bg-cover bg-no-repeat bg-center bg-fixed home-bg'>
-      <Heading />
 
       <section className='relative bg-[#f7efe6] px-4 py-10 sm:px-8 md:px-10 lg:px-16 xl:px-20'>
-        <div className='grid gap-8 lg:gap-12 lg:grid-cols-4'>
-          {/* Sidebar */}
-          <aside className='order-2 lg:order-1 lg:col-span-1'>
-            <SidebarBlog
-              posts={posts}
-              selectedCategories={selectedCategories}
-              setSelectedCategories={setSelectedCategories}
-              toggleCategory={toggleCategory}
-              selectedTags={selectedTags}
-              setSelectedTags={selectedTags}
-              toggleTag={toggleTag}
-              onImageClick={handleImageClick}
-            />
-          </aside>
+        <Heading />
+
+
+        <div className='grid gap-8 lg:gap-12 lg:grid-cols-4 mt-6'>
+          <SidebarBlog
+            posts={posts}
+            selectedCategories={selectedCategories}
+            setSelectedCategories={setSelectedCategories}
+            toggleCategory={toggleCategory}
+            selectedTags={selectedTags}
+            setSelectedTags={selectedTags}
+            toggleTag={toggleTag}
+            onImageClick={handleImageClick}
+          />
 
           {/* Main Content */}
           <main className='order-1 lg:order-2 lg:col-span-3'>
             <div className='lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-8 '>
               {currentPosts.length > 0 ? (
-                currentPosts.map(post => <BlogCard key={post.id} post={post} />)
+                currentPosts.map(post => <BlogCard key={post._id} post={post} />)
               ) : (
                 <p className='col-span-full text-center text-gray-600 text-base sm:text-lg'>
                   No posts found.

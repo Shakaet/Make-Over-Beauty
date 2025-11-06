@@ -11,6 +11,9 @@
     "category": "Serums",
     "imagePrimary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-12.jpg",
     "imageSecondary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-11.jpg",
+    "imageThird": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-12.jpg",
+    "imageFourth": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-4.jpg",
+    "quantity": 10,
     "description": "A lightweight serum enriched with hyaluronic acid and vitamin C that helps reduce fine lines, promote collagen production, and restore youthful glow.",
     "ingredients": [
       "Hyaluronic Acid",
@@ -42,6 +45,9 @@
     "category": "Creams",
     "imagePrimary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-18.jpg",
     "imageSecondary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-18.1.jpg",
+    "imageThird": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-12.jpg",
+    "imageFourth": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-4.jpg",
+    "quantity": 5,
     "description": "A rich, nourishing cream designed to firm the skin and diminish wrinkles with natural peptides and collagen boosters.",
     "ingredients": [
       "Collagen",
@@ -73,6 +79,9 @@
     "category": "Serums",
     "imagePrimary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-1.jpg",
     "imageSecondary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-10.jpg",
+    "imageThird": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-12.jpg",
+    "imageFourth": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-4.jpg",
+    "quantity": 0,
     "description": "Targets acne and blemishes with a concentrated blend of niacinamide and tea tree oil to clear pores and calm irritation.",
     "ingredients": [
       "Niacinamide",
@@ -103,6 +112,9 @@
     "category": "Serums",
     "imagePrimary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-2.jpg",
     "imageSecondary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-18.1.jpg",
+    "imageThird": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-12.jpg",
+    "imageFourth": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-4.jpg",
+    "quantity": 0,
     "description": "An advanced retinol-infused formula that smooths wrinkles, evens skin tone, and enhances cell renewal for visibly younger skin.",
     "ingredients": [
       "Retinol",
@@ -134,6 +146,9 @@
     "category": "Hair Care",
     "imagePrimary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-9.jpg",
     "imageSecondary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/01/shop-9.1.jpg",
+    "imageThird": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-12.jpg",
+    "imageFourth": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-4.jpg",
+    "quantity": 5,
     "description": "A lightweight detangling mist that softens, hydrates, and smooths frizzy hair while providing protection against heat styling.",
     "ingredients": [
       "Argan Oil",
@@ -164,6 +179,9 @@
     "category": "Lotions",
     "imagePrimary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-5.jpg",
     "imageSecondary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-6.jpg",
+    "imageThird": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-12.jpg",
+    "imageFourth": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-4.jpg",
+    "quantity": 19,
     "description": "Deeply hydrates dry skin with shea butter and coconut oil, leaving it soft, supple, and refreshed all day long.",
     "ingredients": [
       "Shea Butter",
@@ -195,6 +213,9 @@
     "category": "Hair Care",
     "imagePrimary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-16.jpg",
     "imageSecondary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/01/shop-15.jpg",
+    "imageThird": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-12.jpg",
+    "imageFourth": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-4.jpg",
+    "quantity": 5,
     "description": "A herbal oil blend that strengthens hair roots, reduces dandruff, and promotes faster growth with amla and castor oil.",
     "ingredients": [
       "Amla",
@@ -257,6 +278,9 @@
     "category": "Lotions",
     "imagePrimary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-12.jpg",
     "imageSecondary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-4.jpg",
+    "imageThird": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-12.jpg",
+    "imageFourth": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-4.jpg",
+    "quantity": 10,
     "description": "Calming lavender-infused body lotion designed to moisturize deeply while relaxing your senses before bedtime.",
     "ingredients": [
       "Lavender Oil",
@@ -288,6 +312,9 @@
     "category": "Gels",
     "imagePrimary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-9.jpg",
     "imageSecondary": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-6.jpg",
+    "imageThird": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-12.jpg",
+    "imageFourth": "https://wdtlilac.wpengine.com/wp-content/uploads/2023/06/shop-4.jpg",
+    "quantity": 0,
     "description": "A cooling and soothing aloe-based gel that hydrates and repairs skin after sun exposure or irritation.",
     "ingredients": [
       "Aloe Vera",

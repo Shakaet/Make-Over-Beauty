@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import bgImage from '/public/images/banner.png'
 
-function capitalizeWords (input) {
+function capitalizeWords(input) {
   return input
     .split(' ')
     .map(w => w.charAt(0).toUpperCase() + w.slice(1))
@@ -31,7 +31,7 @@ const Heading = ({
   ]
 
   return (
-    <section className='relative'>
+    <section className='relative '>
       <div className='relative h-[260px] sm:h-[320px] md:h-[360px] overflow-hidden'>
         <Image
           src={image}
@@ -44,7 +44,7 @@ const Heading = ({
         {/* Soft warm overlay to match brand look */}
         <div className='absolute inset-0 bg-[#f3eadf]/85' />
 
-        <div className='z-10 relative flex justify-center items-center mx-auto px-4 sm:px-6 pt-16 max-w-7xl h-full text-center'>
+        <div className='z-10 relative flex justify-center items-center mx-auto px-4 sm:px-6 pt-10 max-w-7xl h-full text-center'>
           <div>
             <h1 className='mb-4 font-extrabold text-black text-4xl sm:text-5xl md:text-6xl tracking-tight'>
               {title}
