@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import ProductCard from './ProductCard'
 import SidebarFilter from './SidebarFilter'
 import Pagination from '../component/Pagination'
+import api from '../libs/axios'
 
 const Product = () => {
   const [products, setProducts] = useState([])
@@ -16,15 +17,16 @@ const Product = () => {
   const [error, setError] = useState(null)
   const productsPerPage = 8
 
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch('/data/products.json')
-        if (!res.ok) throw new Error('Failed to load products')
-        const data = await res.json()
-        setProducts(data)
+        const res = await api.get('/api/products/all-products')
+        console.log(res.data)
+        setProducts(res.data.data)
       } catch (err) {
-        setError(err.message)
+        console.error('Error fetching products:', err)
+        setError('Failed to load products.')
       } finally {
         setLoading(false)
       }

@@ -43,7 +43,7 @@ const SidebarBlog = ({
         <button
           onClick={() => {
             setShowCategoryFilter(!showCategoryFilter)
-            setShowPriceFilters(false)
+            setShowTagFilters(false)
           }}
           className="flex-1 bg-[#f0e3cd] mr-2 p-2 border border-gray-400 rounded-md text-sm font-semibold text-gray-800"
         >
@@ -51,12 +51,12 @@ const SidebarBlog = ({
         </button>
         <button
           onClick={() => {
-            setShowPriceFilters(!showPriceFilters)
+            setShowTagFilters(!showTagFilters)
             setShowCategoryFilter(false)
           }}
           className="flex-1 bg-[#f0e3cd] mr-2 p-2 border border-gray-400 rounded-md text-sm font-semibold text-gray-800"
         >
-          <span className='justify-center gap-2 items-center flex'> <Filter size={14} />Filter By Price</span>
+          <span className='justify-center gap-2 items-center flex'> <Filter size={14} />Filter By Tag</span>
         </button>
       </div>
 
@@ -101,7 +101,7 @@ const SidebarBlog = ({
           .slice(-3)
           .reverse()
           .map(post => (
-            <div key={post.id} className='flex items-center gap-3 mb-3'>
+            <div key={post._id} className='flex items-center gap-3 mb-3'>
               <img
                 src={post.image}
                 alt={post.title}
@@ -147,7 +147,7 @@ const SidebarBlog = ({
         <div className='gap-2 grid grid-cols-3'>
           {posts.slice(0, 6).map(post => (
             <img
-              key={post.id}
+              key={post._id}
               src={post.image}
               alt={post.title}
               className='border w-full object-cover aspect-square cursor-pointer'
