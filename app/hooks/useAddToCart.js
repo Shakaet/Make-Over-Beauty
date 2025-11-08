@@ -10,7 +10,6 @@ export default function useAddToCart() {
     const { user } = useContext(Context)
 
     const addToCart = async (productId, quantity, currentStock, onSuccess) => {
-        console.log(productId, quantity, currentStock, onSuccess)
         try {
             if (!user) {
                 alert('Please login first.')
@@ -29,7 +28,7 @@ export default function useAddToCart() {
             }
 
             const payload = {
-                userEmail: user.email, 
+                userEmail: user.email,
                 quantity,
             }
 
