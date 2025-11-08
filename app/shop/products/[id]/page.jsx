@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { ArrowLeft, Heart, ShoppingBag, Star, Plus, Minus, Car } from 'lucide-react'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -8,33 +8,34 @@ import { Navigation, Thumbs } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/thumbs'
-import axios from 'axios'
 import api from '@/app/libs/axios'
+import { Context } from '@/app/provider/AuthProvider'
+import useAddToCart from '@/app/hooks/useAddToCart'
 
 const ProductDetailPage = () => {
     const { id } = useParams()
     const router = useRouter()
+    const { user } = useContext(Context)
     const [product, setProduct] = useState(null)
     const [related, setRelated] = useState([])
     const [loading, setLoading] = useState(true)
     const [mainImage, setMainImage] = useState('')
     const [isWishlisted, setIsWishlisted] = useState(false)
     const [activeTab, setActiveTab] = useState('description')
+    const { addToCart } = useAddToCart()
     const [quantity, setQuantity] = useState(0)
 
     useEffect(() => {
         const fetchProduct = async () => {
             try {
 
-                // Fetch single product
                 const res = await api.get(`/api/products/product/${id}`)
                 const data = res.data.data
 
                 if (data) {
                     setProduct(data)
                     setMainImage(data.imagePrimary)
-
-                    // Fetch related items (optional)
+                    
                     try {
                         const relatedRes = await api.get(`/api/products/all-products`)
                         const all = relatedRes.data.data
@@ -60,9 +61,22 @@ const ProductDetailPage = () => {
 
 
     const handleQuantity = type => {
-        if (type === 'add') setQuantity(q => q + 1)
-        else if (quantity > 0) setQuantity(q => q - 1)
+        if (!product) return
+        if (type === 'add') {
+            if (quantity < product.stock) setQuantity(q => q + 1)
+            else alert('Not enough stock available!')
+        } else if (type === 'minus' && quantity > 0) {
+            setQuantity(q => q - 1)
+        }
     }
+
+    const handleAddToCart = () => {
+        addToCart(id, quantity, product.stock, () => {
+            setProduct(prev => ({ ...prev, stock: prev.stock - quantity }))
+            setQuantity(0)
+        })
+    }
+
 
     if (loading)
         return (
@@ -226,11 +240,18 @@ const ProductDetailPage = () => {
                                 </button>
                             </div>
 
-                            <button className="bg-[#E8D8C0] hover:bg-[#d8c0a1] text-gray-900 font-semibold px-10 py-3 rounded-full shadow-md flex items-center justify-center gap-2 transition-all duration-300 hover:scale-[1.04]">
+                            <button
+                                onClick={handleAddToCart}
+                                className="bg-[#E8D8C0] hover:bg-[#d8c0a1] text-gray-900 font-semibold px-10 py-3 rounded-full shadow-md flex items-center justify-center gap-2 transition-all duration-300 hover:scale-[1.04]">
                                 <ShoppingBag className="w-5 h-5" />
                                 Add to Cart
                             </button>
                         </div>
+
+                        {/* Stock Info */}
+                        <p className="text-sm text-gray-600 pt-1">
+                            In stock: {product.stock}
+                        </p>
 
                         {/* Wishlist & Shipping Info */}
                         <div className="flex items-center justify-between text-sm pt-4 border-t border-gray-200">
