@@ -23,7 +23,7 @@ const ProductDetailPage = () => {
     const [isWishlisted, setIsWishlisted] = useState(false)
     const [activeTab, setActiveTab] = useState('description')
     const { addToCart } = useAddToCart()
-    const [quantity, setQuantity] = useState(0)
+    const [quantity, setQuantity] = useState(1)
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -35,7 +35,7 @@ const ProductDetailPage = () => {
                 if (data) {
                     setProduct(data)
                     setMainImage(data.imagePrimary)
-                    
+
                     try {
                         const relatedRes = await api.get(`/api/products/all-products`)
                         const all = relatedRes.data.data
@@ -65,7 +65,7 @@ const ProductDetailPage = () => {
         if (type === 'add') {
             if (quantity < product.stock) setQuantity(q => q + 1)
             else alert('Not enough stock available!')
-        } else if (type === 'minus' && quantity > 0) {
+        } else if (type === 'minus' && quantity > 1) {
             setQuantity(q => q - 1)
         }
     }
