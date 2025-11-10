@@ -71,7 +71,7 @@ const ProductDetailPage = () => {
     }
 
     const handleAddToCart = () => {
-        addToCart(id, quantity, product.stock, () => {
+        addToCart(id, quantity, product.stock, product.imagePrimary, () => {
             setProduct(prev => ({ ...prev, stock: prev.stock - quantity }))
             setQuantity(0)
         })
