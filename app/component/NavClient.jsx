@@ -111,37 +111,37 @@ const NavClient = () => {
 
                 {/* Right icons */}
                 <div className='flex items-center gap-5'>
+                  <button
+                    aria-label='Wishlist'
+                    className='relative hover:opacity-80 p-1'
+                  >
+                    <svg
+                      width='20'
+                      height='20'
+                      viewBox='0 0 24 24'
+                      fill='none'
+                      stroke='currentColor'
+                      strokeWidth='1.5'
+                    >
+                      <path d='M12 21s-7-4.35-9-8.5C1 8 3.5 5.5 6.5 5.5 8.24 5.5 9.86 6.44 11 7.86 12.14 6.44 13.76 5.5 15.5 5.5 18.5 5.5 21 8 21 12.5 19 16.65 12 21 12 21z' />
+                    </svg>
+                    <span className='-top-1 -right-1 absolute bg-black px-1 rounded-full text-[10px] text-white'>
+                      0
+                    </span>
+                  </button>
+
+
+
+                  {/* Cart */}
+                  <CartDrawer isOpen={isOpen} toggleDrawer={toggleDrawer} />
+
                   {!user ? (
                     // 🔹 Show only User icon
                     <Link href='/my-account' aria-label='Login' className='hover:opacity-80 p-1 tooltip' data-tip="hello">
                       <User className='w-5 h-5 btn' />
                     </Link>
-
                   ) : (
                     <>
-                      {/* Wishlist */}
-                      <button
-                        aria-label='Wishlist'
-                        className='relative hover:opacity-80 p-1'
-                      >
-                        <svg
-                          width='20'
-                          height='20'
-                          viewBox='0 0 24 24'
-                          fill='none'
-                          stroke='currentColor'
-                          strokeWidth='1.5'
-                        >
-                          <path d='M12 21s-7-4.35-9-8.5C1 8 3.5 5.5 6.5 5.5 8.24 5.5 9.86 6.44 11 7.86 12.14 6.44 13.76 5.5 15.5 5.5 18.5 5.5 21 8 21 12.5 19 16.65 12 21 12 21z' />
-                        </svg>
-                        <span className='-top-1 -right-1 absolute bg-black px-1 rounded-full text-[10px] text-white'>
-                          0
-                        </span>
-                      </button>
-
-                      {/* Cart */}
-                      <CartDrawer isOpen={isOpen} toggleDrawer={toggleDrawer} />
-
                       {/* Logout */}
                       <button
                         aria-label='Logout'

@@ -1,58 +1,85 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { useContext } from 'react'
-import api from '@/app/libs/axios'
-import { Context } from '@/app/provider/AuthProvider'
+import { useEffect, useState, useCallback } from 'react'
 
-export default function useAddToCart(fetchCart) {
-    const router = useRouter()
-    const { user } = useContext(Context)
+export default function useAddToCart() {
+    const [cart, setCart] = useState([])
 
-    const addToCart = async (
-        productId,
-        quantity,
-        currentStock,
-        onSuccess
-    ) => {
+    //  Load cart from localStorage
+    useEffect(() => {
         try {
-            if (!user) {
-                alert('Please login first.')
-                router.push('/my-account')
-                return
-            }
-
-            if (quantity <= 0) {
-                alert('Please select a valid quantity.')
-                return
-            }
-
-            if (quantity > currentStock) {
-                alert('Not enough stock available!')
-                return
-            }
-
-            const payload = { userEmail: user.email, quantity }
-
-            const res = await api.post(`/api/addTocart/${productId}`, payload)
-
-            if (res.status === 200 || res.status === 201) {
-                alert(res.data?.message || 'Added to cart successfully!')
-                if (fetchCart) await fetchCart()
-                if (onSuccess) onSuccess()
-            } else {
-                alert('Unexpected response from server.')
-            }
+            const stored = JSON.parse(localStorage.getItem('tempCart') || '[]')
+            setCart(stored)
         } catch (err) {
-            console.error('Add to cart error:', err)
-            const message =
-                err?.response?.data?.message ||
-                (err?.response?.status === 404
-                    ? 'Product not found.'
-                    : 'Failed to add to cart. Please try again.')
-            alert(message)
+            console.error('Error loading cart:', err)
         }
-    }
+    }, [])
 
-    return { addToCart }
+    //  Sync with localStorage + broadcast to other components
+    const updateCart = useCallback((newCart) => {
+        setCart(newCart)
+        localStorage.setItem('tempCart', JSON.stringify(newCart))
+        window.dispatchEvent(new Event('storage')) // Notify others like CartDrawer
+    }, [])
+
+    // Add or update product in cart
+    const addToCart = useCallback(
+        (product, quantity, onSuccess) => {
+            try {
+                const { _id, name, imagePrimary, lowprice, stock } = product
+                if (!quantity || quantity <= 0) {
+                    alert('Please select a valid quantity.')
+                    return
+                }
+                if (quantity > stock) {
+                    alert('Not enough stock available!')
+                    return
+                }
+
+                const existingCart = [...cart]
+                const existingIndex = existingCart.findIndex(
+                    (item) => item.productId === _id
+                )
+
+                if (existingIndex !== -1) {
+                    // Update existing item quantity
+                    const currentQty = existingCart[existingIndex].quantity
+                    const newQty = currentQty + quantity
+
+                    if (newQty > stock) {
+                        alert('Cannot add more than available stock.')
+                        return
+                    }
+
+                    existingCart[existingIndex].quantity = newQty
+                } else {
+                    // Add new product to cart
+                    existingCart.push({
+                        productId: _id,
+                        name,
+                        image: imagePrimary,
+                        price: lowprice,
+                        quantity,
+                        stock,
+                        addedAt: new Date().toISOString(),
+                    })
+                }
+
+                updateCart(existingCart)
+                alert(`${name} added to cart!`)
+                if (onSuccess) onSuccess()
+            } catch (err) {
+                console.error('Error adding to cart:', err)
+                alert('Something went wrong while adding to cart.')
+            }
+        },
+        [cart, updateCart]
+    )
+
+
+
+    return {
+        cart,
+        addToCart,
+    }
 }

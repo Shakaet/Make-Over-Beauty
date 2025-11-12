@@ -3,8 +3,8 @@ import "./globals.css";
 import Nav from "./component/Nav";
 import Top from "./component/Top";
 import Splash from "./component/Splash";
-import Footer from "./component/Footer";
 import AuthProvider from "./provider/AuthProvider";
+import Footer from "./footer/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,12 +37,12 @@ export default function RootLayout({ children }) {
       >
         <AuthProvider>
           <Splash />
-        <Top props={ANNOUNCEMENTS}></Top>
-        <Nav></Nav>
-        
-        {children}
+          <Top props={ANNOUNCEMENTS}></Top>
+          <Nav></Nav>
 
-        <Footer></Footer>
+          {children}
+
+          <Footer ></Footer>
         </AuthProvider>
       </body>
     </html>

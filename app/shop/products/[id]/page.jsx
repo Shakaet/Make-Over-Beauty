@@ -9,13 +9,11 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/thumbs'
 import api from '@/app/libs/axios'
-import { Context } from '@/app/provider/AuthProvider'
 import useAddToCart from '@/app/hooks/useAddToCart'
 
 const ProductDetailPage = () => {
     const { id } = useParams()
     const router = useRouter()
-    const { user } = useContext(Context)
     const [product, setProduct] = useState(null)
     const [related, setRelated] = useState([])
     const [loading, setLoading] = useState(true)
@@ -69,11 +67,11 @@ const ProductDetailPage = () => {
             setQuantity(q => q - 1)
         }
     }
-
     const handleAddToCart = () => {
-        addToCart(id, quantity, product.stock, product.imagePrimary, () => {
-            setProduct(prev => ({ ...prev, stock: prev.stock - quantity }))
-            setQuantity(0)
+        if (!product) return
+        addToCart(product, quantity, () => {
+            setProduct((prev) => ({ ...prev, stock: prev.stock - quantity }))
+            setQuantity(1)
         })
     }
 
