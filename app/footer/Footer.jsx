@@ -39,23 +39,29 @@ export default function Footer() {
                 </div>
 
                 {/* Footer Links */}
+                {/* Footer Links */}
                 {footerLinks.map((section) => (
                     <div key={section.title}>
                         <h3 className="font-semibold mb-3">{section.title}</h3>
                         <ul className="space-y-2">
-                            {section.links.map((link) => (
-                                <li key={link.slug}>
-                                    <Link
-                                        href={`/footer/${link.slug}`}
-                                        className="hover:text-gray-900 transition-colors duration-200"
-                                    >
-                                        {link.label}
-                                    </Link>
-                                </li>
-                            ))}
+                            {section.links.map((link, index) => {
+                                const slugExists = Boolean(link?.slug)
+
+                                return (
+                                    <li key={`${section.title}-${link.label}-${index}`}>
+                                        <Link
+                                            href={slugExists ? `/pages/${link.slug}` : `/`}
+                                            className="hover:text-gray-900 transition-colors duration-200"
+                                        >
+                                            {link.label}
+                                        </Link>
+                                    </li>
+                                )
+                            })}
                         </ul>
                     </div>
                 ))}
+
             </div>
 
             <div className="border-t mt-10 pt-5 text-center text-sm text-gray-500">

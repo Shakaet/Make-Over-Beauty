@@ -1,25 +1,25 @@
 'use client'
-import { useParams } from 'next/navigation'
+import { useEffect } from 'react'
+import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { footerLinks } from '@/app/footer/FooterData'
 
 export default function FooterDetails() {
     const { slug } = useParams()
+    const router = useRouter()
 
-    // Find content by slug
+    // Find matching footer link
     const linkData = footerLinks
         .flatMap(section => section.links)
         .find(link => link.slug === slug)
 
-    if (!linkData) {
-        return (
-            <div className="p-10 text-center">
-                <h1 className="text-2xl font-semibold mb-2">Page Not Found</h1>
-                <p className="text-gray-500 mb-4">The requested content could not be found.</p>
-                <Link href="/" className="text-blue-500 hover:underline">Back to Home</Link>
-            </div>
-        )
-    }
+    // Redirect if no matching link found
+    useEffect(() => {
+        if (!linkData) {
+            router.replace('/')  
+        }
+    }, [linkData, router])
+    if (!linkData) return null
 
     return (
         <div className="max-w-3xl mx-auto py-16 px-6">
