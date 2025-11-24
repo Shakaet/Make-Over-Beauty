@@ -7,7 +7,19 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
     const [cartItems, setCartItems] = useState([])
     const [loading, setLoading] = useState(true)
 
-    // 🧠 Load cart data
+    // Coupon states
+    const [coupon, setCoupon] = useState('')
+    const [discount, setDiscount] = useState(0)
+    const [appliedCoupon, setAppliedCoupon] = useState(null)
+
+    // Demo coupon list (you can replace with API later)
+    const COUPONS = {
+        SAVE10: 10,   // 10% discount
+        SAVE20: 20,   // 20% discount
+        FLAT50: 50    // 50% discount
+    }
+
+    // Load cart data
     const loadCart = () => {
         const stored = JSON.parse(localStorage.getItem('tempCart') || '[]')
         setCartItems(stored)
@@ -33,11 +45,32 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
         0
     )
 
+    const totalAfterDiscount = subtotal - discount
+
     const handleClearCart = () => {
         if (!confirm('Clear your entire cart?')) return
         setCartItems([])
         localStorage.removeItem('tempCart')
+        setDiscount(0)
+        setAppliedCoupon(null)
         window.dispatchEvent(new Event('storage'))
+    }
+
+    const applyCoupon = () => {
+        const code = coupon.trim().toUpperCase()
+
+        if (!COUPONS[code]) {
+            alert('Invalid coupon code')
+            setDiscount(0)
+            setAppliedCoupon(null)
+            return
+        }
+
+        const percentage = COUPONS[code]
+        const discountAmount = (subtotal * percentage) / 100
+
+        setDiscount(discountAmount)
+        setAppliedCoupon({ code, percentage })
     }
 
     return (
@@ -62,7 +95,7 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
                 </div>
 
                 {/* Cart List */}
-                <div className="flex-1 overflow-y-auto max-h-[70vh] divide-y">
+                <div className="flex-1 overflow-y-auto max-h-[60vh] divide-y">
                     {loading ? (
                         <div className="flex justify-center items-center h-full">
                             <p>Loading...</p>
@@ -97,14 +130,46 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
                     )}
                 </div>
 
+                {/* Coupon Section */}
+                <div className="p-4 border-t">
+                    <label className="text-sm font-medium text-gray-700">Have a coupon?</label>
+                    <div className="flex gap-2 mt-2">
+                        <input
+                            type="text"
+                            value={coupon}
+                            onChange={(e) => setCoupon(e.target.value)}
+                            placeholder="Enter coupon code"
+                            className="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-gray-800"
+                        />
+                        <button
+                            onClick={applyCoupon}
+                            className="bg-gray-900 text-white px-3 rounded-lg hover:bg-gray-800 transition"
+                        >
+                            Apply
+                        </button>
+                    </div>
+                </div>
+
                 {/* Summary */}
-                <div className="border-t p-4">
-                    <div className="flex justify-between mb-3">
+                <div className="border-t p-4 space-y-2">
+                    <div className="flex justify-between">
                         <span className="text-gray-600">Subtotal</span>
                         <span className="font-semibold">৳{subtotal.toFixed(2)}</span>
                     </div>
 
-                    <div className="flex gap-2">
+                    {appliedCoupon && (
+                        <div className="flex justify-between text-green-600 text-sm">
+                            <span>Coupon ({appliedCoupon.code}) -{appliedCoupon.percentage}%</span>
+                            <span>-৳{discount.toFixed(2)}</span>
+                        </div>
+                    )}
+
+                    <div className="flex justify-between text-base font-bold">
+                        <span>Total</span>
+                        <span>৳{totalAfterDiscount.toFixed(2)}</span>
+                    </div>
+
+                    <div className="flex gap-2 pt-2">
                         <button
                             onClick={handleClearCart}
                             disabled={cartItems.length === 0}
