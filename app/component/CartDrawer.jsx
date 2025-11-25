@@ -71,7 +71,10 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
             setAppliedCoupon({ code, percentage })
             toast.success(`Coupon applied: ${percentage}% discount`)
         } catch (error) {
-            toast.error('Server error validating coupon')
+             
+            // toast.error('Server error validating coupon')
+             const message = error.response?.data?.message || 'Server error validating coupon';
+                toast.error(message);
         }
     }
 
