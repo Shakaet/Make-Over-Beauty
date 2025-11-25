@@ -53,7 +53,7 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
             return
         }
         try {
-            const res = await api.post('/api/coupons/validate', { code })
+            const res = await api.post('api/coupons/validate', { code })
             const data = res.data
 
             if (!data.success) {
