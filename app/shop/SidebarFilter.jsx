@@ -141,7 +141,7 @@ const SidebarFilter = ({
           Recent Products
         </h4>
         {products.slice(-3).map(product => (
-          <div key={product.id} className="flex items-start space-x-3 mb-3">
+          <div key={product._id} className="flex items-start space-x-3 mb-3">
             <img
               src={product.imagePrimary}
               alt={product.name}

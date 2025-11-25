@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { ArrowLeft, Heart, ShoppingBag, Star, Plus, Minus, Car } from 'lucide-react'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -8,8 +8,8 @@ import { Navigation, Thumbs } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/thumbs'
-import axios from 'axios'
 import api from '@/app/libs/axios'
+import useAddToCart from '@/app/hooks/useAddToCart'
 
 const ProductDetailPage = () => {
     const { id } = useParams()
@@ -20,13 +20,13 @@ const ProductDetailPage = () => {
     const [mainImage, setMainImage] = useState('')
     const [isWishlisted, setIsWishlisted] = useState(false)
     const [activeTab, setActiveTab] = useState('description')
-    const [quantity, setQuantity] = useState(0)
+    const { addToCart } = useAddToCart()
+    const [quantity, setQuantity] = useState(1)
 
     useEffect(() => {
         const fetchProduct = async () => {
             try {
 
-                // Fetch single product
                 const res = await api.get(`/api/products/product/${id}`)
                 const data = res.data.data
 
@@ -34,7 +34,6 @@ const ProductDetailPage = () => {
                     setProduct(data)
                     setMainImage(data.imagePrimary)
 
-                    // Fetch related items (optional)
                     try {
                         const relatedRes = await api.get(`/api/products/all-products`)
                         const all = relatedRes.data.data
@@ -60,9 +59,22 @@ const ProductDetailPage = () => {
 
 
     const handleQuantity = type => {
-        if (type === 'add') setQuantity(q => q + 1)
-        else if (quantity > 0) setQuantity(q => q - 1)
+        if (!product) return
+        if (type === 'add') {
+            if (quantity < product.stock) setQuantity(q => q + 1)
+            else alert('Not enough stock available!')
+        } else if (type === 'minus' && quantity > 1) {
+            setQuantity(q => q - 1)
+        }
     }
+    const handleAddToCart = () => {
+        if (!product) return
+        addToCart(product, quantity, () => {
+            setProduct((prev) => ({ ...prev, stock: prev.stock - quantity }))
+            setQuantity(1)
+        })
+    }
+
 
     if (loading)
         return (
@@ -226,11 +238,18 @@ const ProductDetailPage = () => {
                                 </button>
                             </div>
 
-                            <button className="bg-[#E8D8C0] hover:bg-[#d8c0a1] text-gray-900 font-semibold px-10 py-3 rounded-full shadow-md flex items-center justify-center gap-2 transition-all duration-300 hover:scale-[1.04]">
+                            <button
+                                onClick={handleAddToCart}
+                                className="bg-[#E8D8C0] hover:bg-[#d8c0a1] text-gray-900 font-semibold px-10 py-3 rounded-full shadow-md flex items-center justify-center gap-2 transition-all duration-300 hover:scale-[1.04]">
                                 <ShoppingBag className="w-5 h-5" />
                                 Add to Cart
                             </button>
                         </div>
+
+                        {/* Stock Info */}
+                        <p className="text-sm text-gray-600 pt-1">
+                            In stock: {product.stock}
+                        </p>
 
                         {/* Wishlist & Shipping Info */}
                         <div className="flex items-center justify-between text-sm pt-4 border-t border-gray-200">
@@ -327,7 +346,7 @@ const ProductDetailPage = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                             {related.map(item => (
                                 <div
-                                    key={item.id}
+                                    key={item._id}
                                     onClick={() => router.push(`/product/${item.id}`)}
                                     className="group bg-white/20 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all cursor-pointer"
                                 >
