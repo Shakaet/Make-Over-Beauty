@@ -5,6 +5,7 @@ import Top from "./component/Top";
 import Splash from "./component/Splash";
 import AuthProvider from "./provider/AuthProvider";
 import Footer from "./footer/Footer";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,7 +40,7 @@ export default function RootLayout({ children }) {
           <Splash />
           <Top props={ANNOUNCEMENTS}></Top>
           <Nav></Nav>
-
+          <Toaster position="top-center" />
           {children}
 
           <Footer ></Footer>
