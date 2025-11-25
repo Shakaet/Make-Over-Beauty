@@ -2,9 +2,12 @@
 
 import { useEffect, useState } from 'react'
 import { X, Trash2 } from 'lucide-react'
+import api from '../libs/axios'
+import toast from 'react-hot-toast'
+import useAddToCart from '@/app/hooks/useAddToCart'
 
 export default function CartDrawer({ isOpen, toggleDrawer }) {
-    const [cartItems, setCartItems] = useState([])
+    const { cart, addToCart, loadCart } = useAddToCart()
     const [loading, setLoading] = useState(true)
 
     // Coupon states
@@ -12,66 +15,71 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
     const [discount, setDiscount] = useState(0)
     const [appliedCoupon, setAppliedCoupon] = useState(null)
 
-    // Demo coupon list (you can replace with API later)
-    const COUPONS = {
-        SAVE10: 10,   // 10% discount
-        SAVE20: 20,   // 20% discount
-        FLAT50: 50    // 50% discount
-    }
-
-    // Load cart data
-    const loadCart = () => {
-        const stored = JSON.parse(localStorage.getItem('tempCart') || '[]')
-        setCartItems(stored)
-        setLoading(false)
-    }
-
+    // Load cart and handle updates
     useEffect(() => {
         loadCart()
-        window.addEventListener('storage', loadCart)
-        return () => window.removeEventListener('storage', loadCart)
-    }, [])
+        const handleUpdate = () => loadCart()
+        window.addEventListener('cartUpdated', handleUpdate)
+        window.addEventListener('storage', handleUpdate)
+        setLoading(false)
+
+        return () => {
+            window.removeEventListener('cartUpdated', handleUpdate)
+            window.removeEventListener('storage', handleUpdate)
+        }
+    }, [loadCart])
 
     const handleRemove = (productId) => {
         if (!confirm('Remove this item from your cart?')) return
-        const updated = cartItems.filter((item) => item.productId !== productId)
-        setCartItems(updated)
+        const updated = cart.filter((item) => item.productId !== productId)
         localStorage.setItem('tempCart', JSON.stringify(updated))
-        window.dispatchEvent(new Event('storage'))
+        window.dispatchEvent(new Event('cartUpdated'))
+        toast.success('Item removed from cart')
     }
-
-    const subtotal = cartItems.reduce(
-        (total, item) => total + (item.price || 0) * (item.quantity || 0),
-        0
-    )
-
-    const totalAfterDiscount = subtotal - discount
 
     const handleClearCart = () => {
         if (!confirm('Clear your entire cart?')) return
-        setCartItems([])
         localStorage.removeItem('tempCart')
+        window.dispatchEvent(new Event('cartUpdated'))
         setDiscount(0)
         setAppliedCoupon(null)
-        window.dispatchEvent(new Event('storage'))
+        toast.success('Cart cleared')
     }
 
-    const applyCoupon = () => {
-        const code = coupon.trim().toUpperCase()
-
-        if (!COUPONS[code]) {
-            alert('Invalid coupon code')
-            setDiscount(0)
-            setAppliedCoupon(null)
+    const applyCoupon = async () => {
+        const code = coupon.trim()
+        if (!code) {
+            toast('Please enter a coupon code')
             return
         }
+        try {
+            const res = await api.post('/api/coupons/validate', { code })
+            const data = res.data
 
-        const percentage = COUPONS[code]
-        const discountAmount = (subtotal * percentage) / 100
+            if (!data.success) {
+                setDiscount(0)
+                setAppliedCoupon(null)
+                toast.error('Invalid or expired coupon')
+                return
+            }
 
-        setDiscount(discountAmount)
-        setAppliedCoupon({ code, percentage })
+            const percentage = data.discountPercentage
+            const subtotal = cart.reduce((total, item) => total + (item.price || 0) * (item.quantity || 0), 0)
+            const discountAmount = (subtotal * percentage) / 100
+
+            setDiscount(discountAmount)
+            setAppliedCoupon({ code, percentage })
+            toast.success(`Coupon applied: ${percentage}% discount`)
+        } catch (error) {
+            toast.error('Server error validating coupon')
+        }
     }
+
+    const subtotal = cart.reduce(
+        (total, item) => total + (item.price || 0) * (item.quantity || 0),
+        0
+    )
+    const totalAfterDiscount = subtotal - discount
 
     return (
         <>
@@ -100,12 +108,12 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
                         <div className="flex justify-center items-center h-full">
                             <p>Loading...</p>
                         </div>
-                    ) : cartItems.length === 0 ? (
+                    ) : cart.length === 0 ? (
                         <div className="flex flex-col items-center justify-center h-full text-gray-500">
                             <p>Your cart is empty</p>
                         </div>
                     ) : (
-                        cartItems.map((item) => (
+                        cart.map((item) => (
                             <div key={item.productId} className="flex items-center p-4 gap-3">
                                 <img
                                     src={item.image || '/placeholder.png'}
@@ -136,8 +144,7 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
                     <div className="flex gap-2 mt-2">
                         <input
                             type="text"
-                            value={coupon}
-                            onChange={(e) => setCoupon(e.target.value)}
+                            value={coupon} onChange={(e) => setCoupon(e.target.value)}
                             placeholder="Enter coupon code"
                             className="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-gray-800"
                         />
@@ -172,13 +179,13 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
                     <div className="flex gap-2 pt-2">
                         <button
                             onClick={handleClearCart}
-                            disabled={cartItems.length === 0}
+                            disabled={cart.length === 0}
                             className="w-1/2 border border-gray-300 py-2 rounded-lg text-gray-700 hover:bg-gray-100 transition disabled:opacity-50"
                         >
                             Clear
                         </button>
                         <button
-                            disabled={cartItems.length === 0}
+                            disabled={cart.length === 0}
                             className="w-1/2 bg-gray-900 text-white py-2 rounded-lg hover:bg-gray-800 transition disabled:opacity-50"
                         >
                             Checkout
@@ -205,9 +212,9 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
                     <circle cx="18" cy="20" r="1.5" />
                     <path d="M2 3h3l3 12h10l2-8H6" strokeLinecap="round" />
                 </svg>
-                {cartItems.length > 0 && (
+                {cart.length > 0 && (
                     <span className="absolute -top-1 -right-1 bg-black px-1 rounded-full text-[10px] text-white">
-                        {cartItems.length}
+                        {cart.length}
                     </span>
                 )}
             </button>

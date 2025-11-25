@@ -10,6 +10,7 @@ import 'swiper/css/navigation'
 import 'swiper/css/thumbs'
 import api from '@/app/libs/axios'
 import useAddToCart from '@/app/hooks/useAddToCart'
+import toast from 'react-hot-toast'
 
 const ProductDetailPage = () => {
     const { id } = useParams()
@@ -62,7 +63,7 @@ const ProductDetailPage = () => {
         if (!product) return
         if (type === 'add') {
             if (quantity < product.stock) setQuantity(q => q + 1)
-            else alert('Not enough stock available!')
+            else toast('Not enough stock available!')
         } else if (type === 'minus' && quantity > 1) {
             setQuantity(q => q - 1)
         }
