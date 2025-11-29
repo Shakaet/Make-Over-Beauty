@@ -111,6 +111,11 @@ const NavClient = () => {
 
                 {/* Right icons */}
                 <div className='flex items-center gap-5'>
+                  {user && (
+                    <Link href='/dashboard' aria-label='Login' className='hover:opacity-80 p-1 tooltip' data-tip="hello">
+                      <User className='w-5 h-5 btn' />
+                    </Link>
+                  )}
                   <button
                     aria-label='Wishlist'
                     className='relative hover:opacity-80 p-1'

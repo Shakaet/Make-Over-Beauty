@@ -1,27 +1,31 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { X, Trash2 } from 'lucide-react'
 import api from '../libs/axios'
 import toast from 'react-hot-toast'
 import useAddToCart from '@/app/hooks/useAddToCart'
+import { Context } from '../provider/AuthProvider'
+import { useRouter } from 'next/navigation'
+import { createOrder } from '../api/orderApi'
 
 export default function CartDrawer({ isOpen, toggleDrawer }) {
-    const { cart, addToCart, loadCart } = useAddToCart()
-    const [loading, setLoading] = useState(true)
+    const { cart, loadCart } = useAddToCart()
+    const [loading, setLoading] = useState(false)
+    const router = useRouter()
+    const { user } = useContext(Context)
 
     // Coupon states
     const [coupon, setCoupon] = useState('')
     const [discount, setDiscount] = useState(0)
     const [appliedCoupon, setAppliedCoupon] = useState(null)
 
-    // Load cart and handle updates
+    // Load cart on mount + listen to updates
     useEffect(() => {
         loadCart()
         const handleUpdate = () => loadCart()
         window.addEventListener('cartUpdated', handleUpdate)
         window.addEventListener('storage', handleUpdate)
-        setLoading(false)
 
         return () => {
             window.removeEventListener('cartUpdated', handleUpdate)
@@ -29,16 +33,18 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
         }
     }, [loadCart])
 
+    // Remove item
     const handleRemove = (productId) => {
         if (!confirm('Remove this item from your cart?')) return
-        const updated = cart.filter((item) => item.productId !== productId)
+        const updated = cart.filter(item => item.productId !== productId)
         localStorage.setItem('tempCart', JSON.stringify(updated))
         window.dispatchEvent(new Event('cartUpdated'))
-        toast.success('Item removed from cart')
+        toast.success('Item removed')
     }
 
+    // Clear cart
     const handleClearCart = () => {
-        if (!confirm('Clear your entire cart?')) return
+        if (!confirm('Clear entire cart?')) return
         localStorage.removeItem('tempCart')
         window.dispatchEvent(new Event('cartUpdated'))
         setDiscount(0)
@@ -46,12 +52,61 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
         toast.success('Cart cleared')
     }
 
+    // ---------------------------
+    //  PLACE ORDER (MAIN FIX)
+    // ---------------------------
+    const placeOrder = async () => {
+        if (!user) {
+            toast("Please login first");
+            router.push('/my-account');
+            return;
+        }
+
+        setLoading(true);
+        try {
+            const items = cart.map(item => ({
+                productId: item.productId,
+                quantity: item.quantity,
+                price: item.price,
+            }));
+
+            const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+            const couponCode = appliedCoupon?.code || '';
+            const discountPercent = appliedCoupon?.percentage || 0;
+            const totalAmount = subtotal - (subtotal * discountPercent) / 100;
+
+            // Use API service instead of calling api.post directly
+            await createOrder({
+                email: user.email,
+                subtotal,
+                couponCode,
+                discountPercent,
+                totalAmount,
+                items
+            });
+
+            toast.success('Order placed successfully!');
+
+            // Clear cart
+            localStorage.removeItem('tempCart');
+            window.dispatchEvent(new Event('cartUpdated'));
+            setDiscount(0);
+            setAppliedCoupon(null);
+            setCoupon('');
+
+        } catch (err) {
+            toast.error(err?.response?.data?.message || err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
+    // Apply coupon
     const applyCoupon = async () => {
         const code = coupon.trim()
-        if (!code) {
-            toast('Please enter a coupon code')
-            return
-        }
+        if (!code) return toast.error("Please enter a coupon")
+
         try {
             const res = await api.post('api/coupons/validate', { code })
             const data = res.data
@@ -59,29 +114,34 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
             if (!data.success) {
                 setDiscount(0)
                 setAppliedCoupon(null)
-                toast.error('Invalid or expired coupon')
+                toast.error('Invalid coupon')
                 return
             }
 
             const percentage = data.discountPercentage
-            const subtotal = cart.reduce((total, item) => total + (item.price || 0) * (item.quantity || 0), 0)
+            const subtotal = cart.reduce(
+                (total, item) => total + item.price * item.quantity,
+                0
+            )
+
             const discountAmount = (subtotal * percentage) / 100
 
             setDiscount(discountAmount)
             setAppliedCoupon({ code, percentage })
-            toast.success(`Coupon applied: ${percentage}% discount`)
+
+            toast.success(`Coupon applied (${percentage}% OFF)`)
+
         } catch (error) {
-             
-            // toast.error('Server error validating coupon')
-             const message = error.response?.data?.message || 'Server error validating coupon';
-                toast.error(message);
+            const msg = error.response?.data?.message || 'Coupon validation error'
+            toast.error(msg)
         }
     }
 
     const subtotal = cart.reduce(
-        (total, item) => total + (item.price || 0) * (item.quantity || 0),
+        (total, item) => total + item.price * item.quantity,
         0
     )
+
     const totalAfterDiscount = subtotal - discount
 
     return (
@@ -107,16 +167,12 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
 
                 {/* Cart List */}
                 <div className="flex-1 overflow-y-auto max-h-[60vh] divide-y">
-                    {loading ? (
-                        <div className="flex justify-center items-center h-full">
-                            <p>Loading...</p>
-                        </div>
-                    ) : cart.length === 0 ? (
+                    {cart.length === 0 ? (
                         <div className="flex flex-col items-center justify-center h-full text-gray-500">
                             <p>Your cart is empty</p>
                         </div>
                     ) : (
-                        cart.map((item) => (
+                        cart.map(item => (
                             <div key={item.productId} className="flex items-center p-4 gap-3">
                                 <img
                                     src={item.image || '/placeholder.png'}
@@ -141,15 +197,16 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
                     )}
                 </div>
 
-                {/* Coupon Section */}
+                {/* Coupon */}
                 <div className="p-4 border-t">
                     <label className="text-sm font-medium text-gray-700">Have a coupon?</label>
                     <div className="flex gap-2 mt-2">
                         <input
                             type="text"
-                            value={coupon} onChange={(e) => setCoupon(e.target.value)}
+                            value={coupon}
+                            onChange={(e) => setCoupon(e.target.value)}
                             placeholder="Enter coupon code"
-                            className="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-gray-800"
+                            className="flex-1 border rounded-lg px-3 py-2 text-sm"
                         />
                         <button
                             onClick={applyCoupon}
@@ -183,20 +240,21 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
                         <button
                             onClick={handleClearCart}
                             disabled={cart.length === 0}
-                            className="w-1/2 border border-gray-300 py-2 rounded-lg text-gray-700 hover:bg-gray-100 transition disabled:opacity-50"
+                            className="w-1/2 border border-gray-300 py-2 rounded-lg"
                         >
                             Clear
                         </button>
+
                         <button
-                            disabled={cart.length === 0}
-                            className="w-1/2 bg-gray-900 text-white py-2 rounded-lg hover:bg-gray-800 transition disabled:opacity-50"
+                            onClick={placeOrder}
+                            disabled={cart.length === 0 || loading}
+                            className="w-1/2 bg-gray-900 text-white py-2 rounded-lg"
                         >
-                            Checkout
+                            {loading ? 'Processing...' : 'Checkout'}
                         </button>
                     </div>
                 </div>
             </div>
-
             {/* Floating Cart Icon */}
             <button
                 aria-label="Cart"

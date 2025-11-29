@@ -5,95 +5,94 @@ import React, { createContext, useEffect, useState } from 'react';
 
 import axios from 'axios';
 import auth from '../firebase/firebase.init';
+import { useRouter } from 'next/navigation';
 
 
 
 
-export let Context= createContext()
+export let Context = createContext()
 
-const AuthProvider = ({children}) => {
+const AuthProvider = ({ children }) => {
 
-    let [user,setUser]=useState(null)
-    const [loading,setLoading] = useState(true);
+    let [user, setUser] = useState(null)
+    const [loading, setLoading] = useState(true);
+    const router = useRouter();
 
-    
-
-  
 
     const provider = new GoogleAuthProvider();
-    let googleSign=()=>{
- 
+    let googleSign = () => {
+
         return signInWithPopup(auth, provider)
     }
-    
-       
-    
-    
-        let createRegistered=(email,password)=>{
-         
-              return createUserWithEmailAndPassword(auth,email,password)
-        }
-    
-        let loginSetup =(email,password)=>{
-          
-             return signInWithEmailAndPassword(auth,email,password)
-        }
-    
-        let signOuts=()=>{
-          
-            return signOut(auth)
-        }
-        let updateUserProfile = (user, profileUpdates) => {
-            return updateProfile(user, profileUpdates);
-          };
-    
-          useEffect(()=>{
-            let unsubscribe= onAuthStateChanged(auth, (currentUser) => {
-                
-                //   console.log(currentUser)
-                  setUser(currentUser)
-                  // setLoading(false)
-
-                 
-                
-                
-        
-                return ()=>{
-                    unsubscribe()
-                }
-                
-              });
-          },[])
-
-          
-
-  
-
-  
 
 
 
 
- 
-  
+    let createRegistered = (email, password) => {
 
-    
-        let val= {
-             createRegistered,
-             loginSetup,
-             signOuts,
-             googleSign,
-             updateUserProfile,
-             user,
-             loading,
-    
-        }
-    
+        return createUserWithEmailAndPassword(auth, email, password)
+    }
+
+    let loginSetup = (email, password) => {
+
+        return signInWithEmailAndPassword(auth, email, password)
+    }
+
+    let signOuts = () => {
+        router.push("/")
+        return signOut(auth)
+    }
+    let updateUserProfile = (user, profileUpdates) => {
+        return updateProfile(user, profileUpdates);
+    };
+
+    useEffect(() => {
+        let unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+
+            //   console.log(currentUser)
+            setUser(currentUser)
+            // setLoading(false)
+
+
+
+
+
+            return () => {
+                unsubscribe()
+            }
+
+        });
+    }, [])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    let val = {
+        createRegistered,
+        loginSetup,
+        signOuts,
+        googleSign,
+        updateUserProfile,
+        user,
+        loading,
+
+    }
+
 
     return (
         <div>
-             <Context.Provider value={val}>
-                   {children}
+            <Context.Provider value={val}>
+                {children}
             </Context.Provider>
         </div>
     );
