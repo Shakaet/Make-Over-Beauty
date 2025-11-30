@@ -40,7 +40,7 @@ export default function Overview() {
 
     return (
         <div className="min-h-screen p-6 bg-gradient-to-b from-[#fff6f0] to-[#fff0e8]">
-            <h1 className="text-3xl font-bold mb-6">Overview</h1>
+            <h1 className="text-3xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-fuchsia-600">Overview</h1>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
                     <h2 className="text-lg font-semibold text-gray-700 mb-2">Total Orders</h2>
