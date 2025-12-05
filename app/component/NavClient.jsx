@@ -5,6 +5,9 @@ import { LogOut, User } from 'lucide-react'
 import { Context } from '../provider/AuthProvider'
 import CartDrawer from './CartDrawer'
 
+import logo from "/public/images/logobg.png"
+import Image from 'next/image'
+
 const NavClient = () => {
   const { user, signOuts } = useContext(Context)
   const [isOpen, setIsOpen] = useState(false)
@@ -42,7 +45,11 @@ const NavClient = () => {
                   href='/'
                   className='font-semibold text-black text-2xl uppercase tracking-[0.35em]'
                 >
-                  LILAC
+                  {/* LILAC */}
+                  <div className="bg-transparent mt-1">
+                    <Image src={logo} alt="Logo" width={80} height={80} />
+                  </div>
+
                 </Link>
 
                 {/* Desktop Menu */}
