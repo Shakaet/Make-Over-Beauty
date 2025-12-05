@@ -3,6 +3,7 @@ import React, { useContext, useState } from 'react'
 import { Context } from '../provider/AuthProvider'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
+import { fallbackModeToFallbackField } from 'next/dist/lib/fallback'
 // import { toast } from 'react-hot-toast'
 
 const Register = () => {
@@ -15,7 +16,12 @@ const Register = () => {
     phone: '',
     address: '',
     password: '',
-    role:"customer"
+    role:"customer",
+    product_access:false,
+    blog_access:false,
+    order_access:false,
+    siteSetting_access:false,
+    customer_access:false
   })
   const [errors, setErrors] = useState({})
 
@@ -52,7 +58,12 @@ const Register = () => {
       phone: formData.phone.trim(),
       address: formData.address.trim(),
       password: formData.password,
-      role:formData.role
+      role:formData.role,
+      product_access:formData.product_access,
+      blog_access:formData.blog_access,
+      order_access:formData.order_access,
+      siteSetting_access:formData.siteSetting_access,
+      customer_access:formData.customer_access
     }
     const validationErrors = validate(trimmed)
     setErrors(validationErrors)
@@ -77,7 +88,7 @@ const Register = () => {
               .then(()=>{
               //  toast.success("Profile Updated")
               console.log(safeData)
-               return axios.post("https://beauty-server-nine.vercel.app/api/users", safeData)
+               return axios.post("http://localhost:5000/api/users", safeData)
               })
             })
             .then((res)=>{
