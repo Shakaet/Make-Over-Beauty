@@ -5,9 +5,9 @@ import { Context } from '../provider/AuthProvider'
 
 
 
-function LoginForm(){
+function LoginForm() {
 
-   let {loginSetup}= useContext(Context)
+  let { loginSetup } = useContext(Context)
 
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -53,12 +53,8 @@ function LoginForm(){
     }
 
     loginSetup(trimmed.email, trimmed.password)
-      .then((res) => {
-        const { password: _pw, ...safeData } = trimmed
-        // console.log('Login success:', safeData)
-        // Optionnel: reset du formulaire
-        // e.currentTarget.reset()
-        router.replace(from)
+      .then(() => {
+        router.replace(from);
       })
       .catch((err) => {
         setErrors(prev => ({ ...prev, password: 'Authentication failed. Please check your credentials.' }))
@@ -71,7 +67,7 @@ function LoginForm(){
     const query = email ? `?email=${encodeURIComponent(email)}` : ''
     router.replace(`/recovery${query}`)
   }
-  
+
 
   return (
     <div>
@@ -121,13 +117,13 @@ function LoginForm(){
   )
 }
 const Login = () => {
-  return(
+  return (
     <Suspense>
-    <LoginForm></LoginForm>
-   </Suspense>
+      <LoginForm></LoginForm>
+    </Suspense>
   )
 
-  
+
 }
 
 export default Login

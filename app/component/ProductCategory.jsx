@@ -19,19 +19,19 @@ const ProductRow = ({ product }) => {
         <div className="relative w-20 h-24 overflow-hidden rounded-md ring-1 ring-black/5 group">
           <div className="absolute inset-0 flex transition-transform duration-500 ease-out group-hover:-translate-x-full">
             <div className="relative shrink-0 w-full h-full">
-              <Image
+              <img
                 src={product.imagePrimary}
                 alt={product.name}
-                fill
+                fill="true"
                 sizes="96px"
                 className="object-cover"
               />
             </div>
             <div className="relative shrink-0 w-full h-full">
-              <Image
+              <img
                 src={product.imageSecondary}
                 alt={`${product.name} alt`}
-                fill
+                fill="true"
                 sizes="96px"
                 className="object-cover"
               />
@@ -116,7 +116,7 @@ const ProductCategory = () => {
         {/* Left hero */}
         <div className="lg:col-span-5 relative overflow-hidden rounded-2xl">
           <div className="relative w-full h-[360px] sm:h-[420px] lg:h-full">
-            <Image src={hero} alt="Care Collections" fill sizes="(min-width:1024px) 40vw, 100vw" className="object-cover" />
+            <img src={hero} alt="Care Collections" fill="true" sizes="(min-width:1024px) 40vw, 100vw" className="object-cover" />
           </div>
           <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-black/0 to-transparent" />
           <div className="absolute inset-0 p-8 flex flex-col">

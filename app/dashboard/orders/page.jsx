@@ -74,7 +74,7 @@ export default function OrderHistory() {
     if (!orders.length) return <p className="p-6 text-center text-gray-500">No orders found.</p>;
 
     return (
-        <div className="p-6 min-h-screen bg-gradient-to-b from-[#fff6f0] to-[#fff0e8]">
+        <div className="p-6 pt-18 min-h-screen bg-gradient-to-b from-[#fff6f0] to-[#fff0e8]">
             <div className="mb-6 flex items-center justify-between">
                 <h1 className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-fuchsia-600">
                     Order History

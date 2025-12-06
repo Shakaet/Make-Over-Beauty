@@ -7,15 +7,15 @@ import axios from 'axios'
 
 const Register = () => {
   const router = useRouter()
-  let {createRegistered,updateUserProfile}= useContext(Context)
- 
+  let { createRegistered, updateUserProfile } = useContext(Context)
+
   const [formData, setFormData] = useState({
     username: '',
     email: '',
     phone: '',
     address: '',
     password: '',
-    role:"customer"
+    role: "customer"
   })
   const [errors, setErrors] = useState({})
 
@@ -52,7 +52,7 @@ const Register = () => {
       phone: formData.phone.trim(),
       address: formData.address.trim(),
       password: formData.password,
-      role:formData.role
+      role: formData.role || 'customer'
     }
     const validationErrors = validate(trimmed)
     setErrors(validationErrors)
@@ -65,37 +65,34 @@ const Register = () => {
     const { password: password, ...safeData } = trimmed
     console.log('Register submit:', safeData)
 
-      let profileUpdates={
-              displayName: safeData.username,
-              
-            }
+    let profileUpdates = {
+      displayName: safeData.username,
+
+    }
 
     // console.log(password)
-    createRegistered(safeData.email,password)
-            .then((res)=>{
-              return updateUserProfile(res.user,profileUpdates)
-              .then(()=>{
-              //  toast.success("Profile Updated")
-              console.log(safeData)
-               return axios.post("https://beauty-server-nine.vercel.app/api/users", safeData)
-              })
-            })
-            .then((res)=>{
-              if(res && res.data && res.data.insertedId){
-                // alert("user added")
-              }
-              e.target.reset()
-              router.push("/")
-            })
-            .catch((error)=>{
-              // console.log(error)
-            })
+    createRegistered(safeData.email, password)
+      .then((res) => {
+        return updateUserProfile(res.user, profileUpdates)
+          .then(() => {
+            const fullUser = {
+              ...safeData,
+              uid: res.user.uid,
+            };
+            return axios.post("https://beauty-server-nine.vercel.app/api/users", fullUser);
+          });
+      })
 
-
-
-
-
-
+      .then((res) => {
+        if (res && res.data && res.data.insertedId) {
+          // alert("user added")
+        }
+        e.target.reset()
+        router.push("/")
+      })
+      .catch((error) => {
+        // console.log(error)
+      })
 
   }
 
