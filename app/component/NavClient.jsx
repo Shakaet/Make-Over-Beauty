@@ -3,7 +3,7 @@ import Link from 'next/link'
 import React, { useContext, useEffect, useState } from 'react'
 import { Context } from '../provider/AuthProvider'
 import CartDrawer from './CartDrawer'
-import { LogOut, User } from 'lucide-react'
+import { LogOut, SearchIcon, User } from 'lucide-react'
 
 import logo from "/public/images/logoup3.png"
 import Image from 'next/image'
@@ -14,7 +14,7 @@ const NavClient = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-  
+
   useEffect(() => {
     const onScroll = () => {
       setIsScrolled(window.scrollY > 10)
@@ -102,6 +102,14 @@ const NavClient = () => {
 
                 {/* Right icons */}
                 <div className='flex items-center gap-5'>
+                  {/* Search Bar */}
+                  <input
+                    type="text"
+                    placeholder="Search..."
+                    className="p-1 border border-gray-400 rounded-md w-[50%] focus:outline-none"
+                  //               value={searchTerm}
+                  //             onChange={e => setSearchTerm(e.target.value)}
+                  />
                   {/* Account */}
                   {user && (
                     <Link href='/dashboard' aria-label='Login' className='hover:opacity-80 p-1 tooltip' data-tip="hello">
@@ -122,7 +130,7 @@ const NavClient = () => {
                       <button
                         aria-label='Logout'
                         onClick={signOuts}
-                        className='hover:opacity-80 p-1'
+                        className='hover:opacity-80 p-1 cursor-pointer'
                       >
                         <LogOut className='w-5 h-5' />
                       </button>

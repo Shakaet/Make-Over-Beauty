@@ -106,9 +106,11 @@ const Banner = () => {
                     {s.copy}
                   </p>
 
-                  <button className="inline-flex items-center bg-black text-white text-bold px-4 py-2 text-sm sm:text-base uppercase tracking-[0.25em] hover:bg-black/80 transition">
+                  <a
+                    href='/product'
+                    className="inline-flex items-center bg-black text-white px-4 py-2 text-sm sm:text-base uppercase tracking-[0.25em] hover:bg-black/80 transition">
                     {s.cta}
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>
