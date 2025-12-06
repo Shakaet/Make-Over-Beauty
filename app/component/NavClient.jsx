@@ -5,7 +5,7 @@ import { Context } from '../provider/AuthProvider'
 import CartDrawer from './CartDrawer'
 import { LogOut, User } from 'lucide-react'
 
-import logo from "/public/images/logoup2.png"
+import logo from "/public/images/logoup3.png"
 import Image from 'next/image'
 
 const NavClient = () => {
@@ -51,7 +51,7 @@ const NavClient = () => {
                 >
                   {/* LILAC */}
                   <div className="bg-transparent">
-                    <Image src={logo} alt="Logo" width={80} height={80} />
+                    <Image src={logo} alt="Logo" width={200} height={200} />
                   </div>
                 </a>
 
