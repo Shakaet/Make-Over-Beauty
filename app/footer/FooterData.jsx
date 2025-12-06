@@ -5,6 +5,7 @@ export const footerLinks = [
         title: "About",
         links: [
             { label: "Career", slug: "", description: "Join our creative team and grow with us." },
+            { label: "History", slug:"history", description: ""},
             { label: "Stockists", slug: "", description: "Find our products at authorized retailers worldwide." },
             { label: "Shop Locator", slug: "", description: "Locate the nearest LILAC shop near you." },
             { label: "Contact", slug: "contact", description: "Reach us for inquiries, feedback, or support." },

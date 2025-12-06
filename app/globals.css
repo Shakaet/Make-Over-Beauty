@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -27,12 +33,19 @@ body {
 
 /* Marquee animation and utilities */
 @keyframes marquee-x {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 /* Container establishes perspective for smooth text */
-.marquee { position: relative; }
+.marquee {
+  position: relative;
+}
 
 /* Track is twice the width so it can loop seamlessly */
 .marquee-track {
@@ -84,14 +97,36 @@ body {
 }
 
 @keyframes splashPop {
-  0% { transform: scale(0.9); opacity: 0; }
-  40% { transform: scale(1.06); opacity: 1; }
-  70% { transform: scale(1); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+
+  40% {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+
+  70% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 @keyframes splashFade {
-  0% { opacity: 1; }
-  85% { opacity: 1; }
-  100% { opacity: 0; visibility: hidden; }
+  0% {
+    opacity: 1;
+  }
+
+  85% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
 }

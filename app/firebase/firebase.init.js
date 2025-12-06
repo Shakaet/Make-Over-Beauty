@@ -50,3 +50,25 @@ export default auth
 // const auth = getAuth(app);
 
 // export default auth
+
+
+
+
+
+// // Import the functions you need from the SDKs you need
+// import { initializeApp } from "firebase/app";
+// // TODO: Add SDKs for Firebase products that you want to use
+// // https://firebase.google.com/docs/web/setup#available-libraries
+
+// // Your web app's Firebase configuration
+// const firebaseConfig = {
+//   apiKey: "AIzaSyA_--coxUuge6C78OM0Zz6mjGQeptlBz44",
+//   authDomain: "bloomingbeauty-b945a.firebaseapp.com",
+//   projectId: "bloomingbeauty-b945a",
+//   storageBucket: "bloomingbeauty-b945a.firebasestorage.app",
+//   messagingSenderId: "923910986374",
+//   appId: "1:923910986374:web:a3c97a8e4b6652e3c5cf07"
+// };
+
+// // Initialize Firebase
+// const app = initializeApp(firebaseConfig);

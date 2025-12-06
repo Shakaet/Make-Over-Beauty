@@ -5,14 +5,16 @@ import { Context } from '../provider/AuthProvider'
 import CartDrawer from './CartDrawer'
 import { LogOut, User } from 'lucide-react'
 
+import logo from "/public/images/logoup2.png"
+import Image from 'next/image'
+
 const NavClient = () => {
   const { user, signOuts } = useContext(Context)
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [showPages, setShowPages] = useState(false)
-
+  
   useEffect(() => {
     const onScroll = () => {
       setIsScrolled(window.scrollY > 10)
@@ -44,15 +46,18 @@ const NavClient = () => {
               <div className='flex justify-between items-center h-16'>
                 {/* Logo */}
                 <a
-                  href='#'
+                  href='/'
                   className='font-semibold text-black text-2xl uppercase tracking-[0.35em]'
                 >
-                  LILAC
+                  {/* LILAC */}
+                  <div className="bg-transparent">
+                    <Image src={logo} alt="Logo" width={80} height={80} />
+                  </div>
                 </a>
 
                 {/* Menu */}
                 <ul className='hidden md:flex items-center gap-8 text-black text-sm'>
-                  {['Home', 'About', 'Shop', 'Blog', 'Gallery', 'Pages'].map(
+                  {['Home', 'About', 'Product', 'Blog', 'Gallery'].map(
                     item => (
                       <li key={item} className='relative'>
                         {item === 'Pages' ? (
@@ -76,43 +81,6 @@ const NavClient = () => {
                                 />
                               </svg>
                             </button>
-                            {/* Dropdown */}
-                            <div className='invisible group-hover:visible top-full left-0 z-40 absolute bg-[#ffdcdc] opacity-0 group-hover:opacity-100 shadow-xl mt-1 border border-black/10 w-56 text-black transition-opacity duration-150'>
-                              <ul className='py-2'>
-                                <li>
-                                  <Link
-                                    href='/pages/history'
-                                    className='block hover:bg-black/5 px-4 py-2'
-                                  >
-                                    Our History
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link
-                                    href='/pages/faq'
-                                    className='block hover:bg-black/5 px-4 py-2'
-                                  >
-                                    Faq
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link
-                                    href='/pages/contact'
-                                    className='block hover:bg-black/5 px-4 py-2'
-                                  >
-                                    Contact Us
-                                  </Link>
-                                </li>
-                                <li>
-                                  <Link
-                                    href='/pages/404'
-                                    className='block hover:bg-black/5 px-4 py-2'
-                                  >
-                                    404
-                                  </Link>
-                                </li>
-                              </ul>
-                            </div>
                           </div>
                         ) : (
                           <Link
@@ -140,30 +108,11 @@ const NavClient = () => {
                       <User className='w-5 h-5 btn' />
                     </Link>
                   )}
-                  {/* WishList */}
-                  <button
-                    aria-label='Wishlist'
-                    className='relative hover:opacity-80 p-1'
-                  >
-                    <svg
-                      width='20'
-                      height='20'
-                      viewBox='0 0 24 24'
-                      fill='none'
-                      stroke='currentColor'
-                      strokeWidth='1.5'
-                    >
-                      <path d='M12 21s-7-4.35-9-8.5C1 8 3.5 5.5 6.5 5.5 8.24 5.5 9.86 6.44 11 7.86 12.14 6.44 13.76 5.5 15.5 5.5 18.5 5.5 21 8 21 12.5 19 16.65 12 21 12 21z' />
-                    </svg>
-                    <span className='-top-1 -right-1 absolute bg-black px-1 rounded-full text-[10px] text-white'>
-                      0
-                    </span>
-                  </button>
                   {/* Cart */}
                   <CartDrawer isOpen={isOpen} toggleDrawer={toggleDrawer} />
                   {/* Logout */}
                   {!user ? (
-                    // 🔹 Show only User icon
+                    // Show only User icon
                     <Link href='/my-account' aria-label='Login' className='hover:opacity-80 p-1 tooltip' data-tip="hello">
                       <User className='w-5 h-5 btn' />
                     </Link>
@@ -220,7 +169,7 @@ const NavClient = () => {
                 className={`md:hidden ${mobileOpen ? 'block' : 'hidden'} pb-4`}
               >
                 <ul className='space-y-1 pt-2 border-black/10 border-t text-black text-sm'>
-                  {['Home', 'About', 'Shop', 'Blog', 'Gallery'].map(item => (
+                  {['Home', 'About', 'Product', 'Blog', 'Gallery'].map(item => (
                     <li key={item}>
                       <Link
                         href={`${item === 'Home' ? '/' : `/${item.toLocaleLowerCase()}`
@@ -234,74 +183,6 @@ const NavClient = () => {
                       </Link>
                     </li>
                   ))}
-
-                  <li className='mt-1 pt-2 border-black/10 border-t'>
-                    {/* New local state toggle for "Pages" */}
-                    <button
-                      onClick={() => setShowPages(prev => !prev)}
-                      className='flex justify-between items-center px-1 py-2 w-full uppercase tracking-[0.25em]'
-                    >
-                      <span>Pages</span>
-                      <svg
-                        width='12'
-                        height='12'
-                        viewBox='0 0 12 12'
-                        className={`transition-transform duration-200 ${showPages ? 'rotate-180' : ''
-                          }`}
-                      >
-                        <path
-                          d='M3 4l3 3 3-3'
-                          stroke='currentColor'
-                          strokeWidth='1.5'
-                          fill='none'
-                          strokeLinecap='round'
-                        />
-                      </svg>
-                    </button>
-
-                    {/* Collapsible sub-menu */}
-                    <ul
-                      className={`pl-3 space-y-1 transition-all duration-300 overflow-hidden ${showPages ? 'max-h-60 opacity-100' : 'max-h-0 opacity-0'
-                        }`}
-                    >
-                      <li>
-                        <Link
-                          href='/pages/history'
-                          className='block px-1 py-2'
-                          onClick={() => setMobileOpen(false)}
-                        >
-                          Our History
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href='/pages/faq'
-                          className='block px-1 py-2'
-                          onClick={() => setMobileOpen(false)}
-                        >
-                          Faq
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href='/pages/contact'
-                          className='block px-1 py-2'
-                          onClick={() => setMobileOpen(false)}
-                        >
-                          Contact Us
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href='/pages/404'
-                          className='block px-1 py-2'
-                          onClick={() => setMobileOpen(false)}
-                        >
-                          404
-                        </Link>
-                      </li>
-                    </ul>
-                  </li>
                 </ul>
               </div>
             </div>
