@@ -2,8 +2,8 @@
 import axios from 'axios'
 
 const api = axios.create({
-//    const baseURL = "https://beauty-server-nine.vercel.app";
-    baseURL: process.env.NEXT_PUBLIC_BASE_API,
+  baseURL: "https://beauty-server-nine.vercel.app",
+//    baseURL: process.env.NEXT_PUBLIC_BASE_API,
     headers: { 'Content-Type': 'application/json' },
 })
 
