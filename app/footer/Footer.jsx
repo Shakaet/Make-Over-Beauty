@@ -73,7 +73,7 @@ export default function Footer() {
             </div>
 
             <div className="border-t mt-10 pt-5 text-center text-sm text-gray-500">
-                © {year} Lilac, Wedesign Tech.
+                © {year} Blooming Beauty By Moon, Wedesign Tech.
             </div>
         </footer>
     )

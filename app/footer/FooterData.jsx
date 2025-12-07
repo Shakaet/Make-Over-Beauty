@@ -7,7 +7,7 @@ export const footerLinks = [
             { label: "Home", slug: "", description: "Join our creative team and grow with us." },
             { label: "Products", slug: "product", description: "" },
             { label: "Blogs", slug: "blogs", description: "Find our products at authorized retailers worldwide." },
-            { label: "Gallery", slug: "gallery", description: "Locate the nearest LILAC shop near you." },
+            { label: "Gallery", slug: "gallery", description: "Locate the nearest BB by Moon shop near you." },
             { label: "FAQ", slug: "faq", description: "Reach us for inquiries, feedback, or support." },
         ],
     },

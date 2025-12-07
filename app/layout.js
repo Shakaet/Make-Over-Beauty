@@ -19,8 +19,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "LILAC - Pure Beauty & Premium Cosmetics",
-  description: "Discover LILAC's premium beauty products. Vegan, cruelty-free cosmetics with clean ingredients.",
+  title: "Blooming Beauty By Moon - Pure Beauty & Premium Cosmetics",
+  description: "Discover Blooming Beauty's premium beauty products. Vegan, cruelty-free cosmetics with clean ingredients.",
 };
 
 export default function RootLayout({ children }) {

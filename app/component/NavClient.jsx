@@ -49,7 +49,7 @@ const NavClient = () => {
                   href='/'
                   className='font-semibold text-black text-2xl uppercase tracking-[0.35em]'
                 >
-                  {/* LILAC */}
+                  {/* Logo */}
                   <div className="bg-transparent">
                     <Image src={logo} alt="Logo" width={200} height={200} />
                   </div>
