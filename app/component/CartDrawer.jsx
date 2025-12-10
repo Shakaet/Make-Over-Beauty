@@ -259,7 +259,7 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
             <button
                 aria-label="Cart"
                 onClick={toggleDrawer}
-                className="relative hover:opacity-80 p-1"
+                className="relative hover:opacity-80 p-1 cursor-pointer"
             >
                 <svg
                     width="22"

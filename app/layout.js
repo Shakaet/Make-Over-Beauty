@@ -6,6 +6,7 @@ import Splash from "./component/Splash";
 import AuthProvider from "./provider/AuthProvider";
 import Footer from "./footer/Footer";
 import { Toaster } from "react-hot-toast";
+import ContactIcons from "./component/ContactIcons";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,8 +19,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "LILAC - Pure Beauty & Premium Cosmetics",
-  description: "Discover LILAC's premium beauty products. Vegan, cruelty-free cosmetics with clean ingredients.",
+  title: "Blooming Beauty By Moon - Pure Beauty & Premium Cosmetics",
+  description: "Discover Blooming Beauty's premium beauty products. Vegan, cruelty-free cosmetics with clean ingredients.",
 };
 
 export default function RootLayout({ children }) {
@@ -42,7 +43,7 @@ export default function RootLayout({ children }) {
           <Nav></Nav>
           <Toaster position="top-center" />
           {children}
-
+          <ContactIcons />
           <Footer ></Footer>
         </AuthProvider>
       </body>

@@ -12,23 +12,25 @@ import MarqueLogo from "./component/MarqueLogo";
 import WhatsPeopleSay from "./component/WhatsPeopleSay";
 import NewsUpdates from "./component/NewsUpdates";
 import TagUs from "./component/TagUs";
+import CategoryShowcase from "./component/CategoryShowcase";
 
 
- const ANNOUNCEMENTS = [
-        "10% off",
-        "10% off",
-        "10% off",
-        "10% off",
-        "10% off",
-        "10% off",
-        "10% off",
-      ]
+const ANNOUNCEMENTS = [
+  "10% off",
+  "10% off",
+  "10% off",
+  "10% off",
+  "10% off",
+  "10% off",
+  "10% off",
+]
 export default function Home() {
   return (
     <div className="home-bg bg-fixed bg-cover bg-center bg-no-repeat">
       <Banner></Banner>
       <LowerBanner></LowerBanner>
-      <ReadMore></ReadMore>
+      {/* <CategoryShowcase /> */}
+      {/* <ReadMore></ReadMore> */}
       <PureSimple></PureSimple>
       <TredingProduct></TredingProduct>
       <Top props={ANNOUNCEMENTS}></Top>

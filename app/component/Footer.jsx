@@ -33,7 +33,7 @@ const Footer = () => {
           {/* Brand and blurb */}
           <div className='lg:col-span-2'>
             <div className='font-serif text-5xl sm:text-6xl italic tracking-wide'>
-              LILAC
+              Blooming Beauty By Moon
             </div>
             <p className='mt-6 max-w-md text-black/70 text-sm leading-7'>
               Sed viverra tellus in hac habitasse platea dictumst vestibulum.
@@ -128,7 +128,7 @@ const Footer = () => {
 
           {/* Copyright */}
           <div className='text-black/70 text-sm'>
-            © {year} lilac, Wedesign Tech.
+            © {year} blooming beauty by moon, Wedesign Tech.
           </div>
 
           {/* Legal */}

@@ -8,7 +8,10 @@
     "start": "next start"
   },
   "dependencies": {
-    "@tailwindcss/oxide": "^4.1.17",
+
+
+
+
     "axios": "^1.13.1",
     "firebase": "^12.5.0",
     "lightningcss": "^1.30.2",

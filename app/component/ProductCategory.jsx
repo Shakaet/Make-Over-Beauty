@@ -13,7 +13,7 @@ import "swiper/css";
 const ProductRow = ({ product }) => {
   return (
     <Link
-      href={`/shop/products/${product._id}`}
+      href={`/product/products/${product._id}`}
     >
       <div className="flex items-center gap-4 py-4">
         <div className="relative w-20 h-24 overflow-hidden rounded-md ring-1 ring-black/5 group">
@@ -126,7 +126,7 @@ const ProductCategory = () => {
                 Vivulum ut tempor sem leo, a ultricies quam aliquam eget.
               </p>
               <Link
-                href="/shop"
+                href="/product"
                 className="mt-6 inline-flex items-center gap-2 bg-white/90 text-stone-900 px-5 py-2 text-xs uppercase tracking-[0.25em]">
                 View All
               </Link>

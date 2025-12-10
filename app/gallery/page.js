@@ -9,7 +9,7 @@ import GalleryStats from './GalleryStats'
 import ExploreCta from './ExploreCta'
 import Category from './Category'
 import GalleryClient from './GalleryClient'
-import JoinUs from '../pages/faq/JoinUs'
+import JoinUs from '../faq/JoinUs'
 
 const page = () => {
   return (

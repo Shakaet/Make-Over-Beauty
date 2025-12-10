@@ -2,7 +2,7 @@ import React from 'react'
 import Heading from '../component/Heading'
 import Product from './Product'
 
-const Page = () => {
+const ProductPage = () => {
   return (
     <div className='home-bg bg-fixed bg-cover bg-center bg-no-repeat'>
       <Heading />
@@ -13,4 +13,4 @@ const Page = () => {
   )
 }
 
-export default Page
+export default ProductPage

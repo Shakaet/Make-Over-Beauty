@@ -1,9 +1,9 @@
-import React from 'react'
-import Heading from '../component/Heading'
-import AboutHero from './AboutHero'
-import FeatureSection from './FeatureSection'
-import Team from './Team'
-import Stats from './Stats'
+import Heading from "@/app/component/Heading"
+import AboutHero from "./AboutHero"
+import FeatureSection from "./FeatureSection"
+import Team from "./Team"
+import Stats from "./Stats"
+
 
 const page = () => {
   return (
