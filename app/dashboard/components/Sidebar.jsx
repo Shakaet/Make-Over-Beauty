@@ -16,11 +16,12 @@ export default function Sidebar({ role, active, setActiveTab }) {
 
         admin: [
             { label: "Overview", key: "overview" },
+            { label: "Manage Products", key: "products" },
             { label: "All Orders", key: "orders" },
             { label: "Users", key: "users" },
             { label: "Site Setting", key: "settings" },
+            { label: "Manager Access", key: "AccessManager" },
             { label: "Profile", key: "profile" },
-            { label: "Manager Access", key: "AccessManager" }
         ]
     };
 
@@ -36,8 +37,8 @@ export default function Sidebar({ role, active, setActiveTab }) {
                         key={link.key}
                         onClick={() => setActiveTab(link.key)}
                         className={`w-full text-left px-4 py-3 rounded-xl transition-all duration-300 ${active === link.key
-                                ? "bg-red-200 text-red-700 font-semibold shadow-inner"
-                                : "hover:bg-red-50 hover:text-red-600"
+                            ? "bg-red-200 text-red-700 font-semibold shadow-inner"
+                            : "hover:bg-red-50 hover:text-red-600"
                             }`}
                     >
                         {link.label}

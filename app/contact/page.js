@@ -1,8 +1,8 @@
 'use client'
 import React, { useState } from 'react'
-import Heading from '../../component/Heading'
 import ContactForm from './ContactForm'
 import ContactMap from './ContactMap'
+import Heading from '../component/Heading'
 
 const Page = () => {
 

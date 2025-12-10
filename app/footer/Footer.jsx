@@ -50,7 +50,7 @@ export default function Footer() {
                                 return (
                                     <li key={`${section.title}-${link.label}-${index}`}>
                                         <Link
-                                            href={slugExists ? `/pages/${link.slug}` : `/`}
+                                            href={slugExists ? `/${link.slug}` : `/`}
                                             className="hover:text-gray-900 transition-colors text-sm duration-200"
                                         >
                                             {link.label}

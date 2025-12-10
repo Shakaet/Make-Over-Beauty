@@ -2,6 +2,29 @@
 
 import { Filter } from 'lucide-react'
 import React, { useState, useEffect } from 'react'
+import { getAllProducts } from '../api/productApi'
+
+// Helper function to get unique categories with proper counting
+const getUniqueCategories = (products) => {
+  const categoryMap = new Map();
+
+  products.forEach(product => {
+    if (product.category) {
+      const normalized = product.category.trim();
+      const key = normalized.toLowerCase();
+
+      if (!categoryMap.has(key)) {
+        categoryMap.set(key, {
+          original: normalized,
+          count: 0
+        });
+      }
+      categoryMap.get(key).count++;
+    }
+  });
+
+  return Array.from(categoryMap.values());
+};
 
 const SidebarFilter = ({
   products,
@@ -14,19 +37,34 @@ const SidebarFilter = ({
 }) => {
   const [showCategoryFilter, setShowCategoryFilter] = useState(false)
   const [showPriceFilters, setShowPriceFilters] = useState(false)
+  const [categoriesWithCount, setCategoriesWithCount] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await getAllProducts(); 
+        const allProducts = res.data || [];
+
+        const categoriesData = getUniqueCategories(allProducts);
+
+        setCategoriesWithCount(categoriesData);
+      } catch (err) {
+        console.error("Error fetching categories:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const prices = products.map(p => p.highprice ?? p.lowprice ?? 0)
   const minPrice = Math.min(...prices)
   const maxPrice = Math.max(...prices)
   const [localMaxPrice, setLocalMaxPrice] = useState(maxPrice)
 
-  // Update price range when products change
-  useEffect(() => {
-    setPriceRange([minPrice, maxPrice])
-    setLocalMaxPrice(maxPrice)
-  }, [minPrice, maxPrice])
-
-  const handleCategoryChange = category => {
+  const handleCategoryChange = (category) => {
     if (selectedCategories.includes(category)) {
       setSelectedCategories(selectedCategories.filter(c => c !== category))
     } else {
@@ -44,7 +82,6 @@ const SidebarFilter = ({
     <aside className="space-y-8">
       {/* Mobile toggle buttons */}
       <div className="lg:hidden flex justify-between mb-4">
-
         <button
           onClick={() => {
             setShowCategoryFilter(!showCategoryFilter)
@@ -52,7 +89,9 @@ const SidebarFilter = ({
           }}
           className="flex-1 bg-[#f0e3cd] mr-2 p-2 border border-gray-400 rounded-md text-sm font-semibold text-gray-800"
         >
-          <span className='justify-center gap-2 items-center flex'> <Filter size={14} />Filter By Category</span>
+          <span className='justify-center gap-2 items-center flex'>
+            <Filter size={14} />Filter By Category
+          </span>
         </button>
         <button
           onClick={() => {
@@ -61,7 +100,9 @@ const SidebarFilter = ({
           }}
           className="flex-1 bg-[#f0e3cd] mr-2 p-2 border border-gray-400 rounded-md text-sm font-semibold text-gray-800"
         >
-          <span className='justify-center gap-2 items-center flex'> <Filter size={14} />Filter By Price</span>
+          <span className='justify-center gap-2 items-center flex'>
+            <Filter size={14} />Filter By Price
+          </span>
         </button>
       </div>
 
@@ -71,23 +112,26 @@ const SidebarFilter = ({
           <h4 className="bg-[#f0e3cd] mb-3 p-2 rounded-md font-semibold">
             Product Category
           </h4>
-          <ul className="space-y-2 text-sm">
-            {Array.from(new Set(products.map(p => p.category))).map(category => (
-              <li key={category}>
-                <label className="flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={selectedCategories.includes(category)}
-                    onChange={() => handleCategoryChange(category)}
-                  />
-                  <span className="ml-2">
-                    {category} (
-                    {products.filter(p => p.category === category).length})
-                  </span>
-                </label>
-              </li>
-            ))}
-          </ul>
+          {loading ? (
+            <p className="text-sm text-gray-500">Loading categories...</p>
+          ) : (
+            <ul className="space-y-2 text-sm">
+              {categoriesWithCount.map(({ original, count }) => (
+                <li key={original}>
+                  <label className="flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={selectedCategories.includes(original)}
+                      onChange={() => handleCategoryChange(original)}
+                    />
+                    <span className="ml-2">
+                      {original} ({count})
+                    </span>
+                  </label>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
 
@@ -155,9 +199,7 @@ const SidebarFilter = ({
               </div>
               <div className="font-bold text-xs">
                 {product.highprice
-                  ? `$${product.lowprice.toFixed(2)} - $${product.highprice.toFixed(
-                    2
-                  )}`
+                  ? `$${product.lowprice.toFixed(2)} - $${product.highprice.toFixed(2)}`
                   : `$${product.lowprice.toFixed(2)}`}
               </div>
             </div>

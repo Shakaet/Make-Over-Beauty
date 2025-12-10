@@ -1,11 +1,11 @@
 'use client'
 import React, { useState } from 'react'
-import Heading from '../../component/Heading'
 import Faq from './Faq'
 import FaqCard from './FaqCard'
 import NewsUpdates from '@/app/component/NewsUpdates'
 import TagUs from '@/app/component/TagUs'
 import JoinUs from './JoinUs'
+import Heading from '../component/Heading'
 
 
 const Page = () => {

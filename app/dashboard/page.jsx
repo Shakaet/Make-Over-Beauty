@@ -3,9 +3,10 @@ import React, { use, useContext, useEffect, useState } from "react";
 import { Context } from "../provider/AuthProvider";
 import Sidebar from "./components/Sidebar";
 import Overview from "./components/Overview";
-import ManageProducts from "./components/ManageProducts";
 import OrderHistory from "./orders/page";
 import Profile from "./profile/page";
+import AdminProductsPage from "./products/page";
+import ProductDashboard from "./products/page";
 
 const DashboardPage = () => {
     const { user, role, loading } = useContext(Context);
@@ -33,7 +34,7 @@ const DashboardPage = () => {
             case "profile":
                 return <Profile />;
             case "products":
-                return <ManageProducts />;
+                return <ProductDashboard />;
             default:
                 return <Overview />;
         }
