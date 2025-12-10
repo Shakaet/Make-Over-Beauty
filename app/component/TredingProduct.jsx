@@ -1,10 +1,10 @@
 import React from 'react'
 import Image from 'next/image'
-import imgBody from '/public/images/makeup1.jpeg'
-import imgMoist from '/public/images/makeup2.png'
-import imgBath from '/public/images/makeup3.webp'
-import imgScrub from '/public/images/makeuo4.webp'
-import imgTooth from '/public/images/makeup5.jpeg'
+import imgBody from '@/public/images/makeup1.jpeg'
+import imgMoist from '@/public/images/makeup2.png'
+import imgBath from '@/public/images/makeup3.webp'
+import imgScrub from '@/public/images/makeuo4.webp'
+import imgTooth from '@/public/images/makeup5.jpeg'
 
 const TredingProduct = () => {
   return (

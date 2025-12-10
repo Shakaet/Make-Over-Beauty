@@ -1,11 +1,12 @@
 "use client"
 import React, { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import img1 from "/public/images/ban2.jpg"
-import img2 from "/public/images/ban3.jpg"
+import img1 from "@/public/images/ban2.jpg"
+import img2 from "@/public/images/ban3.jpg"
+
 
 // Local banner images placed in /public. Replace with your own files.
-// Example files: /public/banner-1.jpg, banner-2.jpg
+// Example files: @/public/banner-1.jpg, banner-2.jpg
 const SLIDES = [
   {
     image: img1,

@@ -1,8 +1,8 @@
 import React from 'react'
 import Image from 'next/image'
-import leftImg from '/public/images/make2.jpg'
-import rightImgA from '/public/images/make6.jpg'
-import rightImgB from '/public/images/cream.png'
+import leftImg from '@/public/images/make2.jpg'
+import rightImgA from '@/public/images/make6.jpg'
+import rightImgB from '@/public/images/cream.png'
 
 const HarbalCosmetics = () => {
   return (

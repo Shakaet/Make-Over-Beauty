@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import productImg from '/public/images/cream.png'
+import productImg from '@/public/images/cream.png'
 
 const PureSimple = () => {
   return (
