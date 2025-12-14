@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from "react"
 import Image from "next/image"
-import hero from "/public/images/makeup2.png"
+import hero from "@/public/images/makeup2.png"
 import api from "../libs/axios"
 import Link from "next/link"
 import { Swiper, SwiperSlide } from "swiper/react";

@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import heroImg from '/public/images/cream.png'
+import heroImg from '@/public/images/cream.png'
 
 const BeautyDestination = () => {
   return (

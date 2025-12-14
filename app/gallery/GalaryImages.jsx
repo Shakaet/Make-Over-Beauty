@@ -1,12 +1,12 @@
 
 import React from 'react'
 import Image from 'next/image'
-import img1 from '/public/images/makeup1.jpeg'
-import img2 from '/public/images/makeup2.png'
-import img3 from '/public/images/makeup3.webp'
-import img4 from '/public/images/makeup5.jpeg'
-import img5 from '/public/images/download.jpeg'
-import img6 from '/public/images/cream.png'
+import img1 from '@/public/images/makeup1.jpeg'
+import img2 from '@/public/images/makeup2.png'
+import img3 from '@/public/images/makeup3.webp'
+import img4 from '@/public/images/makeup5.jpeg'
+import img5 from '@/public/images/download.jpeg'
+import img6 from '@/public/images/cream.png'
 
 const TILES = [
   { src: img5, alt: 'Hand with lotion tube', span: 'lg:col-span-2 lg:row-span-2' },

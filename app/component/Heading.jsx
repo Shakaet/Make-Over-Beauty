@@ -2,7 +2,7 @@
 import React from 'react'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import bgImage from '/public/images/banner.png'
+import bgImage from '@/public/images/banner.png'
 
 function capitalizeWords(input) {
   return input
