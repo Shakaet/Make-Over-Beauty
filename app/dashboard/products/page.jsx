@@ -130,7 +130,7 @@ const ProductDashboard = () => {
             <div className="max-w-7xl mx-auto">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
                     <div>
-                        <h1 className="text-3xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-fuchsia-600 text-transparent">
+                        <h1 className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-fuchsia-600">
                             Product Management
                         </h1>
                         <p className="text-pink-600">Manage your inventory with elegance</p>

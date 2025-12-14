@@ -1,20 +1,28 @@
 import api from "../libs/axios";
 
-export const registerUser = async (data) => {
-    const res = await api.post("/users", data);
-    return res.data;
+export const authApi = {
+    login: async (email, password) => {
+        const response = await api.post(
+            `/api/auth/login`,
+            { email, password },
+      //      { withCredentials: true }
+        );
+        return response.data; // contains { success, message, data }
+    },
+
+    refreshToken: async () => {
+        const response = await api.post(
+            `/api/auth/refresh-token`,
+            {},
+            { withCredentials: true }
+        );
+        return response.data;
+    },
+
+    logout: () => {
+        localStorage.removeItem("accessToken");
+    },
 };
 
-export const loginUser = async (data) => {
-    const res = await api.post("/auth/login", data, {
-        withCredentials: true,
-    });
-    // save access token
-    localStorage.setItem("accessToken", res.data.data.accessToken);
-    return res.data;
-};
 
-export const getUserRole = async (email, role) => {
-    const res = await api.get(`/users/get${role}/${email}`);
-    return res.data;
-};
+

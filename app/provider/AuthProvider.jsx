@@ -10,9 +10,10 @@ import {
     updateProfile
 } from "firebase/auth";
 import React, { createContext, useEffect, useState } from "react";
-import axios from "axios";
 import auth from "../firebase/firebase.init";
 import { useRouter } from "next/navigation";
+import { authApi, roleAccessApi } from "../api/authApi";
+import axios from "axios";
 
 export let Context = createContext();
 
@@ -25,15 +26,54 @@ const AuthProvider = ({ children }) => {
     const provider = new GoogleAuthProvider();
 
     // Google SignIn
-    const googleSign = () => signInWithPopup(auth, provider);
+    //const googleSign = () => signInWithPopup(auth, provider);
+    const googleSign = async () => {
+        try {
+            const result = await signInWithPopup(auth, provider);
+
+            // Get JWT tokens after Google sign in
+            if (result.user?.email) {
+                try {
+                    const jwtResponse = await authApi.login(result.user.email, "google-oauth");
+                    if (jwtResponse.data?.accessToken) {
+                        localStorage.setItem("accessToken", jwtResponse.data.accessToken);
+                    }
+                } catch (err) {
+                    console.log("JWT fetch after Google sign in:", err);
+                }
+            }
+
+            return result;
+        } catch (error) {
+            console.error("Google sign in error:", error);
+            throw error;
+        }
+    }
 
     // Register using Firebase auth
     const createRegistered = (email, password) =>
         createUserWithEmailAndPassword(auth, email, password);
 
     // Login Firebase
-    const loginSetup = (email, password) =>
-        signInWithEmailAndPassword(auth, email, password);
+    // const loginSetup = (email, password) =>
+    //     signInWithEmailAndPassword(auth, email, password);
+    const loginSetup = async (email, password) => {
+        try {
+            const firebaseResult = await signInWithEmailAndPassword(auth, email, password);
+
+            const jwtResponse = await authApi.login(email, password);
+
+            if (jwtResponse?.data?.accessToken) {
+                localStorage.setItem("accessToken", jwtResponse.data.accessToken);
+            }
+
+            return firebaseResult;
+        } catch (error) {
+            console.error("Login error:", error);
+            throw error;
+        }
+    };
+
 
     // Logout
     const signOuts = () => {
@@ -58,10 +98,10 @@ const AuthProvider = ({ children }) => {
             );
             if (admin.data.admin === true) return "admin";
 
-            const manager = await axios.get(
-                `https://beauty-server-nine.vercel.app/api/users/getmanager/${email}`
-            );
-            if (manager.data.manager === true) return "manager";
+            // const manager = await axios.get(
+            //     `https://beauty-server-nine.vercel.app/api/users/getmanager/${email}`
+            // );
+            // if (manager.data.manager === true) return "manager";
 
             return null;
         } catch (err) {

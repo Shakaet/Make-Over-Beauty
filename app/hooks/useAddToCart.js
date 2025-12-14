@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import toast from 'react-hot-toast'
 
-const CART_EXPIRY_MINUTES = 1
+const CART_EXPIRY_MINUTES = 10080
 
 export default function useAddToCart() {
     const [cart, setCart] = useState([])

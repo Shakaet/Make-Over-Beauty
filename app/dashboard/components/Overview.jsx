@@ -6,7 +6,7 @@ import { Context } from "@/app/provider/AuthProvider";
 import toast from "react-hot-toast";
 
 export default function Overview() {
-    const { user } = useContext(Context);
+    const { user, role } = useContext(Context);
     const [overview, setOverview] = useState({});
     const [loading, setLoading] = useState(true);
 
@@ -40,8 +40,8 @@ export default function Overview() {
 
     return (
         <div className="min-h-screen p-6 pt-18 bg-gradient-to-b from-[#fff6f0] to-[#fff0e8]">
-            <h1 className="text-3xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-fuchsia-600">Overview</h1>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* <h1 className="text-3xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-fuchsia-600">Overview</h1> */}
+            {role == 'customer' && (<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
                     <h2 className="text-lg font-semibold text-gray-700 mb-2">Total Orders</h2>
                     <p className="text-3xl font-bold text-red-600">{overview.totalOrders}</p>
@@ -54,7 +54,10 @@ export default function Overview() {
                     <h2 className="text-lg font-semibold text-gray-700 mb-2">Last Order</h2>
                     <p className="text-3xl font-bold text-red-600">{overview.lastOrder}</p>
                 </div>
-            </div>
+            </div>)}
+            {role == 'admin' && (
+                <div></div>
+            )}
         </div>
     );
 }

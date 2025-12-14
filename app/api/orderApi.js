@@ -19,3 +19,23 @@ export const createOrder = async (orderData) => {
         throw err;
     }
 };
+
+export const getAllOrders = async (params = {}) => {
+    try {
+        const res = await api.get("/api/orders/all", { params });
+        return res.data || { totalOrders: 0, page: 1, totalPages: 1, data: [] };
+    } catch (err) {
+        console.error("Failed to fetch orders:", err);
+        throw err;
+    }
+};
+
+export const deleteOrder = async (id) => {
+    try {
+        const res = await api.delete(`/api/orders/delete/${id}`);
+        return res.data;
+    } catch (err) {
+        console.error("Failed to delete order:", err);
+        throw err;
+    }
+};

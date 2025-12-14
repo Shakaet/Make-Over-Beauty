@@ -5,8 +5,10 @@ import Sidebar from "./components/Sidebar";
 import Overview from "./components/Overview";
 import OrderHistory from "./orders/page";
 import Profile from "./profile/page";
-import AdminProductsPage from "./products/page";
 import ProductDashboard from "./products/page";
+import UsersPage from "./users/page";
+import AllOrdersPage from "./allOrders/page";
+import SiteSettings from "./siteSettings/page";
 
 const DashboardPage = () => {
     const { user, role, loading } = useContext(Context);
@@ -35,6 +37,14 @@ const DashboardPage = () => {
                 return <Profile />;
             case "products":
                 return <ProductDashboard />;
+            case "blogs":
+                return <Overview />;
+            case "allorders":
+                return <AllOrdersPage />;
+            case "users":
+                return <UsersPage />;
+            case "settings":
+                return <SiteSettings />;
             default:
                 return <Overview />;
         }

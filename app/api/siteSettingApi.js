@@ -1,0 +1,22 @@
+import api from "../libs/axios";
+
+export const siteSettingApi = {
+  getAll: async () => {
+    const response = await api.get("/api/site-setting");
+    return response.data;
+  },
+
+  update: async (formData) => {
+    const response = await api.patch(
+      "/api/site-setting",
+      formData
+    );
+    return response.data;
+  },
+
+
+  delete: async (id) => {
+    const response = await api.delete(`/api/site-setting/${id}`);
+    return response.data;
+  },
+};
