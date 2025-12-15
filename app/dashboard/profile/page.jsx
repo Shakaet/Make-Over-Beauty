@@ -179,7 +179,7 @@ export default function Profile() {
                         <h1 className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-fuchsia-600">
                             {isAdmin ? 'Admin' : 'User'} Profile
                         </h1>
-                        <p className="text-pink-600 mt-2">Manage your account and administrative settings</p>
+                        <p className="text-[var(--pink)] mt-2">Manage your account and administrative settings</p>
                     </div>
 
                 </div>
@@ -198,7 +198,7 @@ export default function Profile() {
                                             className="w-full h-full rounded-full object-cover border-4 border-white"
                                         />
                                     </div>
-                                    <button className="absolute bottom-4 right-4 bg-pink-500 hover:bg-pink-600 text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110">
+                                    <button className="absolute bottom-4 right-4 bg-pink-500 hover:bg-[var(--pink)] text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110">
                                         <Camera size={20} />
                                     </button>
                                     {isAdmin && (
@@ -245,7 +245,7 @@ export default function Profile() {
                                 {/* Stats */}
                                 {/* {activeTab === 'admin' && isAdmin && (
                                     <div className="bg-pink-50 rounded-xl p-4 text-center w-full mb-4">
-                                        <div className="text-2xl font-bold text-pink-600">{stats.totalUsers}</div>
+                                        <div className="text-2xl font-bold text-[var(--pink)]">{stats.totalUsers}</div>
                                         <div className="text-sm text-gray-600">Users</div>
                                     </div>
                                 )} */}
@@ -253,7 +253,7 @@ export default function Profile() {
                                 {/* Edit Button */}
                                 <button
                                     onClick={handleEdit}
-                                    className={`w-full py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 ${isEditing ? 'bg-green-500 hover:bg-green-600' : 'bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600'} text-white shadow-lg`}
+                                    className={`w-full py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 ${isEditing ? 'bg-green-500 hover:bg-green-600' : 'bg-gradient-to-r from-pink-500 to-rose-500 hover:from-[var(--pink)] hover:to-rose-600'} text-white shadow-lg`}
                                 >
                                     {isEditing ? (
                                         <>
@@ -279,7 +279,7 @@ export default function Profile() {
                                 <button
                                     key={tab}
                                     onClick={() => setActiveTab(tab)}
-                                    className={`px-6 py-3 rounded-xl font-semibold capitalize transition-all duration-300 whitespace-nowrap ${activeTab === tab ? 'bg-white text-pink-600 shadow-lg' : 'text-gray-600 hover:bg-white/50'}`}
+                                    className={`px-6 py-3 rounded-xl font-semibold capitalize transition-all duration-300 whitespace-nowrap ${activeTab === tab ? 'bg-white text-[var(--pink)] shadow-lg' : 'text-gray-600 hover:bg-white/50'}`}
                                 >
                                     {tab}
                                 </button>
@@ -360,7 +360,7 @@ export default function Profile() {
                                     />
 
                                     <div className="pt-6 border-t">
-                                        <button className="w-full py-3 bg-gradient-to-r from-rose-500 to-pink-500 text-white rounded-xl font-semibold hover:from-rose-600 hover:to-pink-600 transition-all duration-300">
+                                        <button className="w-full py-3 bg-gradient-to-r from-rose-500 to-pink-500 text-white rounded-xl font-semibold hover:from-rose-600 hover:to-[var(--pink)] transition-all duration-300">
                                             Change Password
                                         </button>
                                     </div>
@@ -388,7 +388,7 @@ export default function Profile() {
                                                 </div>
                                                 <h4 className="font-bold text-gray-800 mb-2">{feature.label}</h4>
                                                 <p className="text-gray-600 text-sm">{feature.description}</p>
-                                                <button className="mt-4 text-pink-600 hover:text-pink-700 font-semibold text-sm">
+                                                <button className="mt-4 text-[var(--pink)] hover:text-pink-700 font-semibold text-sm">
                                                     Manage →
                                                 </button>
                                             </div>

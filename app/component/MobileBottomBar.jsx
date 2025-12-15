@@ -27,7 +27,7 @@ const MobileBottomBar = () => {
                             key={item.name}
                             href={item.href}
                             className={`flex flex-col items-center justify-center gap-1 text-xs transition-all
-                ${active ? "text-pink-600" : "text-gray-500 hover:text-pink-500"
+                ${active ? "text-[var(--pink)]" : "text-gray-500 hover:text-pink-500"
                                 }
               `}
                         >

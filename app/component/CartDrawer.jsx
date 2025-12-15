@@ -256,7 +256,7 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
                         />
                         <button
                             onClick={applyCoupon}
-                            className="bg-pink-600 text-white px-3 rounded-lg hover:bg-gray-800 transition"
+                            className="bg-[var(--pink)] text-white px-3 rounded-lg hover:bg-gray-800 transition"
                         >
                             Apply
                         </button>

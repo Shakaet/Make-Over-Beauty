@@ -97,7 +97,7 @@ export function ProductCard({ product }) {
                     </div>
                 </div>
             </div>
-            <button className="w-full mt-4 py-2 bg-white border border-pink-200 text-pink-600 rounded-lg font-semibold hover:bg-pink-50 transition-colors duration-300">
+            <button className="w-full mt-4 py-2 bg-white border border-pink-200 text-[var(--pink)] rounded-lg font-semibold hover:bg-pink-50 transition-colors duration-300">
                 Add to Cart
             </button>
         </div>
@@ -167,7 +167,7 @@ export function InfoCard({ icon: Icon, title, description, actionText, color }) 
                     <p className="text-sm text-gray-600">{description}</p>
                 </div>
             </div>
-            <button className="text-pink-600 hover:text-pink-700 font-semibold text-sm">
+            <button className="text-[var(--pink)] hover:text-pink-700 font-semibold text-sm">
                 {actionText} →
             </button>
         </div>
@@ -334,7 +334,7 @@ export function QuickAdminAction({ icon: Icon, label, description, color, count,
                 <h3 className="font-bold text-gray-800 mb-2">{label}</h3>
                 <p className="text-gray-600 text-sm mb-3">{description}</p>
             </div>
-            <div className="text-pink-600 font-semibold text-sm">
+            <div className="text-[var(--pink)] font-semibold text-sm">
                 Manage →
             </div>
         </button>

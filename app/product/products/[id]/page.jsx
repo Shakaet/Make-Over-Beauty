@@ -93,7 +93,7 @@ const ProductDetailPage = () => {
 
     return (
         <div className="bg-gradient-to-b from-[#f9f5ef] to-[#f1e8db]">
-            <div className="max-w-7xl mx-auto px-4 py-16 md:py-24 font-sans">
+            <div className="max-w-7xl mx-auto p-4 pb-14 md:pb-20 font-sans">
                 {/* Back Button */}
                 <button
                     onClick={() => router.back()}
@@ -111,13 +111,8 @@ const ProductDetailPage = () => {
                             <img
                                 src={mainImage}
                                 alt={product.name}
-                                className="w-full h-[480px] md:h-[560px] object-cover transition-transform duration-700 hover:scale-105"
+                                className="w-full h-[400px] md:h-[560px] object-cover transition-transform duration-700 hover:scale-105"
                             />
-                            {product.discount && (
-                                <div className="absolute top-5 left-5 bg-[#E8D8C0] text-gray-900 text-sm font-semibold px-4 py-1.5 rounded-full shadow-md">
-                                    -{product.discount}%
-                                </div>
-                            )}
                             <button
                                 onClick={() => setIsWishlisted(!isWishlisted)}
                                 className={`absolute top-5 right-5 w-11 h-11 rounded-full flex items-center justify-center shadow-md transition-all ${isWishlisted
@@ -161,21 +156,21 @@ const ProductDetailPage = () => {
                     </div>
 
                     {/* Right - Product Info */}
-                    <div className=" lg:top-28 bg-white/10 backdrop-blur-sm p-8 rounded-3xl shadow-lg space-y-7 border border-[#e6dbc7]/60">
+                    <div className=" lg:top-28 bg-white/10 backdrop-blur-sm p-8 rounded-3xl shadow-lg  border border-[#e6dbc7]/60">
                         {/* Category / Tagline */}
-                        <p className="text-sm uppercase tracking-wider text-[#8b7355]/80 font-medium">
-                            {product.category || 'Natural Collection'}
-                        </p>
+                        <div className="mb-4 flex justify-between items-center">
+                            <p className="text-sm uppercase tracking-wider text-[#8b7355]/80 font-medium">
+                                {product.brand || 'Unknown Brand'}
+                            </p>
+                            <p className="text-sm uppercase tracking-wider bg-[var(--pink)]/60 w-fit text-white py-1 px-2  rounded-full ">
+                                {product.category || 'Natural Collection'}
+                            </p>
+                        </div>
 
                         {/* Product Name */}
                         <h1 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight">
                             {product.name}
                         </h1>
-
-                        {/* Short Tagline */}
-                        <p className="text-gray-600 italic text-sm">
-                            A blend of luxury and nature — made to enhance your natural glow.
-                        </p>
 
                         {/* Rating */}
                         <div className="flex items-center space-x-2 pt-2">
@@ -190,14 +185,11 @@ const ProductDetailPage = () => {
                                     />
                                 ))}
                             </div>
-                            <span className="text-gray-600 text-sm">
-                                {product.rating.toFixed(1)} / 5 ({product.reviews || 0} reviews)
-                            </span>
                         </div>
 
                         {/* Price Block */}
-                        <div className="pt-3 pb-2 border-y border-gray-200">
-                            <div className="flex items-center space-x-3 mt-2">
+                        <div className="pt-3 pb-6 border-gray-200">
+                            <div className="space-y-3 mt-2">
                                 <span className="text-4xl font-bold text-gray-900 drop-shadow-sm">
                                     ${product.lowprice.toFixed(2)}
                                 </span>
@@ -216,13 +208,13 @@ const ProductDetailPage = () => {
 
                         {/* Key Highlights */}
                         <ul className="text-sm text-gray-700 space-y-2 pt-2">
-                            <li>• 100% organic & cruelty-free</li>
-                            <li>• Gentle on all skin types</li>
-                            <li>• Free shipping on orders over $50</li>
+                            {product.shippingInfo.map((info, index) => (
+                                <li key={index}>● {info}</li>
+                            ))}
                         </ul>
 
                         {/* Quantity & Add to Cart */}
-                        <div className="flex items-center gap-4 pt-4">
+                        <div className="flex items-center gap-4 py-4">
                             <div className="flex items-center border border-gray-300 rounded-full overflow-hidden shadow-sm">
                                 <button
                                     onClick={() => handleQuantity('minus')}
@@ -248,7 +240,7 @@ const ProductDetailPage = () => {
                         </div>
 
                         {/* Stock Info */}
-                        <p className="text-sm text-gray-600 pt-1">
+                        <p className="text-sm text-gray-600 py-1">
                             In stock: {product.stock}
                         </p>
 
@@ -265,9 +257,8 @@ const ProductDetailPage = () => {
                                 />
                                 {isWishlisted ? 'Added to Wishlist' : 'Add to Wishlist'}
                             </button>
-                            <span className="text-gray-500 flex  items-center gap-2">
-                                <Car className="transform -scale-x-100" />
-                                <span className='pt-1'>Ships in 2–4 business days </span>
+                            <span className="text-gray-600 text-sm">
+                                ({product.reviews || 0} reviews)
                             </span>
                         </div>
                     </div>
@@ -275,9 +266,9 @@ const ProductDetailPage = () => {
                 </div>
 
                 {/* Tabs Section */}
-                <div className="mt-20 border-t border-gray-300 pt-10">
+                <div className="mt-6 border-t border-gray-300 pt-10">
                     <div className="flex border-b border-gray-200 mb-6 justify-center">
-                        {['description', 'ingredients', 'reviews'].map(tab => (
+                        {['description', 'ingredients'].map(tab => (
                             <button
                                 key={tab}
                                 onClick={() => setActiveTab(tab)}
@@ -292,48 +283,19 @@ const ProductDetailPage = () => {
                     </div>
 
                     {/* Tab Content */}
-                    <div className="max-w-4xl mx-auto text-gray-700 leading-relaxed text-[15px]">
+                    <div className="w-full mx-auto text-gray-700 leading-relaxed text-[15px]">
                         {activeTab === 'description' && (
-                            <p>{product.description || 'No description available.'}</p>
+                            <div className=' bg-white/10 backdrop-blur-sm p-8 rounded-3xl shadow-lg border border-[#e6dbc7]/60'>
+                                <p>{product.description || 'No description available.'}</p>
+                            </div>
+
                         )}
                         {activeTab === 'ingredients' && product.ingredients && (
-                            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 list-disc list-inside space-y-1">
+                            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 px-12 list-disc list-inside space-y-1  bg-white/10 backdrop-blur-sm p-8 rounded-3xl shadow-lg border border-[#e6dbc7]/60">
                                 {product.ingredients.map((ing, i) => (
                                     <li key={i}>{ing}</li>
                                 ))}
                             </ul>
-                        )}
-                        {activeTab === 'reviews' && (
-                            <div className="space-y-4">
-                                {product.reviewsList?.length > 0 ? (
-                                    product.reviewsList.map((rev, i) => (
-                                        <div
-                                            key={i}
-                                            className="border p-4 rounded-xl bg-white shadow-sm"
-                                        >
-                                            <div className="flex justify-between mb-1">
-                                                <span className="font-semibold text-gray-800">
-                                                    {rev.user}
-                                                </span>
-                                                <div className="flex text-yellow-500">
-                                                    {[...Array(5)].map((_, j) => (
-                                                        <Star
-                                                            key={j}
-                                                            className={`w-4 h-4 ${j < rev.rating
-                                                                ? 'fill-yellow-400'
-                                                                : 'fill-gray-200'
-                                                                }`}
-                                                        />
-                                                    ))}
-                                                </div>
-                                            </div>
-                                            <p className="text-gray-600 text-sm">{rev.comment}</p>
-                                        </div>
-                                    ))
-                                ) : (
-                                    <p className="text-gray-500 italic">No reviews yet.</p>
-                                )}
-                            </div>
                         )}
                     </div>
                 </div>

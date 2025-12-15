@@ -300,7 +300,7 @@ export default function UsersPage() {
                             <h1 className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-fuchsia-600">
                                 User Management
                             </h1>
-                            <p className="text-pink-600 pt-2">
+                            <p className="text-[var(--pink)] pt-2">
                                 Manage and track all users in one place
                             </p>
                         </div>
@@ -435,7 +435,7 @@ export default function UsersPage() {
                             </p>
                             <button
                                 onClick={fetchUsers}
-                                className="px-4 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition"
+                                className="px-4 py-2 bg-[var(--pink)] text-white rounded-lg hover:bg-pink-700 transition"
                             >
                                 Refresh Users
                             </button>
@@ -462,7 +462,7 @@ export default function UsersPage() {
                     transition={{ delay: 0.4 }}
                     className="mt-8 pt-6 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center text-sm text-gray-600"
                 >
-                    <div className="mt-8 pt-6 border-t border-pink-200 flex justify-between text-sm text-pink-600">
+                    <div className="mt-8 pt-6 border-t border-pink-200 flex justify-between text-sm text-[var(--pink)]">
                         <div>
                             Showing <span className="font-semibold">{filteredUsers.length}</span> of{' '}
                             <span className="font-semibold">{users.length}</span> users

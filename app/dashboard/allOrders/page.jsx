@@ -157,7 +157,7 @@ export default function AllOrdersPage() {
                         <h1 className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-fuchsia-600">
                             Order Management
                         </h1>
-                        <p className="text-pink-600 pt-2">
+                        <p className="text-[var(--pink)] pt-2">
                             Manage and track all customer orders in one place
                         </p>
                     </div>
@@ -169,15 +169,15 @@ export default function AllOrdersPage() {
                 <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-4 mb-6 border border-white/20 shadow-2xl">
                     <div className="flex flex-col md:flex-row gap-4">
                         <div className="relative flex-1 ">
-                            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-pink-600" size={20} />
+                            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[var(--pink)]" size={20} />
                             <input type="text"
                                 placeholder="Search by invoice ID..."
                                 value={localFilters.search}
-                                onChange={(e) => handleChange(e.target.value)} className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-pink-600 placeholder-pink-300 focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-400/30 transition-all" />
+                                onChange={(e) => handleChange(e.target.value)} className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-[var(--pink)] placeholder-pink-300 focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-400/30 transition-all" />
                         </div>
                         <button
                             onClick={() => setShowFilters(!showFilters)}
-                            className="px-6 py-1 bg-pink-600/90 border border-pink-500/10 rounded-2xl text-white hover:bg-pink-400/90 transition-all flex items-center gap-2 justify-center">
+                            className="px-6 py-1 bg-[var(--pink)]/90 border border-pink-500/10 rounded-2xl text-white hover:bg-pink-400/90 transition-all flex items-center gap-2 justify-center">
                             <SlidersHorizontal size={20} />
                             Filters
                         </button>

@@ -33,7 +33,7 @@ const DeleteConfirmModal = ({
                 {/* Header */}
                 <div className="flex items-center justify-between px-5 py-4 border-b border-pink-200">
                     <h3 className="text-lg font-semibold text-pink-700 flex items-center gap-2">
-                        <Trash2 className="w-5 h-5 text-pink-600" />
+                        <Trash2 className="w-5 h-5 text-[var(--pink)]" />
                         {title}
                     </h3>
                     <button
@@ -68,7 +68,7 @@ const DeleteConfirmModal = ({
                     <button
                         onClick={onConfirm}
                         disabled={isLoading}
-                        className="px-4 py-2 rounded-lg text-sm font-semibold bg-pink-600 text-white hover:bg-pink-700 transition disabled:opacity-60"
+                        className="px-4 py-2 rounded-lg text-sm font-semibold bg-[var(--pink)] text-white hover:bg-pink-700 transition disabled:opacity-60"
                     >
                         {isLoading ? "Deleting..." : confirmText}
                     </button>

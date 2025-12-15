@@ -98,7 +98,7 @@ const UserCard = ({ user, onDelete, index, currentUserEmail }) => {
             <div className="relative">
               <div
                 className={`w-12 h-12 rounded-xl flex items-center justify-center text-white font-semibold ${isCurrentUser
-                  ? 'bg-gradient-to-br from-pink-600 to-pink-800'
+                  ? 'bg-gradient-to-br from-[var(--pink)] to-pink-800'
                   : 'bg-gradient-to-br from-pink-500 to-fuchsia-600'
                   }`}
               >
@@ -167,7 +167,7 @@ const UserCard = ({ user, onDelete, index, currentUserEmail }) => {
                 <div className="space-y-3">
                   <div className="flex items-center space-x-2">
                     <Calendar className="w-4 h-4 text-pink-400" />
-                    <span className="text-sm text-pink-600">Joined:</span>
+                    <span className="text-sm text-[var(--pink)]">Joined:</span>
                     <span className="text-sm font-medium text-pink-900">
                       {formatDate(user.createdAt)}
                     </span>
@@ -175,7 +175,7 @@ const UserCard = ({ user, onDelete, index, currentUserEmail }) => {
 
                   <div className="flex items-center space-x-2">
                     <Eye className="w-4 h-4 text-pink-400" />
-                    <span className="text-sm text-pink-600">Phone:</span>
+                    <span className="text-sm text-[var(--pink)]">Phone:</span>
                     <span
                       className={'px-2 py-0.5 rounded-full text-xs font-medium bg-pink-200 text-pink-800'}
                     >
@@ -185,7 +185,7 @@ const UserCard = ({ user, onDelete, index, currentUserEmail }) => {
 
                   <div className="flex items-center space-x-2">
                     <LocationEdit className="w-4 h-4 text-pink-400" />
-                    <span className="text-sm text-pink-600">Address:</span>
+                    <span className="text-sm text-[var(--pink)]">Address:</span>
                     <span
                       className={'px-2 py-0.5 rounded-full text-xs font-medium bg-pink-200 text-pink-800'}
                     >

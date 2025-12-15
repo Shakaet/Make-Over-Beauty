@@ -164,12 +164,12 @@ export default function SiteSettings() {
                         <h1 className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-fuchsia-600">
                             Site Settings Manager
                         </h1>
-                        <p className="text-pink-600 mt-2">Configure your website sections and content</p>
+                        <p className="text-[var(--pink)] mt-2">Configure your website sections and content</p>
                     </div>
                     <div>
                         <button
                             onClick={() => setShowPreview(!showPreview)}
-                            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-xl hover:from-pink-600 hover:to-rose-600 transition-all shadow-lg hover:shadow-xl"
+                            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-xl hover:from-[var(--pink)] hover:to-rose-600 transition-all shadow-lg hover:shadow-xl"
                         >
                             {showPreview ? <EyeOff size={20} /> : <Eye size={20} />}
                             {showPreview ? 'Hide' : 'Show'} Preview
@@ -179,7 +179,7 @@ export default function SiteSettings() {
 
                 {loading && (
                     <div className="flex items-center justify-center py-12">
-                        <RefreshCw className="animate-spin text-pink-600" size={48} />
+                        <RefreshCw className="animate-spin text-[var(--pink)]" size={48} />
                     </div>
                 )}
 
@@ -204,11 +204,11 @@ export default function SiteSettings() {
                         {formData.sections.map((section, index) => (
                             <div key={index} className="bg-white rounded-2xl shadow-xl p-8 border-4 border-pink-200">
                                 <div className="flex items-center justify-between mb-6">
-                                    <h2 className="text-2xl font-bold text-pink-600">Section {index + 1}</h2>
+                                    <h2 className="text-2xl font-bold text-[var(--pink)]">Section {index + 1}</h2>
                                     <button
                                         type="button"
                                         onClick={() => setActiveSection(activeSection === index ? null : index)}
-                                        className="px-4 py-2 bg-pink-100 text-pink-600 rounded-lg hover:bg-pink-200 transition-colors"
+                                        className="px-4 py-2 bg-pink-100 text-[var(--pink)] rounded-lg hover:bg-pink-200 transition-colors"
                                     >
                                         {activeSection === index ? 'Collapse' : 'Expand'}
                                     </button>
@@ -234,7 +234,7 @@ export default function SiteSettings() {
                                                             ) : (
                                                                 <ImageIcon className="text-pink-400 mb-4" size={48} />
                                                             )}
-                                                            <span className="text-pink-600 font-medium">
+                                                            <span className="text-[var(--pink)] font-medium">
                                                                 {imagePreviews[`image${index + 1}`] ? 'Change Image' : 'Upload Image'}
                                                             </span>
                                                         </div>
@@ -325,7 +325,7 @@ export default function SiteSettings() {
                                                     onClick={() => handleSectionChange(index, 'align', 'left')}
                                                     className={`flex-1 py-2 rounded-lg font-medium transition-colors ${section.align === 'left'
                                                         ? 'bg-pink-500 text-white'
-                                                        : 'bg-pink-100 text-pink-600 hover:bg-pink-200'
+                                                        : 'bg-pink-100 text-[var(--pink)] hover:bg-pink-200'
                                                         }`}
                                                 >
                                                     Left
@@ -335,7 +335,7 @@ export default function SiteSettings() {
                                                     onClick={() => handleSectionChange(index, 'align', 'right')}
                                                     className={`flex-1 py-2 rounded-lg font-medium transition-colors ${section.align === 'right'
                                                         ? 'bg-pink-500 text-white'
-                                                        : 'bg-pink-100 text-pink-600 hover:bg-pink-200'
+                                                        : 'bg-pink-100 text-[var(--pink)] hover:bg-pink-200'
                                                         }`}
                                                 >
                                                     Right
@@ -351,7 +351,7 @@ export default function SiteSettings() {
                         <button
                             onClick={handleSubmit}
                             disabled={loading}
-                            className="w-full py-4 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-xl font-bold text-lg hover:from-pink-600 hover:to-rose-600 transition-all shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+                            className="w-full py-4 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-xl font-bold text-lg hover:from-[var(--pink)] hover:to-rose-600 transition-all shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
                         >
                             <Save size={24} />
                             {loading ? 'Saving...' : 'Save'}
@@ -364,7 +364,7 @@ export default function SiteSettings() {
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-6 px-20">
                         <div className="bg-white rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-y-auto">
                             <div className="sticky top-0 bg-white border-b-4 border-pink-200 p-6 flex justify-between items-center">
-                                <h2 className="text-xl font-bold text-pink-600">Preview</h2>
+                                <h2 className="text-xl font-bold text-[var(--pink)]">Preview</h2>
                                 <button
                                     onClick={() => setShowPreview(false)}
                                     className="p-2 hover:bg-pink-100 rounded-lg transition-colors"
@@ -373,7 +373,7 @@ export default function SiteSettings() {
                                 </button>
                             </div>
                             <div className="p-6">
-                                <h1 className="text-2xl font-bold text-center mb-8 text-pink-600">
+                                <h1 className="text-2xl font-bold text-center mb-8 text-[var(--pink)]">
                                     {formData.site_name || 'Site Name'}
                                 </h1>
                                 {formData.sections.map((section, index) => (
@@ -400,7 +400,7 @@ export default function SiteSettings() {
                                                 <p className="text-gray-600 mb-4">{section.copy}</p>
                                             )}
                                             {section.cta && (
-                                                <button className="px-6 py-3 bg-pink-500 text-white rounded-lg font-medium hover:bg-pink-600 transition-colors">
+                                                <button className="px-6 py-3 bg-pink-500 text-white rounded-lg font-medium hover:bg-[var(--pink)] transition-colors">
                                                     {section.cta}
                                                 </button>
                                             )}

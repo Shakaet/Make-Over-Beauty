@@ -38,7 +38,7 @@ const ProductCard = ({ product }) => {
         {/* Details Button */}
         <Link
           href={`/product/products/${product._id}`}
-          className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-[#E8D8C0] hover:bg-[#dec5a4] opacity-0 group-hover:opacity-100 shadow-md px-6 py-2 rounded-full font-medium text-gray-900 transition duration-300"
+          className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-[var(--beige)] hover:bg-[#dec5a4] opacity-0 group-hover:opacity-100 shadow-md px-6 py-2 rounded-full font-medium text-gray-900 transition duration-300"
         >
           View Details
         </Link>
