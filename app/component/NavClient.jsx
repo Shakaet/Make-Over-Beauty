@@ -5,8 +5,9 @@ import { Context } from '../provider/AuthProvider'
 import CartDrawer from './CartDrawer'
 import { LogOut, SearchIcon, User, ChevronDown, Menu, ShoppingCart, Phone } from 'lucide-react'
 
-import logo from "@/public/images/logoup3.png"
+import logo from "@/public/images/logoup9.png"
 import Image from 'next/image'
+import MobileBottomBar from './MobileBottomBar'
 
 const NavClient = () => {
   const { user, signOuts } = useContext(Context)
@@ -347,8 +348,13 @@ const NavClient = () => {
           background: #db2777;
         }
       `}</style>
+
+      <MobileBottomBar />
     </nav>
   )
 }
+
+
+
 
 export default NavClient

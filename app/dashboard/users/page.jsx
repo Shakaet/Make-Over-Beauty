@@ -83,7 +83,6 @@ export default function UsersPage() {
                 } catch (directError) {
 
                     try {
-                        // Approach 3: Without auth (public endpoint if available)
                         const response = await axios.get(
                             'https://beauty-server-nine.vercel.app/api/users',
                             { timeout: 10000 }
@@ -305,23 +304,7 @@ export default function UsersPage() {
                                 Manage and track all users in one place
                             </p>
                         </div>
-                        {/* <div className="flex space-x-3 mt-4 md:mt-0">
-                            <button
-                                onClick={exportUsers}
-                                disabled={filteredUsers.length === 0}
-                                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 flex items-center space-x-2"
-                            >
-                                <Download className="w-4 h-4" />
-                                <span>Export CSV</span>
-                            </button>
-                            <button
-                                onClick={fetchUsers}
-                                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center space-x-2"
-                            >
-                                <RefreshCw className="w-4 h-4" />
-                                <span>Refresh</span>
-                            </button>
-                        </div> */}
+
                     </div>
 
                     {/* Stats Grid */}

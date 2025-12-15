@@ -3,7 +3,7 @@
 import { useEffect, useState, useContext } from "react";
 import { Context } from "@/app/provider/AuthProvider";
 import toast from "react-hot-toast";
-import { getOrders } from "@/app/api/orderApi";
+import { deleteOrder, getOrders } from "@/app/api/orderApi";
 import { ProductDetailsModal } from "@/app/modal/productDetailsModal";
 
 export default function OrderHistory() {
@@ -12,27 +12,39 @@ export default function OrderHistory() {
     const [loading, setLoading] = useState(true);
     const [selectedOrder, setSelectedOrder] = useState(null); // order shown in modal
 
-    useEffect(() => {
+    const fetchData = async () => {
         if (!user) return;
 
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                const data = await getOrders(user.email);
-                setOrders(data.orders);
-            } catch (err) {
-                toast.error("Failed to fetch orders");
-            } finally {
-                setLoading(false);
-            }
-        };
+        setLoading(true);
+        try {
+            const data = await getOrders(user.email);
+            setOrders(data.orders);
+        } catch (err) {
+            toast.error("Failed to fetch orders");
+        } finally {
+            setLoading(false);
+        }
+    };
 
+    useEffect(() => {
         fetchData();
     }, [user]);
 
+
     const handleDelete = async (orderId) => {
-        if (!confirm("Are you sure you want to delete this order?")) return;
+        const confirmed = window.confirm("Are you sure you want to delete this order?");
+        if (!confirmed) return;
+
+        try {
+            await deleteOrder(orderId);
+            toast.success("Order deleted successfully");
+            fetchData(); // refresh orders
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to delete order");
+        }
     };
+
 
     const closeModal = () => setSelectedOrder(null);
 

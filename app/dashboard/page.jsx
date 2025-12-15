@@ -2,13 +2,14 @@
 import React, { use, useContext, useEffect, useState } from "react";
 import { Context } from "../provider/AuthProvider";
 import Sidebar from "./components/Sidebar";
-import Overview from "./components/Overview";
 import OrderHistory from "./orders/page";
 import Profile from "./profile/page";
 import ProductDashboard from "./products/page";
 import UsersPage from "./users/page";
 import AllOrdersPage from "./allOrders/page";
 import SiteSettings from "./siteSettings/page";
+import UserDashboardPage from "./overview/userOverview/page";
+import AdminDashboardPage from "./overview/adminOverview/page";
 
 const DashboardPage = () => {
     const { user, role, loading } = useContext(Context);
@@ -29,16 +30,16 @@ const DashboardPage = () => {
 
     const renderContent = () => {
         switch (activeTab) {
-            case "overview":
-                return <Overview />;
+            case "userOverview":
+                return <UserDashboardPage />;
+            case "adminOverview":
+                return <AdminDashboardPage />;
             case "orders":
                 return <OrderHistory />;
             case "profile":
                 return <Profile />;
             case "products":
                 return <ProductDashboard />;
-            case "blogs":
-                return <Overview />;
             case "allorders":
                 return <AllOrdersPage />;
             case "users":
@@ -46,7 +47,7 @@ const DashboardPage = () => {
             case "settings":
                 return <SiteSettings />;
             default:
-                return <Overview />;
+                return role === "admin" ? <AdminDashboardPage /> : <UserDashboardPage />;
         }
     };
 

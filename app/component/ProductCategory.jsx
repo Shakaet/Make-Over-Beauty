@@ -8,6 +8,7 @@ import Link from "next/link"
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
+import { getAllProducts } from "../api/productApi"
 
 
 const ProductRow = ({ product }) => {
@@ -73,8 +74,8 @@ const ProductCategory = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await api.get("/api/products/all-products")
-        const data = res.data.data
+        const res = await getAllProducts()
+        const data = res.data
         setProducts(data)
 
         // set first category as default active

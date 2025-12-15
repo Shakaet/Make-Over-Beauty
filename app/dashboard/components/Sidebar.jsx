@@ -3,7 +3,7 @@
 export default function Sidebar({ role, active, setActiveTab }) {
     const links = {
         customer: [
-            { label: "Overview", key: "overview" },
+            { label: "Overview", key: "userOverview" },
             { label: "Order History", key: "orders" },
             { label: "Profile", key: "profile" },
         ],
@@ -16,7 +16,7 @@ export default function Sidebar({ role, active, setActiveTab }) {
         // ],
 
         admin: [
-            { label: "Overview", key: "overview" },
+            { label: "Overview", key: "adminOverview" },
             { label: "Manage Products", key: "products" },
             { label: "All Orders", key: "allorders" },
             { label: "Users", key: "users" },

@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState, useEffect } from 'react';
 import { Search, Plus, Edit2, Trash2, X, Star, ChevronLeft, ChevronRight, SlidersHorizontal } from 'lucide-react';
 import { useProduct } from '@/app/hooks/useProducts';

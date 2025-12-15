@@ -17,8 +17,8 @@ const ProductCard = ({ product }) => {
         {/* Stock Badge */}
         <div
           className={`absolute top-3 right-3 text-xs font-semibold px-3 py-1 rounded-full shadow-sm ${product.stock && product.stock > 0
-              ? 'bg-green-100 text-green-700'
-              : 'bg-red-100 text-red-700'
+            ? 'bg-green-100 text-green-700'
+            : 'bg-red-100 text-red-700'
             }`}
         >
           {product.stock && product.stock > 0 ? 'In Stock' : 'Out of Stock'}
@@ -80,20 +80,21 @@ const ProductCard = ({ product }) => {
         </div>
 
         {/* Add to Cart */}
-        <div className="mt-4">
-          <button
-            type="button"
-            disabled={!product.stock || product.stock === 0}
-            className={`block mx-auto w-full md:w-3/4 font-medium text-gray-900 rounded-full shadow-md px-6 py-2 transition duration-200 ${product.stock && product.stock > 0
+        {product.stock && product.stock === 0 && (
+          <div className="mt-4">
+            <button
+              type="button"
+              disabled={!product.stock || product.stock === 0}
+              className={`block mx-auto w-full md:w-3/4 font-medium text-gray-900 rounded-full shadow-md px-6 py-2 transition duration-200 ${product.stock && product.stock > 0
                 ? 'bg-[#E8D8C0] hover:bg-[#dec5a4]'
                 : 'bg-gray-300 cursor-not-allowed text-gray-500'
-              }`}
-          >
-            {product.stock && product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
-          </button>
-        </div>
+                }`}
+            >
+              {product.stock && product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
+            </button>
+          </div>)}
       </div>
-    </div>
+    </div >
 
   )
 }
