@@ -13,10 +13,4 @@ export const siteSettingApi = {
     );
     return response.data;
   },
-
-
-  delete: async (id) => {
-    const response = await api.delete(`/api/site-setting/${id}`);
-    return response.data;
-  },
 };

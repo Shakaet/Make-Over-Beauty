@@ -131,7 +131,7 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
                 items
             });
 
-            toast.success('Order placed successfully!');
+            alert('Order placed successfully!');
 
             // Clear cart
             localStorage.removeItem('tempCart');
