@@ -43,7 +43,7 @@ export const ProductFilter = ({
                                     key={cat}
                                     onClick={() => toggleCategory(cat)}
                                     className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${selectedCategories.includes(cat)
-                                        ? 'bg-gradient-to-r from-pink-500 to-pink-600 text-white shadow-lg'
+                                        ? 'bg-gradient-to-r from-pink-500 to-[var(--pink)] text-white shadow-lg'
                                         : 'bg-[#fff6f0] text-pink-900 hover:bg-pink-100 border border-pink-200'
                                         }`}
                                 >

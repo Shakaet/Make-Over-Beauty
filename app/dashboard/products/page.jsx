@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState, useEffect } from 'react';
 import { Search, Plus, Edit2, Trash2, X, Star, ChevronLeft, ChevronRight, SlidersHorizontal } from 'lucide-react';
 import { useProduct } from '@/app/hooks/useProducts';
@@ -39,7 +41,15 @@ const ProductDashboard = () => {
     const [showFilters, setShowFilters] = useState(false);
 
     const [formData, setFormData] = useState({
-        name: '', lowprice: '', highprice: '', discount: '', stock: '', rating: '', reviews: '', category: '', quantity: '', description: '', ingredients: '', tags: '', shippingInfo: '',
+        name: '', lowprice: '', highprice: '',
+        discount: '', stock: '', rating: '',
+        reviews: '', category: '', quantity: '',
+        description: '', ingredients: '', tags: '',
+        shippingInfo: '', brand: '',
+        season: null,
+        festival: null,
+        Thematic: null,
+        offer: false,
     });
 
     const [images, setImages] = useState({
@@ -58,6 +68,18 @@ const ProductDashboard = () => {
         }
     }, [allProducts]);
 
+    useEffect(() => {
+        if (!formData.offer) {
+            setFormData((prev) => ({
+                ...prev,
+                season: null,
+                festival: null,
+                Thematic: null,
+                discount: 0,
+            }));
+        }
+    }, [formData.offer, setFormData]);
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
@@ -69,7 +91,17 @@ const ProductDashboard = () => {
     };
 
     const resetForm = () => {
-        setFormData({ name: '', lowprice: '', highprice: '', discount: '', stock: '', rating: '', reviews: '', category: '', quantity: '', description: '', ingredients: '', tags: '', shippingInfo: '' });
+        setFormData({
+            name: '', lowprice: '', highprice: '',
+            discount: '', stock: '', rating: '',
+            reviews: '', category: '', quantity: '',
+            description: '', ingredients: '', tags: '',
+            shippingInfo: '', brand: '',
+            season: null,
+            festival: null,
+            Thematic: null,
+            offer: false,
+        });
         setImages({ imagePrimary: null, imageSecondary: null, imageThird: null, imageFourth: null });
     };
 
@@ -83,7 +115,24 @@ const ProductDashboard = () => {
         setModalMode('edit');
         setSelectedProduct(product);
         setFormData({
-            name: product.name, lowprice: product.lowprice, highprice: product.highprice || '', discount: product.discount, stock: product.stock, rating: product.rating, reviews: product.reviews, category: product.category, quantity: product.quantity, description: product.description, ingredients: product.ingredients.join(', '), tags: product.tags.join(', '), shippingInfo: product.shippingInfo.join(', '),
+            name: product.name,
+            lowprice: product.lowprice,
+            highprice: product.highprice || '',
+            discount: product.discount,
+            stock: product.stock,
+            rating: product.rating,
+            reviews: product.reviews,
+            category: product.category,
+            quantity: product.quantity,
+            description: product.description,
+            ingredients: product.ingredients.join(', '),
+            tags: product.tags.join(', '),
+            shippingInfo: product.shippingInfo.join(', '),
+            brand: product.brand || null,
+            season: product.season || null,
+            festival: product.festival || null,
+            Thematic: product.Thematic || null,
+            offer: product.offer || false,
         });
         setImages({ imagePrimary: null, imageSecondary: null, imageThird: null, imageFourth: null });
         setShowModal(true);
@@ -92,7 +141,23 @@ const ProductDashboard = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const payload = {
-            name: formData.name, lowprice: parseFloat(formData.lowprice), highprice: formData.highprice ? parseFloat(formData.highprice) : undefined, discount: parseFloat(formData.discount), stock: parseInt(formData.stock), rating: formData.rating ? parseFloat(formData.rating) : 0, reviews: formData.reviews ? parseInt(formData.reviews) : 0, category: formData.category, quantity: parseInt(formData.quantity), description: formData.description, ingredients: formData.ingredients.split(',').map(i => i.trim()), tags: formData.tags ? formData.tags.split(',').map(t => t.trim()) : [], shippingInfo: formData.shippingInfo ? formData.shippingInfo.split(',').map(s => s.trim()) : [],
+            name: formData.name,
+            lowprice: parseFloat(formData.lowprice),
+            highprice: formData.highprice ? parseFloat(formData.highprice) : undefined,
+            discount: parseFloat(formData.discount),
+            stock: parseInt(formData.stock),
+            rating: formData.rating ? parseFloat(formData.rating) : 0,
+            reviews: formData.reviews ? parseInt(formData.reviews) : 0,
+            category: formData.category, quantity: parseInt(formData.quantity),
+            description: formData.description,
+            ingredients: formData.ingredients.split(',').map(i => i.trim()),
+            tags: formData.tags ? formData.tags.split(',').map(t => t.trim()) : [],
+            shippingInfo: formData.shippingInfo ? formData.shippingInfo.split(',').map(s => s.trim()) : [],
+            brand: formData.brand,
+            season: formData.season || null,
+            festival: formData.festival || null,
+            Thematic: formData.Thematic || null,
+            offer: formData.offer,
         };
 
         let result;
@@ -130,12 +195,12 @@ const ProductDashboard = () => {
             <div className="max-w-7xl mx-auto">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
                     <div>
-                        <h1 className="text-3xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-fuchsia-600 text-transparent">
+                        <h1 className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-fuchsia-600">
                             Product Management
                         </h1>
-                        <p className="text-pink-600">Manage your inventory with elegance</p>
+                        <p className="text-[var(--pink)]">Manage your inventory with elegance</p>
                     </div>
-                    <button onClick={openCreateModal} className="bg-gradient-to-r from-pink-600 to-pink-600 text-white px-6 py-3 rounded-2xl font-semibold flex items-center gap-2 hover:from-pink-700 hover:to-pink-700 transform hover:scale-105 transition-all shadow-lg hover:shadow-pink-500/50">
+                    <button onClick={openCreateModal} className="bg-gradient-to-r from-[var(--pink)] to-[var(--pink)] text-white px-6 py-3 rounded-2xl font-semibold flex items-center gap-2 hover:from-pink-700 hover:to-pink-700 transform hover:scale-105 transition-all shadow-lg hover:shadow-pink-500/50">
                         <Plus size={20} />
                         New Product
                     </button>
@@ -144,10 +209,10 @@ const ProductDashboard = () => {
                 <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-4 mb-6 border border-white/20 shadow-2xl">
                     <div className="flex flex-col md:flex-row gap-4">
                         <div className="relative flex-1 ">
-                            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-pink-600" size={20} />
-                            <input type="text" placeholder="Search products..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-pink-600 placeholder-pink-300 focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-400/30 transition-all" />
+                            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[var(--pink)]" size={20} />
+                            <input type="text" placeholder="Search products..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-2xl text-[var(--pink)] placeholder-pink-300 focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-400/30 transition-all" />
                         </div>
-                        <button onClick={() => setShowFilters(!showFilters)} className="px-6 py-1 bg-pink-600/90 border border-pink-500/10 rounded-2xl text-white hover:bg-pink-400/90 transition-all flex items-center gap-2 justify-center">
+                        <button onClick={() => setShowFilters(!showFilters)} className="px-6 py-1 bg-[var(--pink)]/90 border border-pink-500/10 rounded-2xl text-white hover:bg-pink-400/90 transition-all flex items-center gap-2 justify-center">
                             <SlidersHorizontal size={20} />
                             Filters
                         </button>
@@ -172,23 +237,23 @@ const ProductDashboard = () => {
                 {loading && !showModal ? (
                     <div className="text-center py-20">
                         <div className="inline-block w-16 h-16 border-4 border-pink-500 border-t-transparent rounded-full animate-spin"></div>
-                        <p className="text-pink-600 mt-4">Loading products...</p>
+                        <p className="text-[var(--pink)] mt-4">Loading products...</p>
                     </div>
                 ) : (
                     <>
-                        <div className="text-pink-600 mb-4">Showing {products.length} of {totalProducts} products</div>
+                        <div className="text-[var(--pink)] mb-4">Showing {products.length} of {totalProducts} products</div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
                             {products.map(product => (
                                 <div key={product._id} className="group bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-3xl overflow-hidden border border-white/20 hover:border-pink-400 transition-all duration-500 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-pink-500/30">
                                     <div className="relative h-56 bg-gradient-to-br from-pink-500/20 to-pink-500/20 overflow-hidden">
                                         <img src={product.imagePrimary} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                                        <div className="absolute top-3 right-3 bg-gradient-to-r from-pink-500 to-pink-600 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">-{product.discount}%</div>
+                                        <div className="absolute top-3 right-3 bg-gradient-to-r from-pink-500 to-[var(--pink)] text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">-{product.discount}%</div>
                                         {product.stock < 10 && <div className="absolute top-3 left-3 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold">Low Stock</div>}
                                     </div>
 
                                     <div className="p-5">
-                                        <h3 className="text-lg font-bold text-pink-600 mb-2 truncate">{product.name}</h3>
+                                        <h3 className="text-lg font-bold text-[var(--pink)] mb-2 truncate">{product.name}</h3>
                                         <p className="text-pink-500 text-sm mb-3 line-clamp-2">{product.description}</p>
 
                                         <div className="flex items-center gap-2 mb-3">
@@ -205,13 +270,13 @@ const ProductDashboard = () => {
                                                 {product.highprice && <div className="text-sm text-pink-300 line-through">${product.highprice}</div>}
                                             </div>
                                             <div className="text-right">
-                                                <div className="text-pink-600 text-xs">Stock</div>
+                                                <div className="text-[var(--pink)] text-xs">Stock</div>
                                                 <div className="text-pink-400 font-bold text-lg">{product.stock}</div>
                                             </div>
                                         </div>
 
                                         <div className="mb-4">
-                                            <span className="px-3 py-1 bg-gradient-to-r from-pink-600/30 to-pink-600/30 text-white rounded-full text-xs font-medium border border-pink-400/30">{product.category}</span>
+                                            <span className="px-3 py-1 bg-gradient-to-r from-[var(--pink)]/30 to-[var(--pink)]/30 text-white rounded-full text-xs font-medium border border-pink-400/30">{product.category}</span>
                                         </div>
 
                                         <div className="flex gap-2">
@@ -219,7 +284,7 @@ const ProductDashboard = () => {
                                                 <Edit2 size={16} />
                                                 Edit
                                             </button>
-                                            <button onClick={() => confirmDelete(product._id)} className="flex-1 bg-gradient-to-r from-red-600 to-pink-600 text-white py-2.5 rounded-xl font-semibold hover:from-red-700 hover:to-pink-700 transition-all flex items-center justify-center gap-2 shadow-lg">
+                                            <button onClick={() => confirmDelete(product._id)} className="flex-1 bg-gradient-to-r from-red-600 to-[var(--pink)] text-white py-2.5 rounded-xl font-semibold hover:from-red-700 hover:to-pink-700 transition-all flex items-center justify-center gap-2 shadow-lg">
                                                 <Trash2 size={16} />
                                                 Delete
                                             </button>
@@ -255,7 +320,7 @@ const ProductDashboard = () => {
                                             pageNum = currentPage - 2 + idx;
                                         }
                                         return (
-                                            <button key={idx} onClick={() => setCurrentPage(pageNum)} className={`w-10 h-10 rounded-xl font-semibold transition-all ${currentPage === pageNum ? 'bg-gradient-to-r from-pink-600 to-pink-600 text-white' : 'bg-white/10 text-pink-300 hover:bg-white/20'}`}>
+                                            <button key={idx} onClick={() => setCurrentPage(pageNum)} className={`w-10 h-10 rounded-xl font-semibold transition-all ${currentPage === pageNum ? 'bg-gradient-to-r from-[var(--pink)] to-[var(--pink)] text-white' : 'bg-white/10 text-pink-300 hover:bg-white/20'}`}>
                                                 {pageNum}
                                             </button>
                                         );
@@ -291,7 +356,7 @@ const ProductDashboard = () => {
                             <p className="text-pink-300 mb-6">This action cannot be undone.</p>
                             <div className="flex gap-4">
                                 <button onClick={() => { setShowDeleteConfirm(false); setDeleteProductId(null); }} className="flex-1 px-6 py-3 bg-white/10 text-white rounded-xl font-semibold hover:bg-white/20 transition-all">Cancel</button>
-                                <button onClick={executeDelete} disabled={loading} className="flex-1 px-6 py-3 bg-gradient-to-r from-red-600 to-pink-600 text-white rounded-xl font-semibold hover:from-red-700 hover:to-pink-700 transition-all disabled:opacity-50">{loading ? 'Deleting...' : 'Delete'}</button>
+                                <button onClick={executeDelete} disabled={loading} className="flex-1 px-6 py-3 bg-gradient-to-r from-red-600 to-[var(--pink)] text-white rounded-xl font-semibold hover:from-red-700 hover:to-pink-700 transition-all disabled:opacity-50">{loading ? 'Deleting...' : 'Delete'}</button>
                             </div>
                         </div>
                     </div>

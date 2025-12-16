@@ -11,7 +11,7 @@ export default function DeleteModal({ open, onClose, onConfirm, loading, title }
                 <p className="text-sm text-gray-600 mt-2">This action cannot be undone.</p>
                 <div className="mt-4 flex justify-end gap-2">
                     <button onClick={onClose} className="px-3 py-1 border rounded">Cancel</button>
-                    <button onClick={onConfirm} disabled={loading} className="px-3 py-1 bg-pink-600 text-white rounded">{loading ? 'Deleting...' : 'Delete'}</button>
+                    <button onClick={onConfirm} disabled={loading} className="px-3 py-1 bg-[var(--pink)] text-white rounded">{loading ? 'Deleting...' : 'Delete'}</button>
                 </div>
             </div>
         </div>

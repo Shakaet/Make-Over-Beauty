@@ -5,8 +5,9 @@ import { Context } from '../provider/AuthProvider'
 import CartDrawer from './CartDrawer'
 import { LogOut, SearchIcon, User, ChevronDown, Menu, ShoppingCart, Phone } from 'lucide-react'
 
-import logo from "@/public/images/logoup3.png"
+import logo from "@/public/images/logoup9.png"
 import Image from 'next/image'
+import MobileBottomBar from './MobileBottomBar'
 
 const NavClient = () => {
   const { user, signOuts } = useContext(Context)
@@ -87,7 +88,7 @@ const NavClient = () => {
           <div className='flex justify-between items-center h-20'>
             {/* Logo */}
             <Link href='/' className='flex-shrink-0'>
-              <Image src={logo} alt="Logo" width={180} height={60} className='object-contain drop-shadow-xl shadow-pink-600/40' />
+              <Image src={logo} alt="Logo" width={180} height={60} className='object-contain drop-shadow-xl shadow-[var(--pink)]/40' />
             </Link>
 
             {/* Search Bar - Center */}
@@ -98,7 +99,7 @@ const NavClient = () => {
                   placeholder="Search products..."
                   className="flex-1 px-4 py-2.5 border border-pink-300 rounded-l-md focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500 text-sm bg-white"
                 />
-                <button className='px-6 bg-pink-600 hover:bg-pink-700 text-white rounded-r-md transition-colors'>
+                <button className='px-6 bg-[var(--pink)] hover:bg-pink-700 text-white rounded-r-md transition-colors'>
                   <SearchIcon className='w-5 h-5' />
                 </button>
               </div>
@@ -112,13 +113,13 @@ const NavClient = () => {
 
               {/* User Account */}
               {!user ? (
-                <Link href='/my-account' className='hidden md:flex items-center gap-2 px-5 py-2.5 bg-pink-600 hover:bg-pink-700 text-white rounded-md transition-colors text-sm font-medium shadow-sm'>
+                <Link href='/my-account' className='hidden md:flex items-center gap-2 px-5 py-2.5 bg-[var(--pink)] hover:bg-pink-700 text-white rounded-md transition-colors text-sm font-medium shadow-sm'>
                   <User className='w-4 h-4' />
                   Sign In
                 </Link>
               ) : (
                 <div className='flex items-center gap-2'>
-                  <Link href='/dashboard' className='hidden md:flex items-center gap-2 px-4 py-2 hover:bg-pink-200 rounded-md transition-colors text-sm font-medium text-gray-800'>
+                  <Link href='/dashboard' className='md:flex items-center gap-2 px-4 py-2 hover:bg-pink-200 rounded-md transition-colors text-sm font-medium text-gray-800'>
                     <User className='w-5 h-5' />
                   </Link>
                   <button
@@ -194,7 +195,7 @@ const NavClient = () => {
                     <div className='grid grid-cols-3 gap-2'>
                       {/* Skin Types */}
                       <div>
-                        <h3 className='font-bold text-sm mb-4 text-gray-900 uppercase tracking-wider border-b-2 border-pink-600 pb-2'>
+                        <h3 className='font-bold text-sm mb-4 text-gray-900 uppercase tracking-wider border-b-2 border-[var(--pink)] pb-2'>
                           Skin Types:
                         </h3>
                         <ul className='space-y-2'>
@@ -202,7 +203,7 @@ const NavClient = () => {
                             <li key={idx}>
                               <Link
                                 href={`/categories/skin-types/${type.toLowerCase().replace(/\s+/g, '-')}`}
-                                className='text-xs text-gray-700 hover:text-pink-600 hover:pl-2 transition-all block'
+                                className='text-xs text-gray-700 hover:text-[var(--pink)] hover:pl-2 transition-all block'
                               >
                                 {type}
                               </Link>
@@ -213,7 +214,7 @@ const NavClient = () => {
 
                       {/* Skin Concerns */}
                       <div>
-                        <h3 className='font-bold text-sm mb-4 text-gray-900 uppercase tracking-wider border-b-2 border-pink-600 pb-2'>
+                        <h3 className='font-bold text-sm mb-4 text-gray-900 uppercase tracking-wider border-b-2 border-[var(--pink)] pb-2'>
                           Skin Concerns:
                         </h3>
                         <ul className='space-y-2 max-h-96 overflow-y-auto pr-2 custom-scrollbar'>
@@ -221,7 +222,7 @@ const NavClient = () => {
                             <li key={idx}>
                               <Link
                                 href={`/categories/skin-concerns/${concern.toLowerCase().replace(/\s+/g, '-')}`}
-                                className='text-xs text-gray-700 hover:text-pink-600 hover:pl-2 transition-all block'
+                                className='text-xs text-gray-700 hover:text-[var(--pink)] hover:pl-2 transition-all block'
                               >
                                 {concern}
                               </Link>
@@ -232,7 +233,7 @@ const NavClient = () => {
 
                       {/* Product Category */}
                       <div>
-                        <h3 className='font-bold text-sm mb-4 text-gray-900 uppercase tracking-wider border-b-2 border-pink-600 pb-2'>
+                        <h3 className='font-bold text-sm mb-4 text-gray-900 uppercase tracking-wider border-b-2 border-[var(--pink)] pb-2'>
                           Product Category:
                         </h3>
                         <ul className='space-y-2 max-h-96 overflow-y-auto pr-2 custom-scrollbar'>
@@ -240,7 +241,7 @@ const NavClient = () => {
                             <li key={idx}>
                               <Link
                                 href={`/categories/products/${product.toLowerCase().replace(/\s+/g, '-')}`}
-                                className='text-xs text-gray-700 hover:text-pink-600 hover:pl-2 transition-all block'
+                                className='text-xs text-gray-700 hover:text-[var(--pink)] hover:pl-2 transition-all block'
                               >
                                 {product}
                               </Link>
@@ -264,7 +265,7 @@ const NavClient = () => {
               <li>
                 <Link
                   href='/offers'
-                  className={`hover:text-pink-600 transition-colors ${isScrolled ? '' : 'hover:text-pink-300'}`}
+                  className={`hover:text-[var(--pink)] transition-colors ${isScrolled ? '' : 'hover:text-pink-300'}`}
                 >
                   Offers
                 </Link>
@@ -275,7 +276,7 @@ const NavClient = () => {
             {isScrolled ?
               (
                 <div className='flex items-center gap-2 text-sm'>
-                  <Phone className='w-5 h-5 text-pink-600' />
+                  <Phone className='w-5 h-5 text-[var(--pink)]' />
                   <div>
                     <div className='text-xs text-gray-600'>Hotline:</div>
                     <div className='font-semibold text-gray-800'>+880 1XXXXXXXXX</div>
@@ -283,7 +284,7 @@ const NavClient = () => {
                 </div>
               ) : (
                 <div className='flex items-center gap-2 text-sm'>
-                  <Phone className='w-5 h-5 text-pink-600' />
+                  <Phone className='w-5 h-5 text-[var(--pink)]' />
                   <div>
                     <div className='text-xs text-gray-300'>Hotline:</div>
                     <div className=' text-gray-100'>+880 1XXXXXXXXX</div>
@@ -347,8 +348,13 @@ const NavClient = () => {
           background: #db2777;
         }
       `}</style>
+
+      <MobileBottomBar />
     </nav>
   )
 }
+
+
+
 
 export default NavClient

@@ -139,7 +139,7 @@ const CategoryCard = ({ category }) => {
           bg-white text-gray-800 rounded-full 
           font-medium text-sm shadow-lg
           transition-all duration-300
-          ${isHovered ? 'bg-pink-600 text-white translate-x-2' : ''}
+          ${isHovered ? 'bg-[var(--pink)] text-white translate-x-2' : ''}
           w-fit
         `}>
                     <span>এখনই কিনুন</span>

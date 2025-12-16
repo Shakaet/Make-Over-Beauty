@@ -33,6 +33,48 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
         }
     }, [loadCart])
 
+    // Add this useEffect to show toast when user is logged in and cart drawer opens
+    useEffect(() => {
+        if (user && cart.length > 0) {
+            // Show toast notification after a short delay
+            const timer = setTimeout(() => {
+                toast.custom((t) => (
+                    <div className={`${t.visible ? 'animate-enter' : 'animate-leave'} 
+                    max-w-md w-full bg-gradient-to-r from-green-50 to-emerald-50 
+                    border border-green-200 rounded-lg shadow-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}>
+                        <div className="flex-1 w-0 p-4">
+                            <div className="flex items-start">
+                                <div className="flex-shrink-0 pt-0.5">
+                                    <div className="relative">
+                                        <div className="w-3 h-3 bg-green-500 rounded-full animate-ping absolute"></div>
+                                        <div className="w-3 h-3 bg-green-600 rounded-full relative"></div>
+                                    </div>
+                                </div>
+                                <div className="ml-3 flex-1">
+                                    <p className="text-sm font-semibold text-green-800">Welcome back, {user.name || user.email}!</p>
+                                    <p className="mt-1 text-sm text-green-600">You're logged in and ready to checkout.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="flex border-l border-green-200">
+                            <button
+                                onClick={() => toast.dismiss(t.id)}
+                                className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-green-600 hover:text-green-800 focus:outline-none"
+                            >
+                                <X className="h-5 w-5" />
+                            </button>
+                        </div>
+                    </div>
+                ), {
+                    duration: 4000,
+                    position: 'bottom-right',
+                });
+            }, 500); // Delay to let drawer open first
+
+            return () => clearTimeout(timer);
+        }
+    }, [isOpen, user, cart.length]);
+
     // Remove item
     const handleRemove = (productId) => {
         if (!confirm('Remove this item from your cart?')) return
@@ -57,10 +99,14 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
     // ---------------------------
     const placeOrder = async () => {
         if (!user) {
-            toast("Please login first");
+            toast(<div className='text-red-500 text-lg font-semibold px-2'>
+                Please login first!
+            </div>);
             router.push('/my-account');
             return;
         }
+
+        toggleDrawer();
 
         setLoading(true);
         try {
@@ -85,7 +131,7 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
                 items
             });
 
-            toast.success('Order placed successfully!');
+            alert('Order placed successfully!');
 
             // Clear cart
             localStorage.removeItem('tempCart');
@@ -210,7 +256,7 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
                         />
                         <button
                             onClick={applyCoupon}
-                            className="bg-gray-900 text-white px-3 rounded-lg hover:bg-gray-800 transition"
+                            className="bg-[var(--pink)] text-white px-3 rounded-lg hover:bg-gray-800 transition"
                         >
                             Apply
                         </button>
@@ -246,12 +292,54 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
                         </button>
 
                         <button
-                            onClick={placeOrder}
+                            onClick={() => {
+                                toggleDrawer(); 
+                                placeOrder();
+                            }}
                             disabled={cart.length === 0 || loading}
-                            className="w-1/2 bg-gray-900 text-white py-2 rounded-lg"
+                            className={`w-full ${user
+                                ? 'bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-700 hover:to-emerald-800 shadow-lg shadow-green-200 animate-pulse'
+                                : 'bg-gray-900'} text-white py-3 rounded-lg font-semibold transition-all duration-300 hover:scale-[1.02] relative overflow-hidden`}
                         >
-                            {loading ? 'Processing...' : 'Checkout'}
+                            {/* Subtle shimmer effect for logged-in users */}
+                            {user && (
+                                <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer"></div>
+                            )}
+
+                            <span className="relative flex items-center justify-center gap-2">
+                                {loading ? (
+                                    <span className="flex items-center justify-center gap-2">
+                                        <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        Processing...
+                                    </span>
+                                ) : user ? (
+                                    <span className="flex items-center justify-center gap-2">
+                                        <svg className="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                        </svg>
+                                        Secure Checkout
+                                    </span>
+                                ) : (
+                                    'Login to Checkout'
+                                )}
+                            </span>
+
+                            {/* Add shimmer animation style */}
+                            <style jsx>{`
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        .animate-shimmer {
+            animation: shimmer 2s infinite;
+        }
+    `}</style>
                         </button>
+
+
                     </div>
                 </div>
             </div>
@@ -273,11 +361,9 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
                     <circle cx="18" cy="20" r="1.5" />
                     <path d="M2 3h3l3 12h10l2-8H6" strokeLinecap="round" />
                 </svg>
-                {cart.length > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-black px-1 rounded-full text-[10px] text-white">
-                        {cart.length}
-                    </span>
-                )}
+                <span className="absolute -top-1 -right-1 bg-black px-1 rounded-full text-[10px] text-white">
+                    {cart.length}
+                </span>
             </button>
         </>
     )

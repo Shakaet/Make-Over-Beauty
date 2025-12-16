@@ -1,8 +1,9 @@
 "use client"
 import React, { useEffect, useRef, useState } from 'react'
-import Image from 'next/image'
 import img1 from "@/public/images/ban2.jpg"
 import img2 from "@/public/images/ban3.jpg"
+import { siteSettingApi } from '../api/siteSettingApi'
+import Image from 'next/image'
 
 
 // Local banner images placed in /public. Replace with your own files.
@@ -48,6 +49,25 @@ const AUTOPLAY_MS = 5500
 const Banner = () => {
   const [index, setIndex] = useState(0)
   const timerRef = useRef(null)
+  const [siteSettings, setSiteSettings] = useState(null);
+
+  // Fetch existing settings
+  useEffect(() => {
+    fetchSettings();
+  }, []);
+
+  const fetchSettings = async () => {
+    try {
+      const data = await siteSettingApi.getAll();
+      const siteData = data.data[0]
+      console.log(siteData);
+      setSiteSettings(siteData);
+    } catch (error) {
+      console.error("Error fetching site settings:", error);
+    }
+  };
+
+  console.log("Site Settings:", siteSettings);
 
   // autoplay
   useEffect(() => {
@@ -67,7 +87,7 @@ const Banner = () => {
           className="flex h-full w-full transition-transform duration-700"
           style={{ transform: `translateX(-${index * 100}%)` }}
         >
-          {SLIDES.map((s, i) => (
+          {siteSettings?.sections.map((s, i) => (
             <div
               key={i}
               className={`min-w-full h-full relative md:flex ${s.align === "left" ? "md:flex-row" : "md:flex-row-reverse"
@@ -76,11 +96,15 @@ const Banner = () => {
               {/* IMAGE */}
               <div className={`relative w-full h-full md:w-1/2`}>
                 <Image
-                  src={s.image}
-                  alt={s.title}
+                  src={
+                    typeof s.image === "string" && s.image.trim() !== ""
+                      ? s.image
+                      : img1
+                  }
+                  alt={s.title || "Banner Image"}
                   fill
                   className="object-cover object-center"
-                  priority={i === 0}
+                // sizes="(max-width: 768px) 100vw, 50vw"
                 />
               </div>
 
@@ -109,7 +133,7 @@ const Banner = () => {
 
                   <a
                     href='/product'
-                    className="inline-flex items-center bg-black text-white px-4 py-2 text-sm sm:text-base uppercase tracking-[0.25em] hover:bg-black/80 transition">
+                    className="inline-flex items-center bg-[#F34179] text-white px-4 py-2 text-sm sm:text-base uppercase tracking-[0.25em] hover:bg-black/80 transition">
                     {s.cta}
                   </a>
                 </div>

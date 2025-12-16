@@ -8,9 +8,16 @@
     "start": "next start"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.3.6",
+    "@mui/material": "^7.3.6",
     "@tabler/icons-react": "^3.35.0",
-    "axios": "^1.13.1",
+    "@tailwindcss/oxide": "^4.1.17",
+    "axios": "^1.13.2",
+    "date-fns": "^4.1.0",
     "firebase": "^12.5.0",
+    "framer-motion": "^12.23.26",
     "install": "^0.13.0",
     "lightningcss": "^1.30.2",
     "lucide-react": "^0.552.0",

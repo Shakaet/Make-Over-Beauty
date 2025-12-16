@@ -3,24 +3,24 @@
 export default function Sidebar({ role, active, setActiveTab }) {
     const links = {
         customer: [
-            { label: "Overview", key: "overview" },
-            { label: "Order History", key: "orders" }
+            { label: "Overview", key: "userOverview" },
+            { label: "Order History", key: "orders" },
+            { label: "Profile", key: "profile" },
         ],
 
-        manager: [
-            { label: "Overview", key: "overview" },
-            { label: "Manage Products", key: "products" },
-            { label: "Orders", key: "orders" },
-            { label: "Profile", key: "profile" }
-        ],
+        // manager: [
+        //     { label: "Overview", key: "overview" },
+        //     { label: "Manage Products", key: "products" },
+        //     { label: "Orders", key: "orders" },
+        //     { label: "Profile", key: "profile" }
+        // ],
 
         admin: [
-            { label: "Overview", key: "overview" },
+            { label: "Overview", key: "adminOverview" },
             { label: "Manage Products", key: "products" },
-            { label: "All Orders", key: "orders" },
+            { label: "All Orders", key: "allorders" },
             { label: "Users", key: "users" },
             { label: "Site Setting", key: "settings" },
-            { label: "Manager Access", key: "AccessManager" },
             { label: "Profile", key: "profile" },
         ]
     };
