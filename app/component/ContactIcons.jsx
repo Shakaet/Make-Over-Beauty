@@ -18,11 +18,16 @@ const ContactIcons = () => {
             {open && (
                 <div className="flex flex-col gap-4 mb-2 animate-fadeIn">
                     {/* WhatsApp */}
+                    {/* WhatsApp */}
                     <a
-                        href="https://wa.me/1234567890"
+                        href="https://wa.me/8801780326279"
                         target="_blank"
-                        className="bg-[#ffc0cb]/70 backdrop-blur-md p-4 rounded-full text-black shadow-lg hover:scale-110 transition"
+                        rel="noopener noreferrer"
+                        aria-label="Chat on WhatsApp"
+                        className="bg-[#ffc0cb]/70 backdrop-blur-md p-4 rounded-full text-black shadow-lg
+             hover:scale-110 hover:bg-[#ffc0cb]/90 transition-transform duration-300"
                     >
+
                         <IconBrandWhatsapp size={28} />
                     </a>
 
@@ -37,7 +42,7 @@ const ContactIcons = () => {
 
                     {/* Phone */}
                     <a
-                        href="tel:+1234567890"
+                        href="tel:+8801780326279"
                         className="bg-[#ffc0cb]/70 backdrop-blur-md p-4 rounded-full text-black shadow-lg hover:scale-110 transition"
                     >
                         <IconPhone size={28} />

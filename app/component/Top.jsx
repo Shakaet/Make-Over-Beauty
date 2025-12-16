@@ -13,7 +13,7 @@ const Top = ({props: announcements = []}) => {
 
 
     {/* Top announcement marquee */}
-    <div className="border-b border-black/10 bg-[#efe2cc] text-[#0a0a0a]">
+    <div className="border-b border-black/10 bg-[var(--rose)] text-white">
         <div className="relative overflow-hidden mask-edge">
           <div className="marquee h-10 flex items-center">
             <div className="marquee-track px-4 gap-12">

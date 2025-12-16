@@ -28,18 +28,18 @@ export default function Home() {
   return (
     <div className="home-bg bg-fixed bg-cover bg-center bg-no-repeat">
       <Banner></Banner>
-      <LowerBanner></LowerBanner>
       {/* <CategoryShowcase /> */}
+      <ProductCategory></ProductCategory>
       {/* <ReadMore></ReadMore> */}
       <PureSimple></PureSimple>
       <TredingProduct></TredingProduct>
       <Top props={ANNOUNCEMENTS}></Top>
       <ImportedProduct></ImportedProduct>
       <Testimonial title={`TESTIMONIAL`} des={`Our Clients Reviews`}></Testimonial>
-      <ProductCategory></ProductCategory>
       <MarqueLogo></MarqueLogo>
       <WhatsPeopleSay></WhatsPeopleSay>
       <NewsUpdates></NewsUpdates>
+      <LowerBanner></LowerBanner>
       <TagUs></TagUs>
     </div>
   );

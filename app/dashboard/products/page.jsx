@@ -6,6 +6,59 @@ import { useProduct } from '@/app/hooks/useProducts';
 import { ProductFilter } from './ProductFilter';
 import { ProductForm } from './ProductForm';
 
+const SUBCATEGORY_OPTIONS = {
+    Skincare: [
+        "Serum",
+        "Lotion",
+        "Toner",
+        "Moisturizer",
+        "Cleanser",
+        "Exfoliator",
+        "Face Mask",
+        "Sunscreen",
+    ],
+    Haircare: [
+        "Shampoo",
+        "Conditioner",
+        "Hair Oil",
+        "Hair Mask",
+        "Hair Serum",
+        "Hair Treatment",
+    ],
+    Makeup: [
+        "Foundation",
+        "Concealer",
+        "Compact Powder",
+        "Blush",
+        "Highlighter",
+        "Lipstick",
+        "Lip Gloss",
+        "Lip Liner",
+        "Eyeliner",
+        "Mascara",
+        "Eyeshadow",
+    ],
+    "Body Care": [
+        "Body Wash",
+        "Body Lotion",
+        "Body Scrub",
+        "Body Oil",
+        "Hand Cream",
+        "Foot Care",
+    ],
+    Fragrance: [
+        "Perfume",
+        "Body Mist",
+        "Deodorant",
+        "Roll On",
+    ],
+    Wellness: [
+        "Supplements",
+        "Essential Oils",
+        "Herbal Products",
+        "Personal Care Devices",
+    ],
+};
 
 const ProductDashboard = () => {
     const {
@@ -43,7 +96,7 @@ const ProductDashboard = () => {
     const [formData, setFormData] = useState({
         name: '', lowprice: '', highprice: '',
         discount: '', stock: '', rating: '',
-        reviews: '', category: '', quantity: '',
+        reviews: '', category: '', subCategory: "", quantity: '',
         description: '', ingredients: '', tags: '',
         shippingInfo: '', brand: '',
         season: null,
@@ -80,6 +133,12 @@ const ProductDashboard = () => {
         }
     }, [formData.offer, setFormData]);
 
+    useEffect(() => {
+        if (!SUBCATEGORY_OPTIONS[formData.category]) {
+            setFormData((prev) => ({ ...prev, subCategory: "" }));
+        }
+    }, [formData.category, setFormData]);
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
@@ -94,7 +153,7 @@ const ProductDashboard = () => {
         setFormData({
             name: '', lowprice: '', highprice: '',
             discount: '', stock: '', rating: '',
-            reviews: '', category: '', quantity: '',
+            reviews: '', category: '', subCategory: "", quantity: '',
             description: '', ingredients: '', tags: '',
             shippingInfo: '', brand: '',
             season: null,
@@ -123,6 +182,7 @@ const ProductDashboard = () => {
             rating: product.rating,
             reviews: product.reviews,
             category: product.category,
+            subCategory: product.subCategory || "",
             quantity: product.quantity,
             description: product.description,
             ingredients: product.ingredients.join(', '),
@@ -149,6 +209,7 @@ const ProductDashboard = () => {
             rating: formData.rating ? parseFloat(formData.rating) : 0,
             reviews: formData.reviews ? parseInt(formData.reviews) : 0,
             category: formData.category, quantity: parseInt(formData.quantity),
+            subCategory: formData.subCategory,
             description: formData.description,
             ingredients: formData.ingredients.split(',').map(i => i.trim()),
             tags: formData.tags ? formData.tags.split(',').map(t => t.trim()) : [],

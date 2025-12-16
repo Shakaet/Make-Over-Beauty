@@ -2,7 +2,7 @@
 
 import { useContext, useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { ArrowLeft, Heart, ShoppingBag, Star, Plus, Minus, Car } from 'lucide-react'
+import { ArrowLeft, Heart, ShoppingBag, Star, Plus, Minus, Car, StarHalf } from 'lucide-react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Thumbs } from 'swiper/modules'
 import 'swiper/css'
@@ -175,27 +175,55 @@ const ProductDetailPage = () => {
                         {/* Rating */}
                         <div className="flex items-center space-x-2 pt-2">
                             <div className="flex text-yellow-500">
-                                {[...Array(5)].map((_, i) => (
-                                    <Star
-                                        key={i}
-                                        className={`w-5 h-5 ${i < Math.round(product.rating)
-                                            ? 'fill-yellow-400'
-                                            : 'fill-gray-200'
-                                            }`}
-                                    />
-                                ))}
+                                {[...Array(5)].map((_, i) => {
+                                    const fullStars = Math.floor(product.rating);
+                                    const hasHalfStar = product.rating % 1 >= 0.5;
+
+                                    if (i < fullStars) {
+                                        // Full star
+                                        return (
+                                            <Star
+                                                key={i}
+                                                className="w-5 h-5 fill-yellow-400 text-yellow-400"
+                                            />
+                                        );
+                                    }
+
+                                    if (i === fullStars && hasHalfStar) {
+                                        // Half star
+                                        return (
+                                            <StarHalf
+                                                key={i}
+                                                className="w-5 h-5 fill-yellow-400 text-yellow-400"
+                                            />
+                                        );
+                                    }
+
+                                    // Empty star
+                                    return (
+                                        <Star
+                                            key={i}
+                                            className="w-5 h-5 fill-gray-200 text-gray-300"
+                                        />
+                                    );
+                                })}
                             </div>
+
+                            <span className="text-gray-600 text-sm">
+                                {product.rating} out of 5 stars
+                            </span>
                         </div>
+
 
                         {/* Price Block */}
                         <div className="pt-3 pb-6 border-gray-200">
-                            <div className="space-y-3 mt-2">
+                            <div className="space-y-3 mt-2 gap-4 flex items-center">
                                 <span className="text-4xl font-bold text-gray-900 drop-shadow-sm">
-                                    ${product.lowprice.toFixed(2)}
+                                    ৳{product.lowprice.toFixed(2)}
                                 </span>
                                 {product.highprice && (
-                                    <span className="text-2xl text-gray-400 line-through">
-                                        ${product.highprice.toFixed(2)}
+                                    <span className="text-2xl text-[var(--rose)] line-through">
+                                        ৳{product.highprice.toFixed(2)}
                                     </span>
                                 )}
                             </div>

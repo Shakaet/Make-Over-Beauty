@@ -12,6 +12,61 @@ const CATEGORY_OPTIONS = [
     "Wellness",
 ];
 
+const SUBCATEGORY_OPTIONS = {
+    Skincare: [
+        "Serum",
+        "Lotion",
+        "Toner",
+        "Moisturizer",
+        "Cleanser",
+        "Exfoliator",
+        "Face Mask",
+        "Sunscreen",
+    ],
+    Haircare: [
+        "Shampoo",
+        "Conditioner",
+        "Hair Oil",
+        "Hair Mask",
+        "Hair Serum",
+        "Hair Treatment",
+    ],
+    Makeup: [
+        "Foundation",
+        "Concealer",
+        "Compact Powder",
+        "Blush",
+        "Highlighter",
+        "Lipstick",
+        "Lip Gloss",
+        "Lip Liner",
+        "Eyeliner",
+        "Mascara",
+        "Eyeshadow",
+    ],
+    "Body Care": [
+        "Body Wash",
+        "Body Lotion",
+        "Body Scrub",
+        "Body Oil",
+        "Hand Cream",
+        "Foot Care",
+    ],
+    Fragrance: [
+        "Perfume",
+        "Body Mist",
+        "Deodorant",
+        "Roll On",
+    ],
+    Wellness: [
+        "Supplements",
+        "Essential Oils",
+        "Herbal Products",
+        "Personal Care Devices",
+    ],
+};
+
+
 export const ProductForm = ({
     modalMode,
     formData,
@@ -22,7 +77,6 @@ export const ProductForm = ({
     setShowModal,
     loading,
 }) => {
-    // Reset offer-related fields when offer is disabled
 
     return (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 z-50 overflow-y-auto">
@@ -80,9 +134,12 @@ export const ProductForm = ({
                     </div>
 
                     {/* Category & Brand */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {/* Category */}
                         <div>
-                            <label className="block text-pink-900 mb-2 font-semibold">Category *</label>
+                            <label className="block text-pink-900 mb-2 font-semibold">
+                                Category *
+                            </label>
                             <select
                                 name="category"
                                 value={formData.category}
@@ -99,8 +156,33 @@ export const ProductForm = ({
                             </select>
                         </div>
 
+                        {/* Sub Category */}
                         <div>
-                            <label className="block text-pink-900 mb-2 font-semibold">Brand</label>
+                            <label className="block text-pink-900 mb-2 font-semibold">
+                                Sub-Category *
+                            </label>
+                            <select
+                                name="subCategory"
+                                value={formData.subCategory}
+                                onChange={handleInputChange}
+                                required
+                                disabled={!formData.category}
+                                className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl disabled:opacity-50"
+                            >
+                                <option value="">Select Sub-Category</option>
+                                {SUBCATEGORY_OPTIONS[formData.category]?.map((sub) => (
+                                    <option key={sub} value={sub}>
+                                        {sub}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {/* Brand */}
+                        <div>
+                            <label className="block text-pink-900 mb-2 font-semibold">
+                                Brand
+                            </label>
                             <input
                                 type="text"
                                 name="brand"
@@ -111,6 +193,7 @@ export const ProductForm = ({
                             />
                         </div>
                     </div>
+
 
                     {/* Ingredients */}
                     <div>

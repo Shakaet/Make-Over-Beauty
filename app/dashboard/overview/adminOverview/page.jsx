@@ -1,4 +1,5 @@
-'use '
+'use client'
+
 import { useContext, useEffect, useState } from "react";
 import { DollarSign, Users, Package, ShoppingBagIcon } from "lucide-react";
 import { TopProductItem, AdminOrderItem, AdminStatCard, } from "../../components";
