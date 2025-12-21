@@ -55,17 +55,20 @@ export const useProduct = () => {
     }, [currentPage, searchTerm, selectedCategories, priceRange, sortOption]);
 
 
-
-    const handleCreate = async (payload, images) => {
-        setLoading(true);
-        setError(null);
+    const handleCreate = async (productData, images) => {
         try {
-            await createProduct(payload, images);
-            await fetchProducts(); // Refresh the product list
-            return { success: true };
-        } catch (err) {
-            setError("Failed to create product");
-            return { success: false, error: err };
+            setLoading(true);
+            const response = await createProduct(productData, images);
+            console.log("Create response:", response); // Log the response
+            if (response.success) {
+                fetchProducts();
+                fetchAllProducts();
+                return { success: true, message: response.message };
+            }
+            return { success: false, message: response.message };
+        } catch (error) {
+            console.error('Error creating product:', error);
+            return { success: false, message: error.message };
         } finally {
             setLoading(false);
         }

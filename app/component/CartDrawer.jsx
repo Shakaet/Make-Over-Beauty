@@ -293,7 +293,7 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
 
                         <button
                             onClick={() => {
-                                toggleDrawer(); 
+                                toggleDrawer();
                                 placeOrder();
                             }}
                             disabled={cart.length === 0 || loading}
@@ -349,19 +349,22 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
                 onClick={toggleDrawer}
                 className="relative hover:opacity-80 p-1 cursor-pointer"
             >
-                <svg
-                    width="22"
-                    height="22"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                >
-                    <circle cx="9" cy="20" r="1.5" />
-                    <circle cx="18" cy="20" r="1.5" />
-                    <path d="M2 3h3l3 12h10l2-8H6" strokeLinecap="round" />
-                </svg>
-                <span className="absolute -top-1 -right-1 bg-black px-1 rounded-full text-[10px] text-white">
+                <div className='flex items-center gap-2 rounded-full shadow-lg px-3 py-1 bg-[var(--pink)] text-white'>
+                    <svg
+                        width="22"
+                        height="22"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                    >
+                        <circle cx="9" cy="20" r="1.5" />
+                        <circle cx="18" cy="20" r="1.5" />
+                        <path d="M2 3h3l3 12h10l2-8H6" strokeLinecap="round" />
+                    </svg>
+                    <h1>Cart</h1>
+                </div>
+                <span className="absolute -top-1.5 -right-1.5 bg-white px-2 py-0.5 rounded-full text-xs text-bold">
                     {cart.length}
                 </span>
             </button>

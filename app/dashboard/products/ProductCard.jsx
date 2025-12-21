@@ -1,4 +1,25 @@
 const ProductCard = ({ product, onEdit, onDelete }) => {
+
+    const getCategoryName = () => {
+        if (typeof product.category_id === 'object' && product.category_id !== null) {
+            return product.category_id.categoryName || 'Unknown Category';
+        }
+        return product.category || 'Unknown Category'; // Fallback to product.category if it exists
+    };
+
+    // Safely get brand name
+    const getBrandName = () => {
+        if (typeof product.brand_id === 'object' && product.brand_id !== null) {
+            return product.brand_id.brandName || 'Unknown Brand';
+        }
+        return product.brand || 'Unknown Brand'; // Fallback to product.brand if it exists
+    };
+
+    // Get subcategory if available
+    const getSubCategory = () => {
+        return product.subCategory || '';
+    };
+
     return (
         <div className="group bg-white backdrop-blur-xl rounded-3xl overflow-hidden border border-pink-200 hover:border-pink-400 transition-all duration-500 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-pink-500/30">
             <div className="relative h-56 bg-gradient-to-br from-pink-100 to-pink-200 overflow-hidden">
@@ -19,6 +40,7 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
 
             <div className="p-5">
                 <h3 className="text-lg font-bold text-pink-900 mb-2 truncate">{product.name}</h3>
+
                 <p className="text-pink-700 text-sm mb-3 line-clamp-2">{product.description}</p>
 
                 <div className="flex items-center gap-2 mb-3">
@@ -44,8 +66,20 @@ const ProductCard = ({ product, onEdit, onDelete }) => {
 
                 <div className="mb-4">
                     <span className="px-3 py-1 bg-gradient-to-r from-pink-100 to-pink-200 text-pink-900 rounded-full text-xs font-medium border border-pink-300">
-                        {product.category}
+                        {product.category_id.categoryName}
                     </span>
+                    {/* Category, Subcategory, and Brand Info */}
+                    <div className="flex flex-wrap gap-2 mb-3">
+                        <span className="px-2 py-1 bg-pink-100 text-pink-900 rounded-full text-xs font-medium border border-pink-300">
+                            {product.category_id.categoryName}
+                        </span>
+                        <span className="px-2 py-1 bg-pink-50 text-pink-700 rounded-full text-xs font-medium border border-pink-200">
+                            {product.subCategory || 'No Subcategory'}
+                        </span>
+                        <span className="px-2 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-medium border border-blue-200">
+                            {product.brand_id.brandName}
+                        </span>
+                    </div>
                 </div>
 
                 <div className="flex gap-2">

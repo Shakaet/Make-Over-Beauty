@@ -1,24 +1,31 @@
-// app/footer/FooterData.js
-
 export const footerLinks = [
     {
-        title: "Popular Categories",
+        title: "Explore",
         links: [
-            { label: "Home", slug: "", description: "Join our creative team and grow with us." },
-            { label: "Products", slug: "product", description: "" },
-            { label: "Blogs", slug: "blogs", description: "Find our products at authorized retailers worldwide." },
-            { label: "Gallery", slug: "gallery", description: "Locate the nearest BB by Moon shop near you." },
-            { label: "FAQ", slug: "faq", description: "Reach us for inquiries, feedback, or support." },
+            { label: "Home", slug: "" },
+            { label: "Shop", slug: "product" },
+            { label: "Recent Offers", slug: "offers" },
+            { label: "Winter Clearance", slug: "winter-clearance" },
+            { label: "Winter Sale", slug: "winter-sale" },
         ],
     },
     {
-        title: "Innformaition",
+        title: "Information",
         links: [
-            { label: "About Us", slug: "about", description: "Join our creative team and grow with us." },
-            { label: "History", slug: "history", description: "" },
-            { label: "Contact", slug: "contact", description: "Reach us for inquiries, feedback, or support." },
-            { label: "Shipping & Returns", slug: "", description: "Know our shipping policies and return process." },
-            { label: "Privacy Policy", slug: "", description: "Review and confirm your order before placing." },
+            { label: "My Account", slug: "my-account" },
+            { label: "My Shopping Cart", slug: "cart" },
+            { label: "My Checkout", slug: "checkout" },
+            { label: "Order History", slug: "orders" },
+        ],
+    },
+    {
+        title: "Get Support",
+        links: [
+            { label: "About Us", slug: "about" },
+            { label: "Contact Us", slug: "contact" },
+            { label: "Faqs", slug: "faqs" },
+            { label: "Delivery & Shipping Policy", slug: "shipping-policy" },
+            { label: "Refund & Return Policy", slug: "return-policy" },
         ],
     }
 ]

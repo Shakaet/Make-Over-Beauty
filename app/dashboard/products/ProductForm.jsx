@@ -1,82 +1,31 @@
 "use client";
 
-import { useEffect } from "react";
 import { X } from "lucide-react";
-
-const CATEGORY_OPTIONS = [
-    "Skincare",
-    "Haircare",
-    "Makeup",
-    "Body Care",
-    "Fragrance",
-    "Wellness",
-];
-
-const SUBCATEGORY_OPTIONS = {
-    Skincare: [
-        "Serum",
-        "Lotion",
-        "Toner",
-        "Moisturizer",
-        "Cleanser",
-        "Exfoliator",
-        "Face Mask",
-        "Sunscreen",
-    ],
-    Haircare: [
-        "Shampoo",
-        "Conditioner",
-        "Hair Oil",
-        "Hair Mask",
-        "Hair Serum",
-        "Hair Treatment",
-    ],
-    Makeup: [
-        "Foundation",
-        "Concealer",
-        "Compact Powder",
-        "Blush",
-        "Highlighter",
-        "Lipstick",
-        "Lip Gloss",
-        "Lip Liner",
-        "Eyeliner",
-        "Mascara",
-        "Eyeshadow",
-    ],
-    "Body Care": [
-        "Body Wash",
-        "Body Lotion",
-        "Body Scrub",
-        "Body Oil",
-        "Hand Cream",
-        "Foot Care",
-    ],
-    Fragrance: [
-        "Perfume",
-        "Body Mist",
-        "Deodorant",
-        "Roll On",
-    ],
-    Wellness: [
-        "Supplements",
-        "Essential Oils",
-        "Herbal Products",
-        "Personal Care Devices",
-    ],
-};
-
 
 export const ProductForm = ({
     modalMode,
     formData,
-    setFormData,
+    categories,
+    brands,
     handleInputChange,
     handleFileChange,
     handleSubmit,
     setShowModal,
     loading,
 }) => {
+    // Find the selected category object
+    const selectedCategory = categories.find(cat => cat._id === formData.category_id);
+
+    // Get subcategories for the selected category
+    const subCategories = selectedCategory?.subCategories || [];
+
+    // Helper function to handle category change
+    const handleCategoryChange = (e) => {
+        const categoryId = e.target.value;
+        handleInputChange({ target: { name: 'category_id', value: categoryId } });
+        // Reset subCategory when category changes
+        handleInputChange({ target: { name: 'subcategory', value: '' } });
+    };
 
     return (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 z-50 overflow-y-auto">
@@ -93,8 +42,8 @@ export const ProductForm = ({
                     </button>
                 </div>
 
-                <div className="space-y-6">
-                    {/* Images */}
+                <form onSubmit={handleSubmit} className="space-y-6">
+                    {/* Images Section */}
                     <div className="border-t border-pink-200 pt-6">
                         <h3 className="text-pink-900 font-bold mb-4">
                             Images {modalMode === "create" && "*"}
@@ -111,7 +60,7 @@ export const ProductForm = ({
                                             name={imgField}
                                             onChange={handleFileChange}
                                             accept="image/*"
-                                            required={modalMode === "create"}
+                                            required={modalMode === "create" && idx === 0}
                                             className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl text-pink-900 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-gradient-to-r file:from-pink-500 file:to-[var(--pink)] file:text-white hover:file:from-[var(--pink)] hover:file:to-pink-700 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all text-sm"
                                         />
                                     </div>
@@ -120,7 +69,7 @@ export const ProductForm = ({
                         </div>
                     </div>
 
-                    {/* Name */}
+                    {/* Basic Information */}
                     <div>
                         <label className="block text-pink-900 mb-2 font-semibold">Name *</label>
                         <input
@@ -129,11 +78,11 @@ export const ProductForm = ({
                             value={formData.name}
                             onChange={handleInputChange}
                             required
-                            className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl"
+                            className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all"
                         />
                     </div>
 
-                    {/* Category & Brand */}
+                    {/* Category, Subcategory & Brand */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {/* Category */}
                         <div>
@@ -141,16 +90,16 @@ export const ProductForm = ({
                                 Category *
                             </label>
                             <select
-                                name="category"
-                                value={formData.category}
-                                onChange={handleInputChange}
+                                name="category_id"
+                                value={formData.category_id}
+                                onChange={handleCategoryChange}
                                 required
-                                className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl"
+                                className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all"
                             >
                                 <option value="">Select Category</option>
-                                {CATEGORY_OPTIONS.map((cat) => (
-                                    <option key={cat} value={cat}>
-                                        {cat}
+                                {categories.map((cat) => (
+                                    <option key={cat._id} value={cat._id}>
+                                        {cat.categoryName}
                                     </option>
                                 ))}
                             </select>
@@ -162,17 +111,17 @@ export const ProductForm = ({
                                 Sub-Category *
                             </label>
                             <select
-                                name="subCategory"
-                                value={formData.subCategory}
+                                name="subcategory"
+                                value={formData.subcategory}
                                 onChange={handleInputChange}
                                 required
-                                disabled={!formData.category}
-                                className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl disabled:opacity-50"
+                                disabled={!formData.category_id}
+                                className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all disabled:opacity-50"
                             >
                                 <option value="">Select Sub-Category</option>
-                                {SUBCATEGORY_OPTIONS[formData.category]?.map((sub) => (
-                                    <option key={sub} value={sub}>
-                                        {sub}
+                                {subCategories.map(sub => (
+                                    <option key={sub._id} value={sub.name}>
+                                        {sub.name}
                                     </option>
                                 ))}
                             </select>
@@ -183,17 +132,21 @@ export const ProductForm = ({
                             <label className="block text-pink-900 mb-2 font-semibold">
                                 Brand
                             </label>
-                            <input
-                                type="text"
-                                name="brand"
-                                value={formData.brand}
+                            <select
+                                name="brand_id"
+                                value={formData.brand_id}
                                 onChange={handleInputChange}
-                                placeholder="Brand name"
-                                className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl"
-                            />
+                                className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all"
+                            >
+                                <option value="">Select Brand</option>
+                                {brands.map((brand) => (
+                                    <option key={brand._id} value={brand._id}>
+                                        {brand.brandName}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
                     </div>
-
 
                     {/* Ingredients */}
                     <div>
@@ -205,7 +158,7 @@ export const ProductForm = ({
                             onChange={handleInputChange}
                             required
                             placeholder="item1, item2"
-                            className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl"
+                            className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all"
                         />
                     </div>
 
@@ -219,7 +172,7 @@ export const ProductForm = ({
                                 value={formData.tags}
                                 onChange={handleInputChange}
                                 placeholder="acne, dry skin"
-                                className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl"
+                                className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all"
                             />
                         </div>
                         <div>
@@ -230,7 +183,7 @@ export const ProductForm = ({
                                 value={formData.shippingInfo}
                                 onChange={handleInputChange}
                                 placeholder="Free shipping"
-                                className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl"
+                                className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all"
                             />
                         </div>
                     </div>
@@ -244,12 +197,12 @@ export const ProductForm = ({
                             onChange={handleInputChange}
                             required
                             rows={3}
-                            className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl resize-none"
+                            className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl resize-none focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all"
                         />
                     </div>
 
-                    {/* Offer Toggle */}
-                    <div className="flex items-center gap-3">
+                    {/* Offer Section */}
+                    <div className="flex items-center gap-3 p-4 bg-pink-50 rounded-xl">
                         <input
                             type="checkbox"
                             name="offer"
@@ -266,16 +219,16 @@ export const ProductForm = ({
 
                     {/* Offer Fields */}
                     {formData.offer && (
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-4 bg-pink-50 rounded-xl">
                             <div>
                                 <label className="block text-pink-900 mb-2 font-semibold">Season</label>
                                 <select
                                     name="season"
-                                    value={formData.season}
+                                    value={formData.season || ''}
                                     onChange={handleInputChange}
-                                    className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl"
+                                    className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all"
                                 >
-                                    <option value={null}>None</option>
+                                    <option value="">None</option>
                                     <option value="summer">Summer</option>
                                     <option value="winter">Winter</option>
                                     <option value="spring">Spring</option>
@@ -285,11 +238,11 @@ export const ProductForm = ({
                                 <label className="block text-pink-900 mb-2 font-semibold">Festival</label>
                                 <select
                                     name="festival"
-                                    value={formData.festival}
+                                    value={formData.festival || ''}
                                     onChange={handleInputChange}
-                                    className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl"
+                                    className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all"
                                 >
-                                    <option value={null}>None</option>
+                                    <option value="">None</option>
                                     <option value="eid-offer">Eid Offer</option>
                                     <option value="puja-offer">Puja Offer</option>
                                 </select>
@@ -298,11 +251,11 @@ export const ProductForm = ({
                                 <label className="block text-pink-900 mb-2 font-semibold">Thematic Offer</label>
                                 <select
                                     name="Thematic"
-                                    value={formData.Thematic}
+                                    value={formData.Thematic || ''}
                                     onChange={handleInputChange}
-                                    className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl"
+                                    className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all"
                                 >
-                                    <option value={null}>None</option>
+                                    <option value="">None</option>
                                     <option value="black-friday">Black Friday</option>
                                     <option value="clearance-sale">Clearance Sale</option>
                                 </select>
@@ -310,7 +263,7 @@ export const ProductForm = ({
                         </div>
                     )}
 
-                    {/* Pricing */}
+                    {/* Pricing Section */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div>
                             <label className="block text-pink-900 mb-2 font-semibold">Discount Price *</label>
@@ -318,10 +271,9 @@ export const ProductForm = ({
                                 type="number"
                                 step="0.01"
                                 name="lowprice"
-                                value={formData.lowprice}
+                                value={formData.lowprice || ''}
                                 onChange={handleInputChange}
-                                required
-                                className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl"
+                                className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all"
                             />
                         </div>
                         <div>
@@ -330,36 +282,38 @@ export const ProductForm = ({
                                 type="number"
                                 step="0.01"
                                 name="highprice"
-                                value={formData.highprice}
+                                value={formData.highprice || ''}
                                 onChange={handleInputChange}
-                                className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl"
+                                required
+                                className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all"
                             />
                         </div>
                         <div>
-                            <label className="block text-pink-900 mb-2 font-semibold">Discount (%) *</label>
+                            <label className="block text-pink-900 mb-2 font-semibold">Discount (%)</label>
                             <input
                                 type="number"
                                 name="discount"
-                                value={formData.discount}
+                                value={formData.discount || ''}
                                 onChange={handleInputChange}
                                 max={100}
-                                disabled={!formData.offer}
-                                className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl disabled:opacity-50"
+                                min={0}
+                                className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all"
                             />
                         </div>
                     </div>
 
-                    {/* Stock */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {/* Stock & Quantity */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label className="block text-pink-900 mb-2 font-semibold">Stock *</label>
                             <input
                                 type="number"
                                 name="stock"
-                                value={formData.stock}
+                                value={formData.stock || ''}
                                 onChange={handleInputChange}
                                 required
-                                className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl"
+                                min={0}
+                                className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all"
                             />
                         </div>
                         <div>
@@ -367,15 +321,15 @@ export const ProductForm = ({
                             <input
                                 type="number"
                                 name="quantity"
-                                value={formData.quantity}
+                                value={formData.quantity || ''}
                                 onChange={handleInputChange}
-                                required
-                                className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl"
+                                min={0}
+                                className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all"
                             />
                         </div>
                     </div>
 
-                    {/* Rating */}
+                    {/* Rating & Reviews */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label className="block text-pink-900 mb-2 font-semibold">Rating (0-5)</label>
@@ -383,10 +337,11 @@ export const ProductForm = ({
                                 type="number"
                                 step="0.1"
                                 name="rating"
-                                value={formData.rating}
+                                value={formData.rating || ''}
                                 onChange={handleInputChange}
                                 max={5}
-                                className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl"
+                                min={0}
+                                className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all"
                             />
                         </div>
                         <div>
@@ -394,32 +349,32 @@ export const ProductForm = ({
                             <input
                                 type="number"
                                 name="reviews"
-                                value={formData.reviews}
+                                value={formData.reviews || ''}
                                 onChange={handleInputChange}
-                                className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl"
+                                min={0}
+                                className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all"
                             />
                         </div>
                     </div>
 
                     {/* Actions */}
-                    <div className="flex gap-4 pt-4">
+                    <div className="flex gap-4 pt-6 border-t border-pink-200">
                         <button
                             type="button"
                             onClick={() => setShowModal(false)}
-                            className="flex-1 px-6 py-3 bg-white border border-pink-200 text-pink-900 rounded-xl font-semibold hover:bg-pink-50"
+                            className="flex-1 px-6 py-3 bg-white border border-pink-200 text-pink-900 rounded-xl font-semibold hover:bg-pink-50 transition-all"
                         >
                             Cancel
                         </button>
                         <button
-                            type="button"
-                            onClick={handleSubmit}
+                            type="submit"
                             disabled={loading}
-                            className="flex-1 px-6 py-3 bg-gradient-to-r from-pink-500 to-[var(--pink)] text-white rounded-xl font-semibold disabled:opacity-50"
+                            className="flex-1 px-6 py-3 bg-gradient-to-r from-pink-500 to-[var(--pink)] text-white rounded-xl font-semibold hover:from-pink-600 hover:to-[var(--pink)] disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                         >
-                            {loading ? "Saving..." : modalMode === "create" ? "Create" : "Update"}
+                            {loading ? "Saving..." : modalMode === "create" ? "Create Product" : "Update Product"}
                         </button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     );

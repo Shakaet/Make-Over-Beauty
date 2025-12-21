@@ -5,60 +5,8 @@ import { Search, Plus, Edit2, Trash2, X, Star, ChevronLeft, ChevronRight, Slider
 import { useProduct } from '@/app/hooks/useProducts';
 import { ProductFilter } from './ProductFilter';
 import { ProductForm } from './ProductForm';
-
-const SUBCATEGORY_OPTIONS = {
-    Skincare: [
-        "Serum",
-        "Lotion",
-        "Toner",
-        "Moisturizer",
-        "Cleanser",
-        "Exfoliator",
-        "Face Mask",
-        "Sunscreen",
-    ],
-    Haircare: [
-        "Shampoo",
-        "Conditioner",
-        "Hair Oil",
-        "Hair Mask",
-        "Hair Serum",
-        "Hair Treatment",
-    ],
-    Makeup: [
-        "Foundation",
-        "Concealer",
-        "Compact Powder",
-        "Blush",
-        "Highlighter",
-        "Lipstick",
-        "Lip Gloss",
-        "Lip Liner",
-        "Eyeliner",
-        "Mascara",
-        "Eyeshadow",
-    ],
-    "Body Care": [
-        "Body Wash",
-        "Body Lotion",
-        "Body Scrub",
-        "Body Oil",
-        "Hand Cream",
-        "Foot Care",
-    ],
-    Fragrance: [
-        "Perfume",
-        "Body Mist",
-        "Deodorant",
-        "Roll On",
-    ],
-    Wellness: [
-        "Supplements",
-        "Essential Oils",
-        "Herbal Products",
-        "Personal Care Devices",
-    ],
-};
+import { categoryApi } from '@/app/api/categoryApi';
+import { brandApi } from '@/app/api/brandApi';
 
 const ProductDashboard = () => {
     const {
@@ -90,15 +38,16 @@ const ProductDashboard = () => {
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [deleteProductId, setDeleteProductId] = useState(null);
-    const [categories, setCategories] = useState([]);
+    const [categories, setCategories] = useState([]); // This will store category objects
+    const [brands, setBrands] = useState([]);
     const [showFilters, setShowFilters] = useState(false);
 
     const [formData, setFormData] = useState({
         name: '', lowprice: '', highprice: '',
         discount: '', stock: '', rating: '',
-        reviews: '', category: '', subCategory: "", quantity: '',
+        reviews: '', category_id: '', subcategory: "", quantity: '',
         description: '', ingredients: '', tags: '',
-        shippingInfo: '', brand: '',
+        shippingInfo: '', brand_id: '',
         season: null,
         festival: null,
         Thematic: null,
@@ -109,17 +58,33 @@ const ProductDashboard = () => {
         imagePrimary: null, imageSecondary: null, imageThird: null, imageFourth: null,
     });
 
+    // Fetch categories and brands on component mount
     useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const categoriesData = await categoryApi.getAllCategory();
+                setCategories(categoriesData);
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+                setCategories([]);
+            }
+        };
+
+        const fetchBrands = async () => {
+            try {
+                const brandsData = await brandApi.getAllBrands();
+                setBrands(brandsData);
+            } catch (error) {
+                console.error('Error fetching brands:', error);
+                setBrands([]);
+            }
+        };
+
+        fetchCategories();
+        fetchBrands();
         fetchProducts();
         fetchAllProducts();
     }, [fetchProducts, fetchAllProducts]);
-
-    useEffect(() => {
-        if (allProducts.length > 0) {
-            const uniqueCategories = [...new Set(allProducts.map(p => p.category))];
-            setCategories(uniqueCategories);
-        }
-    }, [allProducts]);
 
     useEffect(() => {
         if (!formData.offer) {
@@ -131,17 +96,14 @@ const ProductDashboard = () => {
                 discount: 0,
             }));
         }
-    }, [formData.offer, setFormData]);
-
-    useEffect(() => {
-        if (!SUBCATEGORY_OPTIONS[formData.category]) {
-            setFormData((prev) => ({ ...prev, subCategory: "" }));
-        }
-    }, [formData.category, setFormData]);
+    }, [formData.offer]);
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        const { name, value, type, checked } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: type === 'checkbox' ? checked : value
+        }));
     };
 
     const handleFileChange = (e) => {
@@ -153,9 +115,9 @@ const ProductDashboard = () => {
         setFormData({
             name: '', lowprice: '', highprice: '',
             discount: '', stock: '', rating: '',
-            reviews: '', category: '', subCategory: "", quantity: '',
+            reviews: '', category_id: '', subcategory: "", quantity: '',
             description: '', ingredients: '', tags: '',
-            shippingInfo: '', brand: '',
+            shippingInfo: '', brand_id: '',
             season: null,
             festival: null,
             Thematic: null,
@@ -173,6 +135,30 @@ const ProductDashboard = () => {
     const openEditModal = (product) => {
         setModalMode('edit');
         setSelectedProduct(product);
+
+        // Get category and brand IDs
+        const categoryId = product.category_id?._id || product.category_id || "";
+        const brandId = product.brand_id?._id || product.brand_id || "";
+
+        // Get subCategory - check multiple possible locations
+        let subCategoryValue = "";
+
+        // Priority 1: Direct property
+        if (product.subcategory) {
+            subCategoryValue = product.subcategory;
+        }
+        // Priority 2: From category object (if populated)
+        else if (product.category_id && product.category_id.subCategories && product.category) {
+            // Try to match category name with subCategories
+            const category = categories.find(cat => cat.categoryName === product.category);
+            if (category) {
+                const foundSub = category.subCategories.find(sub => sub.name === product.subcategory);
+                if (foundSub) {
+                    subCategoryValue = foundSub.name;
+                }
+            }
+        }
+
         setFormData({
             name: product.name,
             lowprice: product.lowprice,
@@ -181,40 +167,55 @@ const ProductDashboard = () => {
             stock: product.stock,
             rating: product.rating,
             reviews: product.reviews,
-            category: product.category,
-            subCategory: product.subCategory || "",
+            category_id: categoryId,
+            subcategory: subCategoryValue,
             quantity: product.quantity,
             description: product.description,
-            ingredients: product.ingredients.join(', '),
-            tags: product.tags.join(', '),
-            shippingInfo: product.shippingInfo.join(', '),
-            brand: product.brand || null,
+            ingredients: Array.isArray(product.ingredients)
+                ? product.ingredients.join(', ')
+                : product.ingredients,
+            tags: Array.isArray(product.tags)
+                ? product.tags.join(', ')
+                : product.tags,
+            shippingInfo: Array.isArray(product.shippingInfo)
+                ? product.shippingInfo.join(', ')
+                : product.shippingInfo,
+            brand_id: brandId,
             season: product.season || null,
             festival: product.festival || null,
             Thematic: product.Thematic || null,
             offer: product.offer || false,
         });
-        setImages({ imagePrimary: null, imageSecondary: null, imageThird: null, imageFourth: null });
+
+        setImages({
+            imagePrimary: null,
+            imageSecondary: null,
+            imageThird: null,
+            imageFourth: null,
+        });
+
         setShowModal(true);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         const payload = {
             name: formData.name,
-            lowprice: parseFloat(formData.lowprice),
+            lowprice: parseFloat(formData.lowprice) || null,
             highprice: formData.highprice ? parseFloat(formData.highprice) : undefined,
-            discount: parseFloat(formData.discount),
+            discount: parseFloat(formData.discount) || 0,
             stock: parseInt(formData.stock),
             rating: formData.rating ? parseFloat(formData.rating) : 0,
             reviews: formData.reviews ? parseInt(formData.reviews) : 0,
-            category: formData.category, quantity: parseInt(formData.quantity),
-            subCategory: formData.subCategory,
+            category_id: formData.category_id,
+            quantity: parseInt(formData.quantity),
+            subcategory: formData.subcategory || null, // Ensure this is included
             description: formData.description,
             ingredients: formData.ingredients.split(',').map(i => i.trim()),
             tags: formData.tags ? formData.tags.split(',').map(t => t.trim()) : [],
             shippingInfo: formData.shippingInfo ? formData.shippingInfo.split(',').map(s => s.trim()) : [],
-            brand: formData.brand,
+            brand_id: formData.brand_id || null,
             season: formData.season || null,
             festival: formData.festival || null,
             Thematic: formData.Thematic || null,
@@ -233,7 +234,6 @@ const ProductDashboard = () => {
             resetForm();
         }
     };
-
     const confirmDelete = (productId) => {
         setDeleteProductId(productId);
         setShowDeleteConfirm(true);
@@ -250,6 +250,9 @@ const ProductDashboard = () => {
     const toggleCategory = (category) => {
         setSelectedCategories(prev => prev.includes(category) ? [] : [category]);
     };
+
+    // Extract category names for filtering
+    const categoryNames = categories.map(cat => cat.categoryName);
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-[#fff6f0] to-[#fff0e8] p-4 md:p-8">
@@ -280,16 +283,19 @@ const ProductDashboard = () => {
                     </div>
 
                     {showFilters && (
-                        <ProductFilter searchTerm={searchTerm} setSearchTerm={setSearchTerm}
+                        <ProductFilter
+                            searchTerm={searchTerm}
+                            setSearchTerm={setSearchTerm}
                             showFilters={showFilters}
                             setShowFilters={setShowFilters}
                             sortOption={sortOption}
                             setSortOption={setSortOption}
-                            categories={categories}
+                            categories={categoryNames} // Pass category names only
                             selectedCategories={selectedCategories}
                             toggleCategory={toggleCategory}
                             priceRange={priceRange}
-                            setPriceRange={setPriceRange} />
+                            setPriceRange={setPriceRange}
+                        />
                     )}
                 </div>
 
@@ -327,8 +333,15 @@ const ProductDashboard = () => {
 
                                         <div className="flex items-center justify-between  pb-4 border-b border-white/10">
                                             <div>
-                                                <div className="text-2xl font-bold text-pink-400">${product.lowprice}</div>
-                                                {product.highprice && <div className="text-sm text-pink-300 line-through">${product.highprice}</div>}
+                                                {product.lowprice ? (
+                                                    <div>
+                                                        <div className="text-2xl font-bold text-pink-400">${product.lowprice}</div>
+                                                        <div className="text-sm text-pink-300 line-through">${product.highprice}</div>
+                                                    </div>
+                                                ) : (
+
+                                                    <div className="text-2xl font-bold text-pink-400">${product.highprice}</div>
+                                                )}
                                             </div>
                                             <div className="text-right">
                                                 <div className="text-[var(--pink)] text-xs">Stock</div>
@@ -336,8 +349,19 @@ const ProductDashboard = () => {
                                             </div>
                                         </div>
 
-                                        <div className="mb-4">
-                                            <span className="px-3 py-1 bg-gradient-to-r from-[var(--pink)]/30 to-[var(--pink)]/30 text-white rounded-full text-xs font-medium border border-pink-400/30">{product.category}</span>
+                                        {/* In the ProductDashboard component, update the product card section: */}
+                                        <div className="mb-4 flex flex-wrap gap-2">
+                                            <span className="px-3 py-1 bg-gradient-to-r from-[var(--pink)]/30 to-[var(--pink)]/30 text-white rounded-full text-xs font-medium border border-pink-400/30">
+                                                {product.category_id?.categoryName}
+                                            </span>
+                                            {product.subcategory && (
+                                                <span className="px-3 py-1 bg-gradient-to-r from-blue-500/30 to-blue-500/30 text-white rounded-full text-xs font-medium border border-blue-400/30">
+                                                    {product.subcategory}
+                                                </span>
+                                            )}
+                                            <span className="px-3 py-1 bg-gradient-to-r from-[var(--beige)]/30 to-[var(--beige)]/30 text-white rounded-full text-xs font-medium border border-pink-400/30">
+                                                {product.brand_id?.brandName}
+                                            </span>
                                         </div>
 
                                         <div className="flex gap-2">
@@ -396,34 +420,41 @@ const ProductDashboard = () => {
                 )}
             </div>
 
-            {showModal && (
-                <ProductForm
-                    modalMode={modalMode}
-                    formData={formData}
-                    handleInputChange={handleInputChange}
-                    handleFileChange={handleFileChange}
-                    handleSubmit={handleSubmit}
-                    setShowModal={setShowModal}
-                    loading={loading}
-                />
-            )}
+            {
+                showModal && (
+                    <ProductForm
+                        modalMode={modalMode}
+                        formData={formData}
+                        setFormData={setFormData}
+                        categories={categories}
+                        brands={brands}
+                        handleInputChange={handleInputChange}
+                        handleFileChange={handleFileChange}
+                        handleSubmit={handleSubmit}
+                        setShowModal={setShowModal}
+                        loading={loading}
+                    />
+                )
+            }
 
-            {showDeleteConfirm && (
-                <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 z-50">
-                    <div className="bg-gradient-to-br from-slate-900 to-pink-900 rounded-3xl p-8 max-w-md w-full border border-red-500/30 shadow-2xl">
-                        <div className="text-center">
-                            <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4"><Trash2 size={32} className="text-red-500" /></div>
-                            <h3 className="text-2xl font-bold text-white mb-2">Delete Product?</h3>
-                            <p className="text-pink-300 mb-6">This action cannot be undone.</p>
-                            <div className="flex gap-4">
-                                <button onClick={() => { setShowDeleteConfirm(false); setDeleteProductId(null); }} className="flex-1 px-6 py-3 bg-white/10 text-white rounded-xl font-semibold hover:bg-white/20 transition-all">Cancel</button>
-                                <button onClick={executeDelete} disabled={loading} className="flex-1 px-6 py-3 bg-gradient-to-r from-red-600 to-[var(--pink)] text-white rounded-xl font-semibold hover:from-red-700 hover:to-pink-700 transition-all disabled:opacity-50">{loading ? 'Deleting...' : 'Delete'}</button>
+            {
+                showDeleteConfirm && (
+                    <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center p-4 z-50">
+                        <div className="bg-gradient-to-br from-slate-900 to-pink-900 rounded-3xl p-8 max-w-md w-full border border-red-500/30 shadow-2xl">
+                            <div className="text-center">
+                                <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4"><Trash2 size={32} className="text-red-500" /></div>
+                                <h3 className="text-2xl font-bold text-white mb-2">Delete Product?</h3>
+                                <p className="text-pink-300 mb-6">This action cannot be undone.</p>
+                                <div className="flex gap-4">
+                                    <button onClick={() => { setShowDeleteConfirm(false); setDeleteProductId(null); }} className="flex-1 px-6 py-3 bg-white/10 text-white rounded-xl font-semibold hover:bg-white/20 transition-all">Cancel</button>
+                                    <button onClick={executeDelete} disabled={loading} className="flex-1 px-6 py-3 bg-gradient-to-r from-red-600 to-[var(--pink)] text-white rounded-xl font-semibold hover:from-red-700 hover:to-pink-700 transition-all disabled:opacity-50">{loading ? 'Deleting...' : 'Delete'}</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            )}
-        </div>
+                )
+            }
+        </div >
     );
 };
 

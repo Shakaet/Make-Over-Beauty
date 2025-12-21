@@ -24,8 +24,8 @@ const ContactIcons = () => {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="Chat on WhatsApp"
-                        className="bg-[#ffc0cb]/70 backdrop-blur-md p-4 rounded-full text-black shadow-lg
-             hover:scale-110 hover:bg-[#ffc0cb]/90 transition-transform duration-300"
+                        className="bg-green-400/70 backdrop-blur-md p-4 rounded-full text-white shadow-lg
+             hover:scale-110 hover:bg-green-400/90 transition-transform duration-300"
                     >
 
                         <IconBrandWhatsapp size={28} />
@@ -35,7 +35,7 @@ const ContactIcons = () => {
                     <a
                         href="https://m.me/username"
                         target="_blank"
-                        className="bg-[#ffc0cb]/70 backdrop-blur-md p-4 rounded-full text-black shadow-lg hover:scale-110 transition"
+                        className="bg-blue-600/70 hover:bg-blue-600/90 backdrop-blur-md p-4 rounded-full text-white shadow-lg hover:scale-110 transition"
                     >
                         <IconBrandMessenger size={28} />
                     </a>
@@ -43,7 +43,7 @@ const ContactIcons = () => {
                     {/* Phone */}
                     <a
                         href="tel:+8801780326279"
-                        className="bg-[#ffc0cb]/70 backdrop-blur-md p-4 rounded-full text-black shadow-lg hover:scale-110 transition"
+                        className="bg-[var(--rose)]/70 backdrop-blur-md p-4 rounded-full text-white shadow-lg hover:scale-110 transition"
                     >
                         <IconPhone size={28} />
                     </a>
@@ -53,7 +53,7 @@ const ContactIcons = () => {
             {/* Main Toggle Button (Always visible) */}
             <button
                 onClick={() => setOpen(!open)}
-                className="bg-[#ffc0cb] p-4 rounded-full text-black shadow-xl hover:scale-110 transition"
+                className={`bg-[var(--pink)] p-4 rounded-full text-white shadow-xl hover:scale-110 transition ${open ? 'bg-red-500' : 'animate-pulse'}`}
             >
                 {open ? <IconX size={30} /> : <IconMessageCircle size={30} />}
             </button>

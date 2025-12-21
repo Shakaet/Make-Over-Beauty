@@ -93,15 +93,14 @@ const NavClient = () => {
               <Image
                 src={logo}
                 alt="Logo"
-                width={180}
-                height={60}
+                width={200}
+                height={80}
                 className="object-contain drop-shadow-xl"
               />
             </Link>
 
             {/* Center Menu */}
             <ul className="hidden md:flex items-center gap-8 text-sm font-medium text-[var(--pink)]">
-              <li><Link href="/">Home</Link></li>
               <li><Link href="/product">Products</Link></li>
 
               {/* Categories */}
@@ -172,7 +171,7 @@ const NavClient = () => {
             </ul>
 
             {/* Search */}
-            <div className="hidden md:flex flex-1 max-w-xl mx-8">
+            <div className="hidden md:flex flex-1 max-w-md mx-8">
               <input
                 className="w-full px-4 py-2 rounded-l-md border border-pink-300"
                 placeholder="Search products..."
@@ -183,15 +182,13 @@ const NavClient = () => {
             </div>
 
             {/* Right */}
-            <div className="flex items-center gap-6">
-              <CartDrawer isOpen={isOpen} toggleDrawer={toggleDrawer} />
-
+            <div className="flex items-center gap-4">
               {!user ? (
                 <Link
                   href="/my-account"
-                  className="hidden md:flex items-center gap-2 bg-pink-500 text-white px-4 py-2 rounded-md"
+                  className="hidden md:flex items-center gap-2 shadow-lg bg-white text-[var(--pink)] px-3 py-1 rounded-full"
                 >
-                  <User className="w-4 h-4" /> Sign In
+                  <User className="w-4 h-4" /> Log In
                 </Link>
               ) : (
                 <>
@@ -199,6 +196,7 @@ const NavClient = () => {
                   <button onClick={signOuts}><LogOut /></button>
                 </>
               )}
+              <CartDrawer isOpen={isOpen} toggleDrawer={toggleDrawer} />
             </div>
           </div>
         </div>

@@ -58,14 +58,11 @@ const Banner = () => {
     try {
       const data = await siteSettingApi.getAll();
       const siteData = data.data[0]
-      console.log(siteData);
       setSiteSettings(siteData);
     } catch (error) {
       console.error("Error fetching site settings:", error);
     }
   };
-
-  console.log("Site Settings:", siteSettings);
 
   // autoplay
   useEffect(() => {
@@ -131,7 +128,7 @@ const Banner = () => {
 
                     <a
                       href='/product'
-                      className="inline-flex items-center bg-[var(--pink)] rounded-full text-white px-4 py-2 text-sm sm:text-base uppercase tracking-[0.25em] hover:bg-black/80 transition">
+                      className="inline-flex items-center bg-[var(--pink)] rounded-full text-white px-4 py-2 text-sm sm:text-base hover:bg-black/80 transition">
                       {s.cta}
                     </a>
                   </div>

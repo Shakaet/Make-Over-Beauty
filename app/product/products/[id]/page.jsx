@@ -159,11 +159,11 @@ const ProductDetailPage = () => {
                     <div className=" lg:top-28 bg-white/10 backdrop-blur-sm p-8 rounded-3xl shadow-lg  border border-[#e6dbc7]/60">
                         {/* Category / Tagline */}
                         <div className="mb-4 flex justify-between items-center">
-                            <p className="text-sm uppercase tracking-wider text-[#8b7355]/80 font-medium">
-                                {product.brand || 'Unknown Brand'}
-                            </p>
                             <p className="text-sm uppercase tracking-wider bg-[var(--pink)]/60 w-fit text-white py-1 px-2  rounded-full ">
-                                {product.category || 'Natural Collection'}
+                                {`${product.category_id.categoryName} - ${product.subcategory}`}
+                            </p>
+                            <p className="text-sm uppercase tracking-wider text-[var(--beige)] font-medium">
+                                {product.brand_id.brandName || 'Unknown Brand'}
                             </p>
                         </div>
 
@@ -217,21 +217,23 @@ const ProductDetailPage = () => {
 
                         {/* Price Block */}
                         <div className="pt-3 pb-6 border-gray-200">
-                            <div className="space-y-3 mt-2 gap-4 flex items-center">
-                                <span className="text-4xl font-bold text-gray-900 drop-shadow-sm">
-                                    ৳{product.lowprice.toFixed(2)}
-                                </span>
-                                {product.highprice && (
-                                    <span className="text-2xl text-[var(--rose)] line-through">
+                            <div className="space-y-3 my-2 gap-4 flex items-center">
+                                {product.lowprice ? (
+                                    <div>
+                                        <p className="text-2xl font-bold text-[var(--rose)]">৳{product.lowprice}</p>
+                                        <p className="text-sm text-[var(--beige)] line-through">৳{product.highprice}</p>
+                                    </div>
+                                ) : (
+                                    <div className="text-4xl font-bold text-gray-900 drop-shadow-sm">
                                         ৳{product.highprice.toFixed(2)}
-                                    </span>
+                                    </div>
                                 )}
                             </div>
-                            {product.discount && (
-                                <p className="text-sm text-[#8B7355] font-medium mt-1">
-                                    Save {product.discount}% today!
-                                </p>
-                            )}
+                            {/* {product.discount && ( */}
+                            <p className="text-sm text-[#8B7355] font-medium mt-1">
+                                Save {product.discount || 0}% today!
+                            </p>
+                            {/* )} */}
                         </div>
 
                         {/* Key Highlights */}
@@ -350,9 +352,16 @@ const ProductDetailPage = () => {
                                         <h3 className="font-medium text-gray-800 group-hover:text-gray-900 truncate">
                                             {item.name}
                                         </h3>
-                                        <p className="text-[#8B7355] font-semibold mt-1">
-                                            ${item.lowprice.toFixed(2)}
-                                        </p>
+                                        {item.lowprice ? (
+                                            <div>
+                                                <p className="text-2xl font-bold text-[var(--rose)]">৳{product.lowprice}</p>
+                                                <p className="text-sm text-[var(--beige)] line-through">৳{product.highprice}</p>
+                                            </div>
+                                        ) : (
+                                            <p className="text-[var(--rose)] font-semibold mt-1">
+                                                ৳{item.highprice.toFixed(2)}
+                                            </p>
+                                        )}
                                     </div>
                                 </div>
                             ))}
