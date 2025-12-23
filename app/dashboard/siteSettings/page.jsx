@@ -186,7 +186,7 @@ export default function SiteSettings() {
                 {!loading && (
                     <div className="space-y-6">
                         {/* Site Name */}
-                        <div className="bg-white rounded-2xl shadow-xl p-8 border-4 border-pink-200">
+                        {/* <div className="bg-white rounded-2xl shadow-xl p-8 border-4 border-pink-200">
                             <label className="block text-lg font-semibold text-gray-800 mb-3">
                                 Site Name
                             </label>
@@ -198,7 +198,7 @@ export default function SiteSettings() {
                                 placeholder="Enter your site name"
                                 required
                             />
-                        </div>
+                        </div> */}
 
                         {/* Sections */}
                         {formData.sections.map((section, index) => (

@@ -64,18 +64,18 @@ const ProductCard = ({ product }) => {
           {product.discount ? (
             <div className="flex justify-center items-center gap-2">
               <span className="text-gray-500 line-through">
-                ${product.lowprice.toFixed(2)}
+                ৳{product.lowprice.toFixed(2)}
               </span>
               <span className="text-gray-900 font-semibold">
-                ${((product.lowprice * (100 - product.discount)) / 100).toFixed(2)}
+                ৳{((product.lowprice * (100 - product.discount)) / 100).toFixed(2)}
               </span>
             </div>
-          ) : product.highprice ? (
+          ) : product.lowprice ? (
             <span>
-              ${product.lowprice.toFixed(2)} - ${product.highprice.toFixed(2)}
+              ৳{product?.lowprice?.toFixed(2)} - ৳{product.highprice.toFixed(2)}
             </span>
           ) : (
-            <span>${product.lowprice.toFixed(2)}</span>
+            <span>৳{product.highprice.toFixed(2)}</span>
           )}
         </div>
 

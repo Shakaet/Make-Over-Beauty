@@ -1,73 +1,61 @@
-import React from 'react'
-import Link from 'next/link'
+'use client'
 
-const FEATURES = [
-  {
-    title: 'Natural Ingredients',
-    desc: 'Praesent in nunc vel urna consequat mattis eget vel libero. Phasellus entesque',
-    icon: (
-      <svg width="76" height="76" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <path d="M4 12c2 0 3-2 4-4s3-4 6-4c0 3-2 5-4 6s-4 2-6 2z"/>
-        <path d="M6 20h10a4 4 0 0 0 4-4v-1H2v1a4 4 0 0 0 4 4z"/>
-      </svg>
-    ),
-  },
-  {
-    title: 'Fragrance Free',
-    desc: 'Ahasellus entesque praesent in nunc vel urna consequat mattis eget vel libero.',
-    icon: (
-      <svg width="76" height="76" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <circle cx="9" cy="9" r="4"/>
-        <circle cx="16" cy="16" r="4"/>
-        <path d="M3 21L21 3"/>
-      </svg>
-    ),
-  },
-  {
-    title: 'Allergy Tested',
-    desc: 'Nunc vel urna consequat praesent in mattis eget vel libero zhasellus entesque.',
-    icon: (
-      <svg width="76" height="76" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <rect x="5" y="7" width="10" height="10" rx="2"/>
-        <path d="M15 7l4 4v6a2 2 0 0 1-2 2h-2"/>
-        <path d="M12 11l-2 3 3 2"/>
-      </svg>
-    ),
-  },
-  {
-    title: 'Paraben Free',
-    desc: 'Mattis eget vel libero praesent in nunc vel urna consequat ehasellus entesque',
-    icon: (
-      <svg width="76" height="76" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <path d="M4 19l8-14 8 14z"/>
-        <path d="M6 16h12"/>
-        <path d="M3 3l18 18"/>
-      </svg>
-    ),
-  },
-]
+import { motion, AnimatePresence } from 'framer-motion'
+import Image from 'next/image'
+import { useState } from 'react'
 
-const ReadMore = () => {
+export default function ReadMore() {
+  const [open, setOpen] = useState(false)
+
   return (
-    <section className="bg-[#fbf6ed]">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-14 text-center">
-          {FEATURES.map((f, i) => (
-            <div key={i}>
-              <div className="flex justify-center mb-6 text-black/90">{f.icon}</div>
-              <h3 className="text-2xl font-semibold text-black mb-4">{f.title}</h3>
-              <p className="text-black/70 leading-relaxed mb-6">
-                {f.desc}
-              </p>
-              <Link href="/" className="inline-block tracking-[0.35em] uppercase text-black border-b border-black pb-1">
-                Read More
-              </Link>
-            </div>
-          ))}
+    <section className="bg-[var(--blush)] py-12">
+      <div className="px-18 mx-auto">
+
+        {/* Content Section */}
+        <div>
+          <h2 className="text-3xl font-bold text-gray-800 mb-4">
+            Blooming Beauty by Moon
+          </h2>
+
+          <p className="text-gray-600 leading-relaxed">
+            আমরা বিশ্বাস করি যে সত্যিকারের সৌন্দর্য ভিতর থেকে ফুটে ওঠে। আমরা আপনাকে প্রিমিয়াম এবং খাঁটি সৌন্দর্য পণ্য সরবরাহ করতে প্রতিশ্রুতিবদ্ধ যা আপনার প্রাকৃতিক দীপ্তি বৃদ্ধি করে।গুণমান এবং সত্যতার প্রতি ভালোবাসার সাথে প্রতিষ্ঠিত, Blooming Beauty by Moon আপনাকে প্রদান করে: <br />
+
+            • সব ধরনের ত্বকের জন্য প্রিমিয়াম স্কিনকেয়ার ... <br />
+
+          </p>
+
+          <AnimatePresence>
+            {open && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.4 }}
+                className="overflow-hidden"
+              >
+                <p>
+                  • প্রাকৃতিক এবং অর্গানিক সৌন্দর্য সমাধান<br />
+                  • বিশ্বস্ত ব্র্যান্ডের মেকআপ এবং কসমেটিক্স <br />
+                  • চুলের যত্নের অপরিহার্য পণ্য <br />
+                  আমাদের লক্ষ্য, আপনি নতুন পণ্য ব্যবহার করছেন বা প্রতিষ্ঠিত রুটিন অনুসরণ করছেন - আমরা আপনাকে আত্মবিশ্বাসী এবং সুন্দর বোধ করতে সাহায্য করতে প্রতিশ্রুতিবদ্ধ। <br />
+                  ✓ যত্ন সহকারে নির্বাচিত সংগ্রহ <br />
+                  ✓ বিশেষজ্ঞ পণ্য পরামর্শ <br />
+                  ✓ দ্রুত এবং নির্ভরযোগ্য ডেলিভারি <br />
+                  ✓ গ্রাহক-প্রথম দৃষ্টিভঙ্গি<br />
+                  আপনার সৌন্দর্য যাত্রা সেরাটির যোগ্য। Blooming Beauty by Moon কে আপনার বিশ্বস্ত অংশীদার করুন সেই প্রাকৃতিক দীপ্তি অর্জনে যা আপনি প্রাপ্য।
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <button
+            onClick={() => setOpen(!open)}
+            className="mt-6 inline-flex items-center gap-2 bg-pink-500 hover:bg-pink-600 text-white px-6 py-2 rounded-full transition"
+          >
+            {open ? 'Show Less' : 'Read More'}
+          </button>
         </div>
       </div>
     </section>
   )
 }
-
-export default ReadMore

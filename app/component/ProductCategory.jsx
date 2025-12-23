@@ -1,55 +1,94 @@
 "use client"
 
 import React, { useEffect, useMemo, useState } from "react"
-import Image from "next/image"
-import hero from "@/public/images/makeup2.png"
-import api from "../libs/axios"
 import Link from "next/link"
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import { getAllProducts } from "../api/productApi"
+import { Star, StarHalf } from "lucide-react"
+import { categoryApi } from "../api/categoryApi";
 
+const ProductCard = ({ product }) => {
+  const discount = product.highprice && product.lowprice
+    ? Math.round(((product.highprice - product.lowprice) / product.highprice) * 100)
+    : 0;
 
-const ProductRow = ({ product }) => {
+  // Get category name from populated object or direct property
+  const categoryName = product.category_id?.categoryName || product.category || "Uncategorized";
+
   return (
-    <Link
-      href={`/product/products/${product._id}`}
-    >
-      <div className="flex items-center gap-4 py-4">
-        <div className="relative w-20 h-24 overflow-hidden rounded-md ring-1 ring-black/5 group">
-          <div className="absolute inset-0 flex transition-transform duration-500 ease-out group-hover:-translate-x-full">
-            <div className="relative shrink-0 w-full h-full">
-              <img
-                src={product.imagePrimary}
-                alt={product.name}
-                fill="true"
-                sizes="96px"
-                className="object-cover"
-              />
-            </div>
-            <div className="relative shrink-0 w-full h-full">
-              <img
-                src={product.imageSecondary}
-                alt={`${product.name} alt`}
-                fill="true"
-                sizes="96px"
-                className="object-cover"
-              />
-            </div>
+    <Link href={`/product/products/${product._id}`}>
+      <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+        <div className="relative aspect-square">
+          {/* Badges */}
+          <div className="absolute top-3 left-3 flex flex-col gap-2 z-10">
+            <span className="bg-white text-[10px] font-semibold px-2 py-1 rounded">
+              NEW
+            </span>
+            {discount > 0 && (
+              <span className="bg-[var(--pink)] text-white text-[10px] font-semibold px-2 py-1 rounded">
+                -{discount}%
+              </span>
+            )}
+          </div>
+
+          {/* Wishlist Button */}
+          <button
+            onClick={(e) => e.preventDefault()}
+            className="absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center hover:bg-gray-50 transition-colors z-10"
+          >
+            <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+          </button>
+
+          {/* Product Image */}
+          <div className="relative w-full h-full">
+            <img
+              src={product.imagePrimary}
+              alt={product.name}
+              className="w-full h-full object-contain"
+              onError={(e) => {
+                e.target.src = "https://via.placeholder.com/300x300?text=No+Image";
+              }}
+            />
           </div>
         </div>
 
-        <div className="min-w-0">
-          <p className="text-[15px] font-semibold text-stone-900 truncate">
+        {/* Product Info */}
+        <div className="p-4">
+          <p className="text-[11px] text-[var(--rose)] uppercase tracking-wide mb-1">
+            {categoryName}
+          </p>
+          <h3 className="text-lg font-medium text-gray-900 line-clamp-2 min-h-[40px]">
             {product.name}
-          </p>
-          <div className="mt-1 text-xs">
+          </h3>
+
+          {/* Rating */}
+          <div className="flex items-center gap-1 mb-3">
             <Rating value={product.rating} />
+            <span className="text-xs text-gray-500 ml-1">
+              {product.rating?.toFixed(1) || "0.0"}
+            </span>
           </div>
-          <p className="mt-1 text-sm text-stone-700 font-medium">
-            ৳ {product.lowprice}
-          </p>
+
+          {/* Price */}
+          <div className="flex items-center gap-2">
+            <span className="text-xl font-semibold">
+              ৳{product.lowprice || product.highprice || "0"}
+            </span>
+            {product.highprice && product.highprice > (product.lowprice || 0) && (
+              <>
+                <span className="text-sm text-[var(--rose)] line-through">
+                  ৳{product.highprice}
+                </span>
+                <span className="text-xs font-semibold text-[var(--pink)] bg-[var(--pink)]/20 px-2 py-0.5 rounded-full">
+                  -{discount}%
+                </span>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </Link>
@@ -57,136 +96,256 @@ const ProductRow = ({ product }) => {
 }
 
 function Rating({ value }) {
+  const ratingValue = value || 0;
+
   return (
-    <span>
-      <span className="text-amber-500">{'★'.repeat(value)}</span>
-      <span className="text-stone-300">{'★'.repeat(5 - value)}</span>
+    <span className="flex">
+      {[...Array(5)].map((_, i) => {
+        const fullStars = Math.floor(ratingValue);
+        const hasHalfStar = ratingValue % 1 >= 0.5;
+
+        if (i < fullStars) {
+          return (
+            <Star
+              key={i}
+              className="w-4 h-4 fill-yellow-400 text-yellow-400"
+            />
+          );
+        }
+
+        if (i === fullStars && hasHalfStar) {
+          return (
+            <StarHalf
+              key={i}
+              className="w-4 h-4 fill-yellow-400 text-yellow-400"
+            />
+          );
+        }
+
+        return (
+          <Star
+            key={i}
+            className="w-4 h-4 fill-gray-200 text-gray-300"
+          />
+        );
+      })}
     </span>
   )
 }
 
 const ProductCategory = () => {
-  const [products, setProducts] = useState([])
-  const [active, setActive] = useState("")
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [products, setProducts] = useState([]);
+  const [active, setActive] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchData = async () => {
       try {
-        const res = await getAllProducts()
-        const data = res.data
-        setProducts(data)
+        setLoading(true);
 
-        // set first category as default active
-        const categories = [...new Set(data.map(p => p.category))]
-        setActive(categories[0])
+        // Fetch both APIs
+        const [productRes, categoryRes] = await Promise.all([
+          getAllProducts(),
+          categoryApi.getAllCategory(),
+        ]);
+
+        // Handle products
+        if (productRes?.data) {
+          const productsData = productRes.data;
+          setProducts(productsData);
+        }
+
+        // Handle categories
+        if (Array.isArray(categoryRes)) {
+          setCategories(categoryRes);
+        } else if (categoryRes?.data && Array.isArray(categoryRes.data)) {
+          setCategories(categoryRes.data);
+        } else {
+          setCategories([]);
+        }
+
       } catch (err) {
-        console.error("Error fetching products:", err)
-        setError("Failed to load products.")
+        console.error("Error in fetchData:", err);
+        setError("Failed to load data. Please try again later.");
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchProducts()
-  }, [])
+    fetchData();
+  }, []);
 
-  // Dynamic category list
+  // Get categories that actually have products
+  const categoriesWithProducts = useMemo(() => {
+    if (!products.length || !categories.length) return [];
+
+    // Filter categories that have at least one product
+    return categories.filter(category => {
+      return products.some(product => {
+        const productCategory = product.category_id?.categoryName || product.category;
+        return productCategory === category.categoryName;
+      });
+    });
+  }, [products, categories]);
+
+  // Get category names for tabs (only those with products)
   const TABS = useMemo(() => {
-    return [...new Set(products.map(p => p.category))]
-  }, [products])
+    return categoriesWithProducts.map(category => category.categoryName);
+  }, [categoriesWithProducts]);
 
-  // Filtered by category
-  const filtered = useMemo(() => {
-    return products.filter(p => p.category === active)
-  }, [products, active])
+  // Filter products by active category
+  const filteredProducts = useMemo(() => {
+    if (!active || !products.length) return [];
 
-  // Split into 2 columns
-  const half = Math.ceil(filtered.length / 2)
-  const leftList = filtered.slice(0, half)
-  const rightList = filtered.slice(half)
+    return products.filter(product => {
+      const productCategory = product.category_id?.categoryName || product.category;
+      return productCategory === active;
+    });
+  }, [products, active]);
 
-  if (loading) return <div className="flex justify-center items-center min-h-screen">Loading...</div>
-  if (error) return <div className="flex justify-center items-center min-h-screen text-red-500">{error}</div>
+  // Set default active category if not set
+  useEffect(() => {
+    if (!active && TABS.length > 0) {
+      setActive(TABS[0]);
+    }
+  }, [TABS, active]);
+
+  if (loading) {
+    return (
+      <section className="bg-[var(--blush)] py-12 px-4">
+        <div className="px-12 mx-auto">
+          <div className="flex justify-center items-center min-h-[400px]">
+            <div className="text-center">
+              <div className="inline-block w-8 h-8 border-2 border-[var(--pink)] border-t-transparent rounded-full animate-spin"></div>
+              <p className="mt-2 text-gray-600">Loading products...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="bg-[var(--blush)] py-12 px-4">
+        <div className="px-12 mx-auto">
+          <div className="text-center py-12">
+            <div className="text-red-500 mb-2">⚠️</div>
+            <p className="text-gray-700">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="mt-4 px-6 py-2 bg-[var(--pink)] text-white rounded-full hover:bg-pink-600"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
-    <section className="bg-[#f5f1ec] py-14 px-4">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <section className="bg-[var(--blush)] py-12 px-4">
+      <div className="px-12 mx-auto px-16">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-10">
+          <div>
+            <h2 className="text-4xl md:text-5xl font-medium text-gray-900 pb-2">
+              Browse Shop
+            </h2>
+          </div>
 
-        {/* Left hero */}
-        <div className="lg:col-span-5 relative overflow-hidden rounded-2xl">
-          <div className="relative w-full h-[360px] sm:h-[420px] lg:h-full">
-            <img src={hero} alt="Care Collections" fill="true" sizes="(min-width:1024px) 40vw, 100vw" className="object-cover" />
-          </div>
-          <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-black/0 to-transparent" />
-          <div className="absolute inset-0 p-8 flex flex-col">
-            <div className="mt-auto max-w-md text-white drop-shadow">
-              <h3 className="text-3xl sm:text-4xl font-extrabold">Care Collections</h3>
-              <p className="mt-3 text-sm opacity-90">
-                Vivulum ut tempor sem leo, a ultricies quam aliquam eget.
-              </p>
-              <Link
-                href="/product"
-                className="mt-6 inline-flex items-center gap-2 bg-white/90 text-stone-900 px-5 py-2 text-xs uppercase tracking-[0.25em]">
-                View All
-              </Link>
+          {/* Category Tabs - Only show categories that have products */}
+          {TABS.length > 0 ? (
+            <div className="w-full sm:w-auto overflow-hidden">
+              <Swiper
+                slidesPerView="auto"
+                spaceBetween={12}
+                loop={false}
+                className="category-swiper"
+                breakpoints={{
+                  320: { slidesPerView: 'auto', spaceBetween: 8 },
+                  640: { slidesPerView: 'auto', spaceBetween: 12 },
+                }}
+              >
+                {TABS.map((tabName) => (
+                  <SwiperSlide key={tabName} style={{ width: 'auto' }}>
+                    <button
+                      onClick={() => setActive(tabName)}
+                      className={`px-5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-300 ${active === tabName
+                        ? "bg-[var(--pink)] text-white shadow-md"
+                        : "bg-white text-gray-700 border border-gray-200 hover:border-[var(--pink)] hover:text-[var(--pink)]"
+                        }`}
+                    >
+                      {tabName}
+                    </button>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
             </div>
-          </div>
+          ) : (
+            <div className="text-gray-500 text-sm">
+              No categories with products available
+            </div>
+          )}
         </div>
 
-        {/* Right side */}
-        <div className="lg:col-span-7">
-          <div className="pb-6 border-b border-black/10">
-            <Swiper
-              slidesPerView={4}
-              spaceBetween={12}
-              loop={true}
-              speed={800}
-              autoplay={{
-                delay: 2000,
-                disableOnInteraction: false,
-              }}
-              modules={[Autoplay]}
-              breakpoints={{
-                0: { slidesPerView: 3 },
-                640: { slidesPerView: 4 },
-                1024: { slidesPerView: 6 },
-              }}
-            >
-              {TABS.map((t) => (
-                <SwiperSlide key={t}>
-                  <button
-                    onClick={() => setActive(t)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium ring-1 ring-black/10 whitespace-nowrap transition-colors ${active === t
-                      ? "bg-[#efe2cc] text-[#0a0a0a]"
-                      : "bg-white text-stone-700 hover:bg-stone-50"
-                      }`}
-                  >
-                    {t}
-                  </button>
-                </SwiperSlide>
-
-              ))}
-            </Swiper>
+        {/* Active category info */}
+        {active && (
+          <div className="mb-8">
+            <h3 className="text-xl font-semibold text-gray-800 mb-2">
+              {active} ({filteredProducts.length} products)
+            </h3>
           </div>
+        )}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 ">
-            <div>
-              {leftList.map((p) => (
-                <ProductRow key={p._id} product={p} />
+        {/* Product Grid */}
+        {filteredProducts.length > 0 ? (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {filteredProducts.slice(0, 8).map((product) => (
+                <ProductCard key={product._id} product={product} />
               ))}
             </div>
-            <div>
-              {rightList.map((p) => (
-                <ProductRow key={p._id} product={p} />
-              ))}
-            </div>
+
+            {/* View More Button */}
+            {active && (
+              <div className="mt-12 text-center">
+                <Link
+                  href={`/product?category=${encodeURIComponent(active)}`}
+                  className="inline-block bg-[var(--pink)] text-white px-8 py-3 rounded-full font-medium hover:bg-pink-600 transition-colors shadow-md hover:shadow-lg"
+                >
+                  CONTINUE SHOPPING →
+                </Link>
+              </div>
+            )}
+          </>
+        ) : active && TABS.length > 0 ? (
+          <div className="text-center py-16">
+            <div className="text-5xl mb-4">📦</div>
+            <h3 className="text-xl font-semibold text-gray-800 mb-2">
+              No products found in {active}
+            </h3>
+            <p className="text-gray-600 mb-6">
+              Try selecting a different category.
+            </p>
           </div>
-        </div>
+        ) : (
+          <div className="text-center py-16">
+            <div className="text-5xl mb-4">📦</div>
+            <h3 className="text-xl font-semibold text-gray-800 mb-2">
+              No products available
+            </h3>
+            <p className="text-gray-600">
+              Please check back later.
+            </p>
+          </div>
+        )}
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default ProductCategory
+export default ProductCategory;

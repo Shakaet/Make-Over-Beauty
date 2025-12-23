@@ -1,3 +1,4 @@
+"use client"
 export const ProductDetailsModal = ({ title, open, onClose, children }) => {
     if (!open) return null;
     return (
