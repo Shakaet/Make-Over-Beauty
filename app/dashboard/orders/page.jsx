@@ -4,7 +4,8 @@ import { useEffect, useState, useContext } from "react";
 import { Context } from "@/app/provider/AuthProvider";
 import toast from "react-hot-toast";
 import { deleteOrder, getOrders } from "@/app/api/orderApi";
-import { ProductDetailsModal } from "@/app/modal/productDetailsModal";
+import { ProductDetailsModal } from "@/app/modal/ProductDetailsModal";
+
 
 export default function OrderHistory() {
     const { user } = useContext(Context);
