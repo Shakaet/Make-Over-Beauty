@@ -76,7 +76,7 @@ const Banner = () => {
 
   return (
     <section className="bg-[var(--blush)] pb-4 px-2">
-      <div className="relative mx-12 rounded-2xl overflow-hidden mb-4 bg-white">
+      <div className="relative mx-4 md:mx-12 rounded-2xl overflow-hidden mb-4 bg-white">
         <div className="relative h-[95vh] sm:h-[92vh] overflow-hidden">
           <div
             className="flex h-full w-full transition-transform duration-700"

@@ -10,6 +10,8 @@ const ExploreByCategory = () => {
             try {
                 const data = await categoryApi.getAllCategory()
 
+                
+
                 setCategories(data)
 
             } catch (err) {
@@ -32,7 +34,7 @@ const ExploreByCategory = () => {
 
     return (
         <section className="bg-[#fff4f4] py-10">
-            <div className=" mx-auto px-20 pb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div className=" mx-auto px-12 md:px-20 pb-8 flex flex-col-reverse md:flex-row items-start md:items-center justify-between gap-6">
 
                 {/* Left: Pills */}
                 <div className="flex flex-wrap gap-6 max-w-4xl">
@@ -52,7 +54,7 @@ const ExploreByCategory = () => {
                 </div>
 
                 {/* Right: Title */}
-                <div className="text-right text-4xl md:text-5xl">
+                <div className="text-right text-5xl pl-4">
                     <p className=" text-gray-700">Explore by</p>
                     <h2 className="font-bold text-gray-900">
                         Category

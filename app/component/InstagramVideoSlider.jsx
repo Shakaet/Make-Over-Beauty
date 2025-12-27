@@ -24,7 +24,7 @@ export default function InstagramVideoSlider() {
     return (
         <section className="bg-[var(--blush)] py-16">
             <Swiper
-                slidesPerView={7}
+                slidesPerView={5}
                 spaceBetween={24}
                 loop
                 autoplay={{ delay: 2500, disableOnInteraction: false }}

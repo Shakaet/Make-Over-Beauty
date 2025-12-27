@@ -19,14 +19,15 @@ export const useProduct = () => {
     const productsPerPage = 8;
 
     const fetchAllProducts = useCallback(async () => {
-        try {
-            const params = { limit: 10000, search: searchTerm || undefined };
-            const res = await getAllProducts(params);
-            setAllProducts(res.data || []);
-        } catch (err) {
-            console.error(err);
-        }
-    }, [searchTerm]);
+        const res = await getAllProducts({
+            limit: 10000,
+            search: searchTerm || undefined,
+            minPrice: priceRange[0] > 0 ? priceRange[0] : undefined,
+            maxPrice: priceRange[1] < 10000 ? priceRange[1] : undefined,
+        });
+        setAllProducts(res.data || []);
+    }, [searchTerm, priceRange]);
+
 
     const fetchProducts = useCallback(async () => {
         setLoading(true);
@@ -36,7 +37,9 @@ export const useProduct = () => {
                 page: currentPage,
                 limit: productsPerPage,
                 search: searchTerm || undefined,
-                category: selectedCategories[0] || undefined,
+                categoryIds: selectedCategories.length
+                    ? selectedCategories.join(",")
+                    : undefined,
                 minPrice: priceRange[0] > 0 ? priceRange[0] : undefined,
                 maxPrice: priceRange[1] < 10000 ? priceRange[1] : undefined,
                 sortBy: sortOption.split("-")[0],

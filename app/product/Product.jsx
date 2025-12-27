@@ -34,7 +34,7 @@ const Product = () => {
 
   useEffect(() => {
     fetchAllProducts()
-  }, [searchTerm]) // Only refetch when search/price changes
+  }, [searchTerm, priceRange]) // Only refetch when search/price changes
 
   if (error) {
     return (

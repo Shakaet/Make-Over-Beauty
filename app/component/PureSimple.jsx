@@ -4,7 +4,7 @@ import React from "react"
 const PureSimple = () => {
   return (
     <section
-      className=" p-12 md:py-20"
+      className="py-12 md:py-20 px-7"
     >
 
       <div className="relative z-10 mx-auto px-4 text-center">

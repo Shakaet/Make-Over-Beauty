@@ -6,25 +6,25 @@ import { getAllProducts } from '../api/productApi'
 
 // Helper function to get unique categories with proper counting
 const getUniqueCategories = (products) => {
-  const categoryMap = new Map();
+  const map = new Map();
 
-  products.forEach(product => {
-    if (product.category) {
-      const normalized = product.category.trim();
-      const key = normalized.toLowerCase();
+  products.forEach(p => {
+    const cat = p.category_id;
+    if (!cat) return;
 
-      if (!categoryMap.has(key)) {
-        categoryMap.set(key, {
-          original: normalized,
-          count: 0
-        });
-      }
-      categoryMap.get(key).count++;
+    if (!map.has(cat._id)) {
+      map.set(cat._id, {
+        id: cat._id,
+        name: cat.categoryName,
+        count: 0,
+      });
     }
+    map.get(cat._id).count++;
   });
 
-  return Array.from(categoryMap.values());
+  return Array.from(map.values());
 };
+
 
 const SidebarFilter = ({
   products,
@@ -43,7 +43,7 @@ const SidebarFilter = ({
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await getAllProducts(); 
+        const res = await getAllProducts();
         const allProducts = res.data || [];
 
         const categoriesData = getUniqueCategories(allProducts);
@@ -59,18 +59,19 @@ const SidebarFilter = ({
     fetchCategories();
   }, []);
 
-  const prices = products.map(p => p.highprice ?? p.lowprice ?? 0)
+  const prices = products.map(p => p.highprice ?? p?.lowprice ?? 0)
   const minPrice = Math.min(...prices)
   const maxPrice = Math.max(...prices)
   const [localMaxPrice, setLocalMaxPrice] = useState(maxPrice)
 
-  const handleCategoryChange = (category) => {
-    if (selectedCategories.includes(category)) {
-      setSelectedCategories(selectedCategories.filter(c => c !== category))
-    } else {
-      setSelectedCategories([...selectedCategories, category])
-    }
-  }
+  const handleCategoryChange = (id) => {
+    setSelectedCategories(prev =>
+      prev.includes(id)
+        ? prev.filter(c => c !== id)
+        : [...prev, id]
+    );
+  };
+
 
   const handlePriceChange = e => {
     const value = Number(e.target.value)
@@ -116,20 +117,21 @@ const SidebarFilter = ({
             <p className="text-sm text-gray-500">Loading categories...</p>
           ) : (
             <ul className="space-y-2 text-sm">
-              {categoriesWithCount.map(({ original, count }) => (
-                <li key={original}>
-                  <label className="flex items-center cursor-pointer">
+              {categoriesWithCount.map(cat => (
+                <li key={cat.id}>
+                  <label className="flex items-center">
                     <input
                       type="checkbox"
-                      checked={selectedCategories.includes(original)}
-                      onChange={() => handleCategoryChange(original)}
+                      checked={selectedCategories.includes(cat.id)}
+                      onChange={() => handleCategoryChange(cat.id)}
                     />
                     <span className="ml-2">
-                      {original} ({count})
+                      {cat.name} ({cat.count})
                     </span>
                   </label>
                 </li>
               ))}
+
             </ul>
           )}
         </div>
@@ -150,11 +152,11 @@ const SidebarFilter = ({
             className="w-full"
           />
           <div className="flex justify-between text-sm mt-1">
-            <span>${minPrice.toFixed(2)}</span>
-            <span>${maxPrice.toFixed(2)}</span>
+            <span>৳{minPrice.toFixed(2)}</span>
+            <span>৳{maxPrice.toFixed(2)}</span>
           </div>
           <div className="text-sm mt-1">
-            Price: ${priceRange[0].toFixed(2)} - ${priceRange[1].toFixed(2)}
+            Price: ৳{localMaxPrice.toFixed(2)}
           </div>
           <button
             className="bg-[#f0e3cd] mt-3 py-2 rounded-md w-full"
@@ -198,10 +200,17 @@ const SidebarFilter = ({
                 {'☆'.repeat(5 - Math.floor(product.rating))}
               </div>
               <div className="font-bold text-xs">
-                {product.highprice
-                  ? `$${product.lowprice.toFixed(2)} - $${product.highprice.toFixed(2)}`
-                  : `$${product.lowprice.toFixed(2)}`}
+                {product.lowprice && product.highprice ? (
+                  `৳${product.lowprice.toFixed(2)} - ৳${product.highprice.toFixed(2)}`
+                ) : product.lowprice ? (
+                  `৳${product.lowprice.toFixed(2)}`
+                ) : product.highprice ? (
+                  `৳${product.highprice.toFixed(2)}`
+                ) : (
+                  "৳0.00"
+                )}
               </div>
+
             </div>
           </div>
         ))}

@@ -8,9 +8,9 @@ const MobileBottomBar = () => {
     const pathname = usePathname();
 
     const items = [
-        { name: "Home", icon: Home, href: "/" },
-        { name: " Products", icon: IconBrandProducthunt, href: "/product" },
+        { name: "Products", icon: IconBrandProducthunt, href: "/product" },
         { name: "Offer", icon: Menu, href: "/offer" },
+        { name: "Home", icon: Home, href: "/" },
         { name: "Cart", icon: ShoppingCart, href: "/cart" },
         { name: "Account", icon: User, href: "/my-account" },
     ];

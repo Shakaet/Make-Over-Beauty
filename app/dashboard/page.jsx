@@ -13,6 +13,7 @@ import UserDashboardPage from "./overview/userOverview/page";
 import AdminDashboardPage from "./overview/adminOverview/page";
 
 import { Menu, X } from "lucide-react";
+import CategoryAndBrand from "./categoryAndBrand/page";
 
 const DashboardPage = () => {
     const { user, role, loading } = useContext(Context);
@@ -33,6 +34,7 @@ const DashboardPage = () => {
             case "products": return <ProductDashboard />;
             case "allorders": return <AllOrdersPage />;
             case "users": return <UsersPage />;
+            case "categoryAndBrand": return <CategoryAndBrand />;
             case "settings": return <SiteSettings />;
             default:
                 return role === "admin" ? <AdminDashboardPage /> : <UserDashboardPage />;

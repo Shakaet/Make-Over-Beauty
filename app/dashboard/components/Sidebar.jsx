@@ -18,6 +18,7 @@ export default function Sidebar({ role, active, setActiveTab }) {
         admin: [
             { label: "Overview", key: "adminOverview" },
             { label: "Manage Products", key: "products" },
+            { label: "Category & Brand", key: "categoryAndBrand" },
             { label: "All Orders", key: "allorders" },
             { label: "Users", key: "users" },
             { label: "Site Setting", key: "settings" },

@@ -13,7 +13,7 @@ export default function Footer() {
             <div className="bg-[var(--light)]  grid grid-cols-1 md:grid-cols-4 gap-16 p-6 rounded-2xl">
 
                 {/* Left Section - Brand */}
-                <div className='space-y-12'>
+                <div className='space-y-2 md:space-y-12'>
                     <Image
                         src={logo}
                         alt="Logo"
@@ -41,11 +41,11 @@ export default function Footer() {
                     </div>
                 </div>
 
-                <div className='flex justify-between col-span-2'>
+                <div className='flex justify-between flex-wrap items-center col-span-2'>
                     {/* Footer Links Sections */}
                     {footerLinks.map((section) => (
                         <div key={section.title} className="space-y-4">
-                            <h3 className="font-semibold text-[var(--pink)] text-sm mb-3">{section.title}</h3>
+                            <h3 className="font-semibold text-[var(--pink)] text-sm mt-12 md:mt-0 mb-3">{section.title}</h3>
                             <ul >
                                 {section.links.map((link, index) => (
                                     <li key={index}>

@@ -5,14 +5,9 @@ import ReadMore from "./component/ReadMore";
 import PureSimple from "./component/PureSimple";
 import TredingProduct from "./component/TredingProduct";
 import Top from "./component/Top";
-import ImportedProduct from "./component/ImportedProduct";
-import Testimonial from "./component/Testimonial";
 import ProductCategory from "./component/ProductCategory";
 import MarqueLogo from "./component/MarqueLogo";
 import WhatsPeopleSay from "./component/WhatsPeopleSay";
-import NewsUpdates from "./component/NewsUpdates";
-import TagUs from "./component/TagUs";
-import CategoryShowcase from "./component/CategoryShowcase";
 import WhyChooseUs from "./component/WhyChooseUs";
 import BrandStrip from "./component/BrandStrip";
 import ExploreByCategory from "./component/ExploreByCategory";
@@ -36,7 +31,6 @@ export default function Home() {
       <Banner></Banner>
       <ExploreByCategory />
       <BrandStrip />
-      {/* <CategoryShowcase /> */}
       <ProductCategory></ProductCategory>
       <PureSimple></PureSimple>
       <WhyChooseUs />

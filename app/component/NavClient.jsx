@@ -9,6 +9,8 @@ import logo from "@/public/images/logoup9.png"
 import Image from 'next/image'
 import MobileBottomBar from './MobileBottomBar'
 import Banner from './Banner'
+import { useProduct } from '../hooks/useProducts'
+import { useCategories } from '../hooks/useCategories'
 
 const NavClient = () => {
   const { user, signOuts } = useContext(Context)
@@ -17,6 +19,14 @@ const NavClient = () => {
   const [mounted, setMounted] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [categoryOpen, setCategoryOpen] = useState(false)
+  const { categories } = useCategories();
+  const [activeCategory, setActiveCategory] = useState(null);
+
+  useEffect(() => {
+    if (categoryOpen && categories.length > 0) {
+      setActiveCategory(categories[0]);
+    }
+  }, [categoryOpen, categories]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -33,59 +43,17 @@ const NavClient = () => {
 
   const toggleDrawer = () => setIsOpen(prev => !prev)
 
-  // Category data structure
-  const categoryData = {
-    skinTypes: [
-      'Oily',
-      'Dry',
-      'Combination',
-      'Normal',
-      'Sensitive',
-      'Combination To Oily',
-      'Combination To Dry'
-    ],
-    tags: [
-      'Acne & Spot Solution',
-      'Aging & Wrinkle',
-      'Dryness & Hydration',
-      'Oiliness & Sebum Control',
-      'Rash, Redness & Sensitivity',
-      'Under Eye Dark Circles & Puffiness',
-      'Fine Line & Puffiness',
-      'Damage Skin Repair & Scars',
-      'Sun Damage & Uneven Skin Tone',
-      'Large Pores',
-      'Whiteheads & Blackheads',
-      'Hyperpigmentation, Freckles & Melasma',
-      'Brightening & Pigmentation',
-      'Exfoliation',
-      'Lip Care',
-      'Hair Care'
-    ],
-    category: [
-      'Pimple Patch',
-      'Powder',
-      'Serum',
-      'Shampoo',
-      'Sheet Mask',
-      'Sleeping Mask',
-      'Soothing Gel',
-      'Sun Stick',
-      'Sunscreen',
-      'Supplement',
-      'Toner',
-      'Toner Pad',
-      'Underarm Cream',
-      'Wash-off Mask',
-      'Soap'
-    ]
-  }
+  const { products, fetchProducts, selectedCategories } = useProduct();
+
+  useEffect(() => {
+    fetchProducts()
+  }, [selectedCategories]) // Only refetch when search/price changes
 
   return (
     <>
       {/* ================= TOP NAV ================= */}
       <nav className="relative bg-[var(--blush)] z-50">
-        <div className="mx-auto px-12">
+        <div className="mx-auto px-6 md:px-12">
           <div className="flex justify-between items-center h-20">
 
             {/* Logo */}
@@ -109,55 +77,78 @@ const NavClient = () => {
                 onMouseEnter={() => setCategoryOpen(true)}
                 onMouseLeave={() => setCategoryOpen(false)}
               >
-                <button className="flex items-center gap-1">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setCategoryOpen((prev) => !prev);
+                  }}
+                  className="flex items-center gap-1"
+                >
                   <Menu className="w-4 h-4" />
                   Categories
                   <ChevronDown className="w-4 h-4" />
                 </button>
 
-                {categoryOpen && (
-                  <div className="absolute left-1/2 -translate-x-1/2 top-full mt-4 w-[900px] bg-white shadow-2xl rounded-xl p-8">
-                    <div className="grid grid-cols-3 gap-6">
-                      {/* Skin Types */}
-                      <div>
-                        <h3 className="font-semibold mb-3 border-b pb-2">Skin Types</h3>
-                        {categoryData.skinTypes.map((t, i) => (
-                          <Link
-                            key={i}
-                            href={`/categories/skin-types/${t.toLowerCase().replace(/\s+/g, '-')}`}
-                            className="block text-sm py-1 hover:text-pink-500"
-                          >
-                            {t}
-                          </Link>
-                        ))}
-                      </div>
 
+                {categoryOpen && (
+                  <div className="absolute left-1/2 -translate-x-1/2 top-full mt-4 w-[700px] bg-white shadow-2xl rounded-xl p-8">
+                    <div className="grid grid-cols-2 gap-6">
                       {/* Skin Concerns */}
-                      <div>
+                      {/* <div>
                         <h3 className="font-semibold mb-3 border-b pb-2">Skin Concerns</h3>
-                        <div className="max-h-72 overflow-y-auto custom-scrollbar">
-                          {categoryData.tags.map((t, i) => (
-                            <Link
+                        {products
+                          .flatMap(product => product.tags) // get all tags from all products
+                          .filter((tag, index, self) => tag && self.indexOf(tag) === index) // remove duplicates & falsy
+                          .map((t, i) => (
+                            <p
                               key={i}
-                              href={`/categories/skin-concerns/${t.toLowerCase().replace(/\s+/g, '-')}`}
                               className="block text-sm py-1 hover:text-pink-500"
                             >
                               {t}
+                            </p>
+                          ))}
+                      </div> */}
+
+
+                      {/* Skin Category */}
+                      <div>
+                        <h3 className="font-semibold mb-3 border-b pb-2">Product Category</h3>
+                        <div className="max-h-72 overflow-y-auto custom-scrollbar">
+                          {categories.map((cat) => (
+                            <Link
+                              key={cat._id}
+                              href={{
+                                pathname: "/product",
+                                query: { category: cat._id },
+                              }}
+                              onMouseEnter={() => setActiveCategory(cat)}
+                              className="block text-sm py-1 hover:text-pink-500"
+                            >
+                              {cat.categoryName}
                             </Link>
                           ))}
+
                         </div>
                       </div>
 
-                      {/* Product Category */}
+                      {/* Product Sub-Category */}
                       <div>
-                        <h3 className="font-semibold mb-3 border-b pb-2">Product Category</h3>
-                        {categoryData.category.map((t, i) => (
+                        <h3 className="font-semibold mb-3 border-b pb-2">
+                          {activeCategory?.categoryName || "Sub Categories"}
+                        </h3>
+                        {activeCategory?.subCategories?.map((sub) => (
                           <Link
-                            key={i}
-                            href={`/categories/products/${t.toLowerCase().replace(/\s+/g, '-')}`}
+                            key={sub._id}
+                            href={{
+                              pathname: "/product",
+                              query: {
+                                category: activeCategory._id,
+                                subcategory: sub.name,
+                              },
+                            }}
                             className="block text-sm py-1 hover:text-pink-500"
                           >
-                            {t}
+                            {sub.name}
                           </Link>
                         ))}
                       </div>
