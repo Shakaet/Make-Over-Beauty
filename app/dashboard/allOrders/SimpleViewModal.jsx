@@ -1,6 +1,8 @@
 // components/orders/SimpleViewModal.jsx
+"use client"
+import  {ProductDetailsModal}  from "@/app/modal/ProductDetailsModal";
 
-import { ProductDetailsModal } from "@/app/modal/productDetailsModal";
+
 
 const SimpleViewModal = ({ order, isOpen, onClose }) => {
     if (!isOpen || !order) return null;
