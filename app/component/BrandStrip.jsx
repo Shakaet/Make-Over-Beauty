@@ -68,7 +68,7 @@ const BrandStrip = () => {
                         key={`${brandName}-${i}`}
                         className="text-[var(--pink)] text-3xl md:text-4xl font-serif tracking-widest opacity-90 hover:opacity-100 hover:scale-110 transition-all duration-300 px-8"
                     >
-                        {brandName.toUpperCase()}
+                        {brandName}
                     </div>
                 ))}
             </motion.div>

@@ -167,8 +167,8 @@ const ProductCategory = () => {
   }
 
   return (
-    <section className="bg-[var(--blush)] py-12 px-4">
-      <div className="px-7 md:px-14 mx-auto">
+    <section className="bg-[var(--blush)] py-12">
+      <div className="px-8 md:px-14 mx-auto">
 
         {/* Header */}
         <div className="grid md:grid-cols-2 grid-cols-1 mb-10 gap-6">
@@ -189,7 +189,7 @@ const ProductCategory = () => {
               <SwiperSlide key={tab} style={{ width: "auto" }}>
                 <button
                   onClick={() => setActive(tab)}
-                  className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${active === tab
+                  className={`px-4 py-2.5 rounded-full text-sm font-medium transition-all ${active === tab
                     ? "bg-[var(--pink)] text-white shadow-md"
                     : "bg-white border hover:text-[var(--pink)]"
                     }`}
@@ -202,7 +202,7 @@ const ProductCategory = () => {
         </div>
 
         {/* Products */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-10">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10">
           {filteredProducts.slice(0, 8).map((p) => (
             <ProductCard key={p._id} product={p} />
           ))}

@@ -209,32 +209,32 @@ export function AdminOrderItem({ order }) {
             </div>
 
             <div className="text-right">
-                <div className="font-bold text-gray-800 mb-1">৳{order.amount.toLocaleString()}</div>
-                <StatusBadge status={order.status} />
+                <div className="font-bold text-gray-800 mb-1">৳{order.amount}</div>
+                {/* <StatusBadge status={order.status} /> */}
             </div>
         </div>
     );
 }
 
 // Component: Status Badge
-export function StatusBadge({ status }) {
-    const config = {
-        completed: { color: 'bg-green-100 text-green-700', icon: CheckCircle },
-        pending: { color: 'bg-yellow-100 text-yellow-700', icon: Clock },
-        processing: { color: 'bg-blue-100 text-blue-700', icon: RefreshCw },
-        shipped: { color: 'bg-purple-100 text-purple-700', icon: Truck },
-        cancelled: { color: 'bg-red-100 text-red-700', icon: TrendingDown },
-    };
+// export function StatusBadge({ status }) {
+//     const config = {
+//         completed: { color: 'bg-green-100 text-green-700', icon: CheckCircle },
+//         pending: { color: 'bg-yellow-100 text-yellow-700', icon: Clock },
+//         processing: { color: 'bg-blue-100 text-blue-700', icon: RefreshCw },
+//         shipped: { color: 'bg-purple-100 text-purple-700', icon: Truck },
+//         cancelled: { color: 'bg-red-100 text-red-700', icon: TrendingDown },
+//     };
 
-    const { color, icon: Icon } = config[status.toLowerCase()] || config.processing;
+//     const { color, icon: Icon } = config[status.toLowerCase()] || config.processing;
 
-    return (
-        <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold ${color}`}>
-            <Icon size={10} />
-            {status.charAt(0).toUpperCase() + status.slice(1)}
-        </span>
-    );
-}
+//     return (
+//         <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold ${color}`}>
+//             <Icon size={10} />
+//             {status.charAt(0).toUpperCase() + status.slice(1)}
+//         </span>
+//     );
+// }
 
 // Component: System Metric
 export function SystemMetric({ metric }) {

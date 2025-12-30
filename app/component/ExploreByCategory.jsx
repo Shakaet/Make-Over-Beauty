@@ -34,7 +34,7 @@ const ExploreByCategory = () => {
 
     return (
         <section className="bg-[#fff4f4] py-10">
-            <div className=" mx-auto px-12 md:px-20 pb-8 flex flex-col-reverse md:flex-row items-start md:items-center justify-between gap-6">
+            <div className=" mx-auto px-8 md:px-20 pb-8 flex flex-col-reverse md:flex-row items-start md:items-center justify-between gap-6">
 
                 {/* Left: Pills */}
                 <div className="flex flex-wrap gap-6 max-w-4xl">

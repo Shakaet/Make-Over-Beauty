@@ -77,7 +77,7 @@ const Banner = () => {
   return (
     <section className="bg-[var(--blush)] pb-4 px-2">
       <div className="relative mx-4 md:mx-12 rounded-2xl overflow-hidden mb-4 bg-white">
-        <div className="relative h-[95vh] sm:h-[92vh] overflow-hidden">
+        <div className="relative h-[90vh] sm:h-[80vh] overflow-hidden">
           <div
             className="flex h-full w-full transition-transform duration-700"
             style={{ transform: `translateX(-${index * 100}%)` }}
@@ -108,7 +108,7 @@ const Banner = () => {
                 {/* CONTENT */}
                 <div
                   className={`
-        absolute bottom-20 md:bottom-10 left-1/2 -translate-x-1/2 px-6 text-center
+        absolute bottom-6 md:bottom-10 left-1/3 -translate-x-1/2 px-6 text-center
         md:relative md:translate-x-0 md:bottom-0 md:left-0 md:px-12 md:w-1/2
         flex items-center justify-center md:items-center md:justify-start
       `}
