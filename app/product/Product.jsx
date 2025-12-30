@@ -5,6 +5,7 @@ import ProductCard from './ProductCard'
 import SidebarFilter from './SidebarFilter'
 import Pagination from '../component/Pagination'
 import { useProduct } from '../hooks/useProducts'
+import { useSearchParams } from 'next/navigation'
 
 const Product = () => {
   const {
@@ -25,7 +26,8 @@ const Product = () => {
     setSortOption,
     setCurrentPage,
     fetchProducts,
-    fetchAllProducts 
+    setSubcategory,
+    fetchAllProducts
   } = useProduct()
 
   useEffect(() => {
@@ -35,6 +37,26 @@ const Product = () => {
   useEffect(() => {
     fetchAllProducts()
   }, [searchTerm, priceRange]) // Only refetch when search/price changes
+
+  const searchParams = useSearchParams()
+  const category = searchParams.get('category')
+  const subcategory = searchParams.get('subcategory')
+
+  useEffect(() => {
+    if (category) {
+      setSelectedCategories([category]);
+    }
+
+    if (subcategory) {
+      setSubcategory(subcategory);
+    }
+
+    fetchProducts({
+      categoryIds: category || undefined,
+      subcategory: subcategory || undefined,
+      page: 1,
+    });
+  }, [category, subcategory]);
 
   if (error) {
     return (

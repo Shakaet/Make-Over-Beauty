@@ -15,6 +15,7 @@ export const useProduct = () => {
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [priceRange, setPriceRange] = useState([0, 10000]);
     const [sortOption, setSortOption] = useState("createdAt-desc");
+    const [subcategory, setSubcategory] = useState(null);
 
     const productsPerPage = 8;
 
@@ -29,34 +30,55 @@ export const useProduct = () => {
     }, [searchTerm, priceRange]);
 
 
-    const fetchProducts = useCallback(async () => {
-        setLoading(true);
-        setError(null);
-        try {
-            const params = {
-                page: currentPage,
-                limit: productsPerPage,
-                search: searchTerm || undefined,
-                categoryIds: selectedCategories.length
-                    ? selectedCategories.join(",")
-                    : undefined,
-                minPrice: priceRange[0] > 0 ? priceRange[0] : undefined,
-                maxPrice: priceRange[1] < 10000 ? priceRange[1] : undefined,
-                sortBy: sortOption.split("-")[0],
-                order: sortOption.split("-")[1],
-            };
-            const res = await getAllProducts(params);
-            setProducts(res.data || []);
-            setTotalPages(res.totalPages);
-            setTotalProducts(res.totalProducts);
-        } catch (err) {
-            setError("Failed to load products");
-            setProducts([]);
-        } finally {
-            setLoading(false);
-        }
-    }, [currentPage, searchTerm, selectedCategories, priceRange, sortOption]);
+    const fetchProducts = useCallback(
+        async (extraParams = {}) => {
+            setLoading(true);
+            setError(null);
 
+            try {
+                const params = {
+                    page: currentPage,
+                    limit: productsPerPage,
+                    search: searchTerm || undefined,
+
+                    categoryIds:
+                        selectedCategories.length
+                            ? selectedCategories.join(",")
+                            : undefined,
+
+                    subcategory: subcategory || undefined,
+
+                    minPrice: priceRange[0] > 0 ? priceRange[0] : undefined,
+                    maxPrice: priceRange[1] < 10000 ? priceRange[1] : undefined,
+
+                    sortBy: sortOption.split("-")[0],
+                    order: sortOption.split("-")[1],
+
+                    // 🔥 external override (URL-based)
+                    ...extraParams,
+                };
+
+                const res = await getAllProducts(params);
+
+                setProducts(res.data || []);
+                setTotalPages(res.totalPages);
+                setTotalProducts(res.totalProducts);
+            } catch (err) {
+                setError("Failed to load products");
+                setProducts([]);
+            } finally {
+                setLoading(false);
+            }
+        },
+        [
+            currentPage,
+            searchTerm,
+            selectedCategories,
+            subcategory,
+            priceRange,
+            sortOption,
+        ]
+    );
 
     const handleCreate = async (productData, images) => {
         try {
@@ -117,15 +139,20 @@ export const useProduct = () => {
         currentPage,
         searchTerm,
         selectedCategories,
+        subcategory,
         priceRange,
         sortOption,
+
         fetchProducts,
         fetchAllProducts,
+
         setSearchTerm: (v) => { setSearchTerm(v); setCurrentPage(1); },
         setSelectedCategories: (v) => { setSelectedCategories(v); setCurrentPage(1); },
+        setSubcategory: (v) => { setSubcategory(v); setCurrentPage(1); },
         setPriceRange: (v) => { setPriceRange(v); setCurrentPage(1); },
         setSortOption: (v) => { setSortOption(v); setCurrentPage(1); },
         setCurrentPage,
+
         handleCreate,
         handleUpdate,
         handleDelete,

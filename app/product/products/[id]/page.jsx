@@ -168,7 +168,7 @@ const ProductDetailPage = () => {
                         </div>
 
                         {/* Product Name */}
-                        <h1 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight">
+                        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
                             {product.name}
                         </h1>
 
@@ -230,7 +230,7 @@ const ProductDetailPage = () => {
                                 )}
                             </div>
                             {/* {product.discount && ( */}
-                            <p className="text-sm text-[#8B7355] font-medium mt-1">
+                            <p className="text-sm text-[#8B7355] font-medium mt-3">
                                 Save {product.discount || 0}% today!
                             </p>
                             {/* )} */}
@@ -270,9 +270,18 @@ const ProductDetailPage = () => {
                         </div>
 
                         {/* Stock Info */}
-                        <p className="text-sm text-gray-600 py-1">
-                            In stock: {product.stock}
-                        </p>
+                        <div>
+                            {product.stock > 0 ?
+                                (<p className="text-base font-medium text-green-600 py-1">
+                                    In Stock
+                                </p>)
+                                :
+                                (<p className="text-base font-medium text-red-600 py-1">
+                                    Stock Out
+                                </p>)
+                            }
+                        </div>
+
 
                         {/* Wishlist & Shipping Info */}
                         <div className="flex items-center justify-between text-sm pt-4 border-t border-gray-200">
