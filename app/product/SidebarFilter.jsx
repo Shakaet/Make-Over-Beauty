@@ -152,11 +152,11 @@ const SidebarFilter = ({
             className="w-full"
           />
           <div className="flex justify-between text-sm mt-1">
-            <span>৳{minPrice.toFixed(2)}</span>
-            <span>৳{maxPrice.toFixed(2)}</span>
+            <span>${minPrice?.toFixed(2)}</span>
+            <span>${maxPrice?.toFixed(2)}</span>
           </div>
           <div className="text-sm mt-1">
-            Price: ৳{localMaxPrice.toFixed(2)}
+            Price: ${priceRange[0]?.toFixed(2)} - ${priceRange[1]?.toFixed(2)}
           </div>
           <button
             className="bg-[#f0e3cd] mt-3 py-2 rounded-md w-full"
@@ -200,15 +200,9 @@ const SidebarFilter = ({
                 {'☆'.repeat(5 - Math.floor(product.rating))}
               </div>
               <div className="font-bold text-xs">
-                {product.lowprice && product.highprice ? (
-                  `৳${product.lowprice.toFixed(2)} - ৳${product.highprice.toFixed(2)}`
-                ) : product.lowprice ? (
-                  `৳${product.lowprice.toFixed(2)}`
-                ) : product.highprice ? (
-                  `৳${product.highprice.toFixed(2)}`
-                ) : (
-                  "৳0.00"
-                )}
+                {product.highprice
+                  ? `$${product.lowprice?.toFixed(2)} - $${product.highprice.toFixed(2)}`
+                  : `$${product.lowprice?.toFixed(2)}`}
               </div>
 
             </div>
