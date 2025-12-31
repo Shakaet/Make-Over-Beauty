@@ -1,10 +1,48 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { brandApi } from "../api/brandApi";
 
 const BrandStrip = () => {
-    const brands = ["Maybelline", "L'Oréal", "Revlon", "NYX", "Clinique"];
+    const [brands, setBrands] = useState([]);
+
+    useEffect(() => {
+        const fetchBrands = async () => {
+            try {
+                const response = await brandApi.getAllBrands();
+
+                // Extract brand names from the response
+                let brandsArray = [];
+
+                if (Array.isArray(response)) {
+                    // Direct array response
+                    brandsArray = response;
+                } else if (response && Array.isArray(response.data)) {
+                    // Wrapped in data property
+                    brandsArray = response.data;
+                }
+
+                // Map to brand names (if objects) or use as is (if strings)
+                const brandNames = brandsArray.map(item =>
+                    typeof item === 'object' && item.brandName
+                        ? item.brandName
+                        : String(item)
+                );
+
+                setBrands(brandNames);
+            } catch (err) {
+                console.error("Error fetching brands:", err);
+            }
+        };
+
+        fetchBrands();
+    }, []);
+
+    // If no brands, return null or loading state
+    if (brands.length === 0) {
+        return null;
+    }
 
     // duplicate for seamless loop
     const marqueeBrands = [...brands, ...brands];
@@ -25,12 +63,12 @@ const BrandStrip = () => {
                     ease: "linear",
                 }}
             >
-                {marqueeBrands.map((brand, i) => (
+                {marqueeBrands.map((brandName, i) => (
                     <div
-                        key={i}
-                        className="text-white text-3xl md:text-4xl font-serif tracking-widest opacity-90 hover:opacity-100 hover:scale-110 transition-all duration-300"
+                        key={`${brandName}-${i}`}
+                        className="text-[var(--pink)] text-3xl md:text-4xl font-serif tracking-widest opacity-90 hover:opacity-100 hover:scale-110 transition-all duration-300 px-8"
                     >
-                        {brand}
+                        {brandName}
                     </div>
                 ))}
             </motion.div>

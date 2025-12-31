@@ -49,7 +49,7 @@ export function OrderItem({ order }) {
     const StatusIcon = getStatusIcon(order.status);
 
     return (
-        <div className="flex items-center justify-between p-4 bg-pink-50 rounded-xl hover:bg-pink-100 transition-colors duration-300 group">
+        <div className="flex flex-col md:flex-row items-center justify-between p-4 bg-pink-50 rounded-xl hover:bg-pink-100 transition-colors duration-300 group">
             <div className="flex items-center gap-4">
                 <div className="p-3 bg-white rounded-xl shadow-sm group-hover:scale-105 transition-transform duration-300">
                     <Package size={20} className="text-pink-500" />
@@ -69,9 +69,6 @@ export function OrderItem({ order }) {
                     <StatusIcon size={12} />
                     {order.status?.charAt(0).toUpperCase() + order.status?.slice(1) || 'Processing'}
                 </span>
-                <button className="p-1 hover:bg-pink-200 rounded">
-                    <Eye size={16} className="text-gray-500" />
-                </button>
             </div>
         </div>
     );
@@ -209,32 +206,32 @@ export function AdminOrderItem({ order }) {
             </div>
 
             <div className="text-right">
-                <div className="font-bold text-gray-800 mb-1">৳{order.amount.toLocaleString()}</div>
-                <StatusBadge status={order.status} />
+                <div className="font-bold text-gray-800 mb-1">৳{order.amount}</div>
+                {/* <StatusBadge status={order.status} /> */}
             </div>
         </div>
     );
 }
 
 // Component: Status Badge
-export function StatusBadge({ status }) {
-    const config = {
-        completed: { color: 'bg-green-100 text-green-700', icon: CheckCircle },
-        pending: { color: 'bg-yellow-100 text-yellow-700', icon: Clock },
-        processing: { color: 'bg-blue-100 text-blue-700', icon: RefreshCw },
-        shipped: { color: 'bg-purple-100 text-purple-700', icon: Truck },
-        cancelled: { color: 'bg-red-100 text-red-700', icon: TrendingDown },
-    };
+// export function StatusBadge({ status }) {
+//     const config = {
+//         completed: { color: 'bg-green-100 text-green-700', icon: CheckCircle },
+//         pending: { color: 'bg-yellow-100 text-yellow-700', icon: Clock },
+//         processing: { color: 'bg-blue-100 text-blue-700', icon: RefreshCw },
+//         shipped: { color: 'bg-purple-100 text-purple-700', icon: Truck },
+//         cancelled: { color: 'bg-red-100 text-red-700', icon: TrendingDown },
+//     };
 
-    const { color, icon: Icon } = config[status.toLowerCase()] || config.processing;
+//     const { color, icon: Icon } = config[status.toLowerCase()] || config.processing;
 
-    return (
-        <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold ${color}`}>
-            <Icon size={10} />
-            {status.charAt(0).toUpperCase() + status.slice(1)}
-        </span>
-    );
-}
+//     return (
+//         <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold ${color}`}>
+//             <Icon size={10} />
+//             {status.charAt(0).toUpperCase() + status.slice(1)}
+//         </span>
+//     );
+// }
 
 // Component: System Metric
 export function SystemMetric({ metric }) {

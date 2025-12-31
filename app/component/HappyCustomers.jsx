@@ -26,7 +26,7 @@ const reviews = [
 const HappyCustomers = () => {
     return (
         <section className="bg-[var(--blush)] py-16 ">
-            <div className=" mx-auto px-16">
+            <div className=" mx-auto px-7 md:px-16">
                 <div className="flex justify-between items-center mb-8">
                     <h2 className="text-3xl  md:text-4xl font-bold text-gray-800">
                         OUR HAPPY CUSTOMERS

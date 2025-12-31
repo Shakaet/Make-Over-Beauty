@@ -3,57 +3,65 @@
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Autoplay } from 'swiper/modules'
 import { motion } from 'framer-motion'
-import { Instagram } from 'lucide-react'
 import 'swiper/css'
 
-const videos = [
-    '/videos/insta1.mp4',
-    '/videos/insta2.mp4',
-    '/videos/insta3.mp4',
-    '/videos/insta4.mp4',
-    '/videos/insta5.mp4',
-    '/videos/insta6.mp4',
-    '/videos/insta7.mp4',
-    '/videos/insta8.mp4',
-    '/videos/insta9.mp4',
-    '/videos/insta10.mp4',
-    '/videos/insta11.mp4',
+const images = [
+    '/images/HomePageImage (1).jpeg',
+    '/images/HomePageImage (2).jpeg',
+    '/images/HomePageImage (3).jpeg',
+    '/images/HomePageImage (4).jpeg',
+    '/images/HomePageImage (5).jpeg',
+    '/images/HomePageImage (6).jpeg',
+    '/images/HomePageImage (7).jpeg',
+    '/images/HomePageImage (8).jpeg',
 ]
 
 export default function InstagramVideoSlider() {
     return (
-        <section className="bg-[var(--blush)] py-16">
+        <section className="bg-[var(--blush)] py-12">
             <Swiper
-                slidesPerView={7}
-                spaceBetween={24}
                 loop
-                autoplay={{ delay: 2500, disableOnInteraction: false }}
                 centeredSlides
+                autoplay={{
+                    delay: 2500,
+                    disableOnInteraction: false,
+                }}
+                spaceBetween={16}
                 modules={[Autoplay]}
-                className="px-14 mx-auto"
+                className="px-4 md:px-14 mx-auto"
+                breakpoints={{
+                    0: {
+                        slidesPerView: 1.2,
+                    },
+                    640: {
+                        slidesPerView: 2.2,
+                    },
+                    768: {
+                        slidesPerView: 3,
+                    },
+                    1024: {
+                        slidesPerView: 5,
+                    },
+                }}
             >
-                {videos.map((video, index) => (
+                {images.map((image, index) => (
                     <SwiperSlide key={index}>
                         {({ isActive }) => (
                             <motion.div
                                 animate={{ scale: isActive ? 1 : 0.95 }}
                                 transition={{ duration: 0.3 }}
-                                className={`relative rounded-2xl overflow-hidden bg-[var(--light)] h-[300px]
+                                className={`relative h-[260px] md:h-[300px] rounded-2xl overflow-hidden bg-[var(--light)]
                   ${isActive ? 'ring-2 ring-pink-400' : ''}`}
                             >
-                                <video
-                                    src={video}
-                                    autoPlay
-                                    loop
-                                    muted
-                                    playsInline
+                                <img
+                                    src={image}
+                                    alt="Instagram post"
                                     className="h-full w-full object-cover"
                                 />
 
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="bg-black/70 p-3 rounded-full">
-                                        <Instagram className="text-white w-5 h-5" />
-                                    </div>
+                                {/* Overlay */}
+                                <div className="absolute inset-0 flex items-center justify-center bg-white/20 opacity-0 hover:opacity-100 transition">
+
                                 </div>
                             </motion.div>
                         )}

@@ -9,14 +9,26 @@ import logo from "@/public/images/logoup9.png"
 import Image from 'next/image'
 import MobileBottomBar from './MobileBottomBar'
 import Banner from './Banner'
+import { useProduct } from '../hooks/useProducts'
+import { useCategories } from '../hooks/useCategories'
+import useAddToCart from '../hooks/useAddToCart'
 
 const NavClient = () => {
+  const { cart, loadCart } = useAddToCart()
   const { user, signOuts } = useContext(Context)
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [categoryOpen, setCategoryOpen] = useState(false)
+  const { categories } = useCategories();
+  const [activeCategory, setActiveCategory] = useState(null);
+
+  useEffect(() => {
+    if (categoryOpen && categories.length > 0) {
+      setActiveCategory(categories[0]);
+    }
+  }, [categoryOpen, categories]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -33,59 +45,35 @@ const NavClient = () => {
 
   const toggleDrawer = () => setIsOpen(prev => !prev)
 
-  // Category data structure
-  const categoryData = {
-    skinTypes: [
-      'Oily',
-      'Dry',
-      'Combination',
-      'Normal',
-      'Sensitive',
-      'Combination To Oily',
-      'Combination To Dry'
-    ],
-    tags: [
-      'Acne & Spot Solution',
-      'Aging & Wrinkle',
-      'Dryness & Hydration',
-      'Oiliness & Sebum Control',
-      'Rash, Redness & Sensitivity',
-      'Under Eye Dark Circles & Puffiness',
-      'Fine Line & Puffiness',
-      'Damage Skin Repair & Scars',
-      'Sun Damage & Uneven Skin Tone',
-      'Large Pores',
-      'Whiteheads & Blackheads',
-      'Hyperpigmentation, Freckles & Melasma',
-      'Brightening & Pigmentation',
-      'Exfoliation',
-      'Lip Care',
-      'Hair Care'
-    ],
-    category: [
-      'Pimple Patch',
-      'Powder',
-      'Serum',
-      'Shampoo',
-      'Sheet Mask',
-      'Sleeping Mask',
-      'Soothing Gel',
-      'Sun Stick',
-      'Sunscreen',
-      'Supplement',
-      'Toner',
-      'Toner Pad',
-      'Underarm Cream',
-      'Wash-off Mask',
-      'Soap'
-    ]
-  }
+  const {
+    allProducts,
+    fetchAllProducts,
+    setSearchTerm,
+  } = useProduct();
+
+  useEffect(() => {
+    fetchAllProducts()
+  }, [])
+
+  const [searchValue, setSearchValue] = useState("");
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
+  const filteredProducts = searchValue
+    ? allProducts.filter((p) =>
+      p.name.toLowerCase().includes(searchValue.toLowerCase())
+    ).slice(0, 6)
+    : [];
+
+  const handleSearch = () => {
+    if (!searchValue.trim()) return;
+    setSearchTerm(searchValue.trim());
+    setShowSuggestions(false);
+  };
 
   return (
     <>
-      {/* ================= TOP NAV ================= */}
       <nav className="relative bg-[var(--blush)] z-50">
-        <div className="mx-auto px-12">
+        <div className="mx-auto px-6 md:px-12">
           <div className="flex justify-between items-center h-20">
 
             {/* Logo */}
@@ -109,55 +97,62 @@ const NavClient = () => {
                 onMouseEnter={() => setCategoryOpen(true)}
                 onMouseLeave={() => setCategoryOpen(false)}
               >
-                <button className="flex items-center gap-1">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setCategoryOpen((prev) => !prev);
+                  }}
+                  className="flex items-center gap-1"
+                >
                   <Menu className="w-4 h-4" />
                   Categories
                   <ChevronDown className="w-4 h-4" />
                 </button>
 
-                {categoryOpen && (
-                  <div className="absolute left-1/2 -translate-x-1/2 top-full mt-4 w-[900px] bg-white shadow-2xl rounded-xl p-8">
-                    <div className="grid grid-cols-3 gap-6">
-                      {/* Skin Types */}
-                      <div>
-                        <h3 className="font-semibold mb-3 border-b pb-2">Skin Types</h3>
-                        {categoryData.skinTypes.map((t, i) => (
-                          <Link
-                            key={i}
-                            href={`/categories/skin-types/${t.toLowerCase().replace(/\s+/g, '-')}`}
-                            className="block text-sm py-1 hover:text-pink-500"
-                          >
-                            {t}
-                          </Link>
-                        ))}
-                      </div>
 
-                      {/* Skin Concerns */}
+                {categoryOpen && (
+                  <div className="absolute left-1/2 -translate-x-1/2 top-full mt-4 w-[700px] bg-white shadow-2xl rounded-xl p-8">
+                    <div className="grid grid-cols-2 gap-6">
+
+                      {/* Skin Category */}
                       <div>
-                        <h3 className="font-semibold mb-3 border-b pb-2">Skin Concerns</h3>
+                        <h3 className="font-semibold mb-3 border-b pb-2">Product Category</h3>
                         <div className="max-h-72 overflow-y-auto custom-scrollbar">
-                          {categoryData.tags.map((t, i) => (
+                          {categories.map((cat) => (
                             <Link
-                              key={i}
-                              href={`/categories/skin-concerns/${t.toLowerCase().replace(/\s+/g, '-')}`}
+                              key={cat._id}
+                              href={{
+                                pathname: "/product",
+                                query: { category: cat._id },
+                              }}
+                              onMouseEnter={() => setActiveCategory(cat)}
                               className="block text-sm py-1 hover:text-pink-500"
                             >
-                              {t}
+                              {cat.categoryName}
                             </Link>
                           ))}
+
                         </div>
                       </div>
 
-                      {/* Product Category */}
+                      {/* Product Sub-Category */}
                       <div>
-                        <h3 className="font-semibold mb-3 border-b pb-2">Product Category</h3>
-                        {categoryData.category.map((t, i) => (
+                        <h3 className="font-semibold mb-3 border-b pb-2">
+                          {activeCategory?.categoryName || "Sub Categories"}
+                        </h3>
+                        {activeCategory?.subCategories?.map((sub) => (
                           <Link
-                            key={i}
-                            href={`/categories/products/${t.toLowerCase().replace(/\s+/g, '-')}`}
+                            key={sub._id}
+                            href={{
+                              pathname: "/product",
+                              query: {
+                                category: activeCategory._id,
+                                subcategory: sub.name,
+                              },
+                            }}
                             className="block text-sm py-1 hover:text-pink-500"
                           >
-                            {t}
+                            {sub.name}
                           </Link>
                         ))}
                       </div>
@@ -166,20 +161,48 @@ const NavClient = () => {
                 )}
               </li>
 
-              <li><Link href="/combo">Combo</Link></li>
               <li><Link href="/offers">Offers</Link></li>
             </ul>
 
+
             {/* Search */}
-            <div className="hidden md:flex flex-1 max-w-md mx-8">
+            <div className="hidden md:flex flex-1 max-w-md mx-8 relative">
               <input
                 className="w-full px-4 py-2 rounded-l-md border border-pink-300"
                 placeholder="Search products..."
+                value={searchValue}
+                onChange={(e) => {
+                  setSearchValue(e.target.value);
+                  setShowSuggestions(true);
+                }}
+                onFocus={() => setShowSuggestions(true)}
+                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
               />
-              <button className="px-4 bg-[var(--pink)] text-white rounded-r-md">
+
+              <button
+                onClick={handleSearch}
+                className="px-4 bg-[var(--pink)] text-white rounded-r-md"
+              >
                 <SearchIcon />
               </button>
+
+              {/* Live Suggestions */}
+              {showSuggestions && filteredProducts.length > 0 && (
+                <div className="absolute top-full left-0 w-full bg-white shadow-lg rounded-md mt-1 z-50">
+                  {filteredProducts.map((item) => (
+                    <Link
+                      key={item._id}
+                      href={`/product/products/${item._id}`}
+                      onClick={() => setShowSuggestions(false)}
+                      className="block px-4 py-2 text-sm hover:bg-pink-50"
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
+
 
             {/* Right */}
             <div className="flex items-center gap-4">
@@ -196,6 +219,31 @@ const NavClient = () => {
                   <button onClick={signOuts}><LogOut /></button>
                 </>
               )}
+              {/* Floating Cart Icon */}
+              <button
+                aria-label="Cart"
+                onClick={toggleDrawer}
+                className="relative hover:opacity-80 p-1 cursor-pointer hidden md:flex"
+              >
+                <div className='flex items-center gap-2 rounded-full shadow-lg px-3 py-1 bg-[var(--pink)] text-white'>
+                  <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                  >
+                    <circle cx="9" cy="20" r="1.5" />
+                    <circle cx="18" cy="20" r="1.5" />
+                    <path d="M2 3h3l3 12h10l2-8H6" strokeLinecap="round" />
+                  </svg>
+                  <h1>Cart</h1>
+                </div>
+                <span className="absolute -top-1.5 -right-1.5 bg-white px-2 py-0.5 rounded-full text-xs text-bold ">
+                  {cart.length}
+                </span>
+              </button>
               <CartDrawer isOpen={isOpen} toggleDrawer={toggleDrawer} />
             </div>
           </div>

@@ -15,7 +15,7 @@ const getYoutubeId = (url) => {
 const LiveVideos = () => {
     return (
         <section className="bg-[var(--blush)] py-16">
-            <div className="mx-auto px-20 grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="mx-auto px-7 md:px-20 grid grid-cols-2 md:grid-cols-4 gap-6">
                 {videos.map((v, i) => {
                     const videoId = getYoutubeId(v.link)
                     const thumbnail = videoId
@@ -33,7 +33,7 @@ const LiveVideos = () => {
                             <img
                                 src={thumbnail}
                                 alt="Live Video"
-                                className="w-full h-[360px] object-cover group-hover:scale-105 transition"
+                                className="w-full h-[280px] md:h-[360px] object-cover group-hover:scale-105 transition"
                             />
 
                             <div className="absolute inset-0 bg-black/20 flex items-center justify-center">

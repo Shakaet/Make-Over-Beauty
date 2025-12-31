@@ -104,7 +104,7 @@ export default function UserDashboardPage() {
 
                                 <div className="space-y-4">
                                     {overview?.orders?.length > 0 ? (
-                                        overview.orders.map((order, index) => (
+                                        overview.orders.slice(0, 3).map((order, index) => (
                                             <OrderItem key={index} order={order} />
                                         ))
                                     ) : (

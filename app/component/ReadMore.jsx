@@ -9,7 +9,7 @@ export default function ReadMore() {
 
   return (
     <section className="bg-[var(--blush)] py-12">
-      <div className="px-18 mx-auto">
+      <div className="px-9 md:px-18 mx-auto">
 
         {/* Content Section */}
         <div>

@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation'
 import { createOrder } from '../api/orderApi'
 
 export default function CartDrawer({ isOpen, toggleDrawer }) {
-    const { cart, loadCart } = useAddToCart()
+    const { cart, loadCart } = useAddToCart() 
     const [loading, setLoading] = useState(false)
     const router = useRouter()
     const { user } = useContext(Context)
@@ -200,23 +200,24 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
             )}
 
             <div
-                className={`fixed top-0 right-0 h-full w-80 bg-white shadow-2xl z-50 transform transition-transform duration-300 ${isOpen ? 'translate-x-0' : 'translate-x-full'
-                    }`}
+                className={`fixed top-0 right-0 h-full w-80 bg-[#FFF5F7] shadow-xl z-50 transform transition-transform duration-300 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
             >
                 {/* Header */}
-                <div className="flex justify-between items-center p-4 border-b">
-                    <h2 className="text-lg font-semibold">Your Cart</h2>
+                <div className="flex justify-between items-center p-4">
+                    <h2 className="text-lg font-semibold text-[#FF5A7A]">Your Cart</h2>
+
                     <button onClick={toggleDrawer}>
                         <X className="w-5 h-5 text-gray-600 hover:text-black" />
                     </button>
                 </div>
 
                 {/* Cart List */}
-                <div className="flex-1 overflow-y-auto max-h-[60vh] divide-y">
+                <div className="flex-1 overflow-y-auto max-h-[60vh] ">
                     {cart.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center h-full text-gray-500">
-                            <p>Your cart is empty</p>
+                        <div className="flex flex-col items-center justify-center h-full text-[#FF8FA3]">
+                            <p className="text-sm">Your cart is empty</p>
                         </div>
+
                     ) : (
                         cart.map(item => (
                             <div key={item.productId} className="flex items-center p-4 gap-3">
@@ -244,19 +245,19 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
                 </div>
 
                 {/* Coupon */}
-                <div className="p-4 border-t">
-                    <label className="text-sm font-medium text-gray-700">Have a coupon?</label>
+                <div className="border-[#FFD6DE] p-4 space-y-2 text-[#FF5A7A]">
+                    <label className="text-sm font-medium text-[var(--rose)]">Have a coupon?</label>
                     <div className="flex gap-2 mt-2">
                         <input
                             type="text"
                             value={coupon}
                             onChange={(e) => setCoupon(e.target.value)}
                             placeholder="Enter coupon code"
-                            className="flex-1 border rounded-lg px-3 py-2 text-sm"
+                            className="flex-1 border border-[#FFCCD5] rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#FF5A7A]"
                         />
                         <button
                             onClick={applyCoupon}
-                            className="bg-[var(--pink)] text-white px-3 rounded-lg hover:bg-gray-800 transition"
+                            className="bg-[var(--rose)] text-white px-3 rounded-lg hover:bg-gray-800 transition"
                         >
                             Apply
                         </button>
@@ -264,10 +265,10 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
                 </div>
 
                 {/* Summary */}
-                <div className="border-t p-4 space-y-2">
+                <div className="border-t p-4 space-y-2 border-[#FFD6DE] text-[#FF5A7A]">
                     <div className="flex justify-between">
-                        <span className="text-gray-600">Subtotal</span>
-                        <span className="font-semibold">৳{subtotal.toFixed(2)}</span>
+                        <span className="text-[var(--pink)] font-medium">Subtotal</span>
+                        <span className="font-medium">৳{subtotal.toFixed(2)}</span>
                     </div>
 
                     {appliedCoupon && (
@@ -286,7 +287,7 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
                         <button
                             onClick={handleClearCart}
                             disabled={cart.length === 0}
-                            className="w-1/2 border border-gray-300 py-2 rounded-lg"
+                            className="bg-white text-[#FF5A7A] border-[#FF5A7A] border-2 px-4 rounded-xl text-sm hover:opacity-90 transition"
                         >
                             Clear
                         </button>
@@ -299,7 +300,7 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
                             disabled={cart.length === 0 || loading}
                             className={`w-full ${user
                                 ? 'bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-700 hover:to-emerald-800 shadow-lg shadow-green-200 animate-pulse'
-                                : 'bg-gray-900'} text-white py-3 rounded-lg font-semibold transition-all duration-300 hover:scale-[1.02] relative overflow-hidden`}
+                                : 'bg-[#FF5A7A]'} text-white py-3 rounded-lg font-semibold transition-all duration-300 hover:scale-[1.02] relative overflow-hidden`}
                         >
                             {/* Subtle shimmer effect for logged-in users */}
                             {user && (
@@ -341,9 +342,14 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
 
 
                     </div>
+                    <div>
+                        <p className='text-sm p-2'>
+                            * আপনার অর্ডার কনফার্ম করতে চেকআউট বাটনে ক্লিক করুন।
+                        </p>
+                    </div>
                 </div>
             </div>
-            {/* Floating Cart Icon */}
+            {/* Floating Cart Icon
             <button
                 aria-label="Cart"
                 onClick={toggleDrawer}
@@ -364,10 +370,10 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
                     </svg>
                     <h1>Cart</h1>
                 </div>
-                <span className="absolute -top-1.5 -right-1.5 bg-white px-2 py-0.5 rounded-full text-xs text-bold">
+                <span className="absolute -top-1.5 -right-1.5 bg-white px-2 py-0.5 rounded-full text-xs text-bold ">
                     {cart.length}
                 </span>
-            </button>
+            </button> */}
         </>
     )
 }

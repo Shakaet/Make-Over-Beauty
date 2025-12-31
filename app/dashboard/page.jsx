@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useContext, useState } from "react";
 import { Context } from "../provider/AuthProvider";
 import Sidebar from "./components/Sidebar";
@@ -11,14 +12,17 @@ import AllOrdersPage from "./allOrders/page";
 import SiteSettings from "./siteSettings/page";
 import UserDashboardPage from "./overview/userOverview/page";
 import AdminDashboardPage from "./overview/adminOverview/page";
+import CategoryAndBrand from "./categoryAndBrand/page";
 
 import { Menu, X } from "lucide-react";
 
 const DashboardPage = () => {
     const { user, role, loading } = useContext(Context);
+
     const [activeTab, setActiveTab] = useState(
         role === "admin" ? "adminOverview" : "userOverview"
     );
+
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     if (loading) return <div className="p-6 text-center">Loading...</div>;
@@ -33,6 +37,7 @@ const DashboardPage = () => {
             case "products": return <ProductDashboard />;
             case "allorders": return <AllOrdersPage />;
             case "users": return <UsersPage />;
+            case "categoryAndBrand": return <CategoryAndBrand />;
             case "settings": return <SiteSettings />;
             default:
                 return role === "admin" ? <AdminDashboardPage /> : <UserDashboardPage />;
@@ -40,17 +45,9 @@ const DashboardPage = () => {
     };
 
     return (
-        <div className="flex min-h-screen bg-gray-50">
+        <div className="min-h-screen flex bg-gray-50">
 
-            {/* 📱 Mobile Header */}
-            <header className="md:hidden fixed top-0 left-0 right-0 z-40 bg-white border-b px-4 py-3 flex items-center justify-between">
-                <h1 className="text-lg font-bold">Dashboard</h1>
-                <button onClick={() => setSidebarOpen(true)}>
-                    <Menu className="w-6 h-6" />
-                </button>
-            </header>
-
-            {/* 📱 Mobile Overlay */}
+            {/* Mobile Sidebar Overlay */}
             {sidebarOpen && (
                 <div
                     className="fixed inset-0 bg-black/40 z-40 md:hidden"
@@ -67,13 +64,24 @@ const DashboardPage = () => {
                     setSidebarOpen(false);
                 }}
                 open={sidebarOpen}
-                close={() => setSidebarOpen(false)}
             />
 
-            {/* Main content */}
-            <main className="flex-1 p-4 md:p-6 pt-20 md:pt-6">
-                {renderContent()}
-            </main>
+            {/* Main Content */}
+            <div className="flex-1 flex flex-col">
+
+                {/* Mobile Header */}
+                <header className="md:hidden flex items-center justify-between p-4 bg-white shadow-sm sticky top-0 z-30">
+                    <button onClick={() => setSidebarOpen(true)}>
+                        <Menu size={24} />
+                    </button>
+                    <h1 className="font-semibold text-lg">Dashboard</h1>
+                </header>
+
+                {/* Page Content */}
+                <main className="p-4 md:p-8">
+                    {renderContent()}
+                </main>
+            </div>
         </div>
     );
 };
