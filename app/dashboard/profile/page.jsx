@@ -343,13 +343,13 @@ export default function Profile() {
                                 <div className="space-y-6">
                                     <h3 className="text-2xl font-bold text-gray-800 mb-6">Security Settings</h3>
 
-                                    <SecurityToggle
+                                    {/* <SecurityToggle
                                         icon={Lock}
                                         label="Two-Factor Authentication"
                                         description="Add an extra layer of security to your account"
                                         enabled={tempData?.twoFactor || false}
                                         onToggle={() => handleInputChange('twoFactor', !(tempData?.twoFactor || false))}
-                                    />
+                                    /> */}
 
                                     <SecurityToggle
                                         icon={Bell}
@@ -445,12 +445,12 @@ function SecurityToggle({ icon: Icon, label, description, enabled, onToggle }) {
                     <p className="text-sm text-gray-600">{description}</p>
                 </div>
             </div>
-            <button
+            {/* <button
                 onClick={onToggle}
                 className={`relative inline-flex h-7 w-14 items-center rounded-full transition-colors duration-300 ${enabled ? 'bg-green-500' : 'bg-gray-300'}`}
             >
                 <span className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform duration-300 ${enabled ? 'translate-x-8' : 'translate-x-1'}`} />
-            </button>
+            </button> */}
         </div>
     );
 }

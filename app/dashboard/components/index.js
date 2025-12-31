@@ -49,7 +49,7 @@ export function OrderItem({ order }) {
     const StatusIcon = getStatusIcon(order.status);
 
     return (
-        <div className="flex items-center justify-between p-4 bg-pink-50 rounded-xl hover:bg-pink-100 transition-colors duration-300 group">
+        <div className="flex flex-col md:flex-row items-center justify-between p-4 bg-pink-50 rounded-xl hover:bg-pink-100 transition-colors duration-300 group">
             <div className="flex items-center gap-4">
                 <div className="p-3 bg-white rounded-xl shadow-sm group-hover:scale-105 transition-transform duration-300">
                     <Package size={20} className="text-pink-500" />
@@ -69,9 +69,6 @@ export function OrderItem({ order }) {
                     <StatusIcon size={12} />
                     {order.status?.charAt(0).toUpperCase() + order.status?.slice(1) || 'Processing'}
                 </span>
-                <button className="p-1 hover:bg-pink-200 rounded">
-                    <Eye size={16} className="text-gray-500" />
-                </button>
             </div>
         </div>
     );
