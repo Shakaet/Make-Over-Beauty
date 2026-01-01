@@ -24,7 +24,7 @@ const OfferPage = () => {
     return (
         <div className=' bg-center bg-no-repeat'>
             <Heading />
-            <div className='relative bg-[#f7efe6] py-16 sm:py-20'>
+            <div className='relative bg-[#f7efe6] py-16 sm:py-20 px-8'>
                 {offerProducts.length === 0 ? (
                     <p className="text-gray-500 text-center">No offers available right now.</p>
                 ) : (
