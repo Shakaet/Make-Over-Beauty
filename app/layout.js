@@ -32,7 +32,7 @@ export default function RootLayout({ children }) {
     "New arrivals in skincare & haircare",
   ]
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
