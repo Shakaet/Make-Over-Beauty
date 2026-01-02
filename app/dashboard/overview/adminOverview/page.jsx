@@ -12,7 +12,7 @@ import { userApi } from "@/app/api/userApi";
 import toast from "react-hot-toast";
 import axios from "axios";
 
-export default function AdminDashboard() {
+export default function AdminDashboardPage() {
     const { user, role } = useContext(Context);
 
     const [orders, setOrders] = useState([]);
@@ -116,7 +116,7 @@ export default function AdminDashboard() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-[#fff6f0] to-[#fff0e8] p-4 md:p-8">
-            {role === 'customer' && (
+            {role === 'admin' && (
                 <div className="space-y-8">
 
                     {/* Stats */}
