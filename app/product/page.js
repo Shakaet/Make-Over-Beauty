@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import Heading from '../component/Heading'
 import Product from './Product'
 
@@ -8,7 +8,11 @@ const ProductPage = () => {
     <div className='home-bg bg-fixed bg-cover bg-center bg-no-repeat'>
       <Heading />
       <section className='relative bg-[#f7efe6] px-4 py-10 sm:px-8 md:px-10 lg:px-16 xl:px-20'>
-        <Product/>
+
+      <Suspense fallback={<div className="p-10 text-center">Loading products...</div>}>
+       <Product/>
+    </Suspense>
+       
       </section>
     </div>
   )

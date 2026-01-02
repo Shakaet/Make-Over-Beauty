@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../provider/AuthProvider";
 import Sidebar from "./components/Sidebar";
 
@@ -15,9 +15,17 @@ import AdminDashboardPage from "./overview/adminOverview/page";
 import CategoryAndBrand from "./categoryAndBrand/page";
 
 import { Menu, X } from "lucide-react";
+import { Navigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 
 const DashboardPage = () => {
+     const router = useRouter();
+    
+    
     const { user, role, loading } = useContext(Context);
+
+   
+    
 
     const [activeTab, setActiveTab] = useState(
         role === "admin" ? "adminOverview" : "userOverview"
@@ -26,7 +34,25 @@ const DashboardPage = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     if (loading) return <div className="p-6 text-center">Loading...</div>;
-    if (!user) return <div className="p-6 text-center">You are not logged in</div>;
+    // if (!user) return <div className="p-6 text-center">You are not logged in</div>;
+
+   
+     // ✅ Hook সবসময় call হবে
+  useEffect(() => {
+    if (!user) {
+      router.push("/my-account");
+    }
+  }, [user, router]);
+
+  // ✅ conditional return hook এর পরে
+  if (!user) {
+    return (
+      <div className="p-6 text-center">
+        You are not logged in
+      </div>
+    );
+  }
+
 
     const renderContent = () => {
         switch (activeTab) {

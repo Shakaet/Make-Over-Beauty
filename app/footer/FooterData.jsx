@@ -5,17 +5,17 @@ export const footerLinks = [
             { label: "Home", slug: "" },
             { label: "Shop", slug: "product" },
             { label: "Recent Offers", slug: "offers" },
-            { label: "Winter Clearance", slug: "winter-clearance" },
-            { label: "Winter Sale", slug: "winter-sale" },
+            { label: "Winter Clearance", slug: "product" },
+            { label: "Winter Sale", slug: "product" },
         ],
     },
     {
         title: "Information",
         links: [
             { label: "My Account", slug: "my-account" },
-            { label: "My Shopping Cart", slug: "cart" },
-            { label: "My Checkout", slug: "checkout" },
-            { label: "Order History", slug: "orders" },
+            { label: "Order History", slug: "dashboard" },
+            { label: "My Checkout", slug: "dashboard" },
+            { label: "My Profile", slug: "dashboard" },
         ],
     },
     {
