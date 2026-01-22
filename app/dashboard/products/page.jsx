@@ -212,9 +212,9 @@ const ProductDashboard = () => {
             quantity: parseInt(formData.quantity),
             subcategory: formData.subcategory || null, // Ensure this is included
             description: formData.description,
-            ingredients: formData.ingredients.split(',').map(i => i.trim()),
-            tags: formData.tags ? formData.tags.split(',').map(t => t.trim()) : [],
-            shippingInfo: formData.shippingInfo ? formData.shippingInfo.split(',').map(s => s.trim()) : [],
+            ingredients: formData.ingredients.split('.' || ';').map(i => i.trim()),
+            tags: formData.tags ? formData.tags.split('.' || ',').map(t => t.trim()) : [],
+            shippingInfo: formData.shippingInfo ? formData.shippingInfo.split('.').map(s => s.trim()) : [],
             brand_id: formData.brand_id || null,
             season: formData.season || null,
             festival: formData.festival || null,

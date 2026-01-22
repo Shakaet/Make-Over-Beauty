@@ -20,6 +20,8 @@ export const useProduct = () => {
     const productsPerPage = 8;
 
     const fetchAllProducts = useCallback(async () => {
+        setLoading(true);
+        setError(null);
         const res = await getAllProducts({
             limit: 10000,
             search: searchTerm || undefined,
@@ -54,7 +56,7 @@ export const useProduct = () => {
                     sortBy: sortOption.split("-")[0],
                     order: sortOption.split("-")[1],
 
-                    // 🔥 external override (URL-based)
+                    // external override (URL-based)
                     ...extraParams,
                 };
 

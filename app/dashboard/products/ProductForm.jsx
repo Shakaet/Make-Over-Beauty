@@ -157,7 +157,7 @@ export const ProductForm = ({
                             value={formData.ingredients}
                             onChange={handleInputChange}
                             required
-                            placeholder="item1, item2"
+                            placeholder="item1. item2"
                             className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all"
                         />
                     </div>
@@ -196,8 +196,8 @@ export const ProductForm = ({
                             value={formData.description}
                             onChange={handleInputChange}
                             required
-                            rows={3}
-                            className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl resize-none focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all"
+                            rows={6}
+                            className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl resize-none overflow-y-auto focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all"
                         />
                     </div>
 
@@ -266,7 +266,7 @@ export const ProductForm = ({
                     {/* Pricing Section */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div>
-                            <label className="block text-pink-900 mb-2 font-semibold">Discount Price *</label>
+                            <label className="block text-pink-900 mb-2 font-semibold">Discount Price</label>
                             <input
                                 type="number"
                                 step="0.01"
@@ -277,7 +277,7 @@ export const ProductForm = ({
                             />
                         </div>
                         <div>
-                            <label className="block text-pink-900 mb-2 font-semibold">Original Price</label>
+                            <label className="block text-pink-900 mb-2 font-semibold">Original Price *</label>
                             <input
                                 type="number"
                                 step="0.01"
@@ -317,7 +317,7 @@ export const ProductForm = ({
                             />
                         </div>
                         <div>
-                            <label className="block text-pink-900 mb-2 font-semibold">Quantity *</label>
+                            <label className="block text-pink-900 mb-2 font-semibold">Quantity</label>
                             <input
                                 type="number"
                                 name="quantity"
