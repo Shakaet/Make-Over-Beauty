@@ -149,6 +149,13 @@ const ProductCategory = () => {
     });
   }, [products, active]);
 
+  const activeCategory = useMemo(() => {
+    if (active === "ALL") return null;
+    return categories.find(
+      (c) => c.categoryName === active
+    );
+  }, [active, categories]);
+
   if (loading) {
     return (
       <section className="py-16 text-center">
@@ -207,6 +214,25 @@ const ProductCategory = () => {
             <ProductCard key={p._id} product={p} />
           ))}
         </div>
+
+        {filteredProducts.length > 0 && (
+          <div className="mt-12 text-center">
+            <Link
+              href={
+                active === "ALL"
+                  ? "/product"
+                  : {
+                    pathname: "/product",
+                    query: { category: activeCategory?._id },
+                  }
+              }
+              className="inline-block bg-[var(--pink)] text-white px-8 py-3 rounded-full font-medium hover:bg-pink-600 transition-colors shadow-md hover:shadow-lg"
+            >
+              CONTINUE SHOPPING →
+            </Link>
+          </div>
+        )}
+
       </div>
     </section>
   );

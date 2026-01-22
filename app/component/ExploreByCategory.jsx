@@ -1,5 +1,7 @@
-'use client'
-import React, { useEffect, useState } from "react"
+'use client';
+
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import { categoryApi } from "../api/categoryApi";
 
 const ExploreByCategory = () => {
@@ -8,20 +10,15 @@ const ExploreByCategory = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const data = await categoryApi.getAllCategory()
-
-                
-
-                setCategories(data)
-
+                const res = await categoryApi.getAllCategory();
+                setCategories(res?.data || res || []);
             } catch (err) {
-                console.error("Error fetching products:", err)
-            } finally {
+                console.error("Error fetching categories:", err);
             }
-        }
+        };
 
-        fetchCategories()
-    }, [])
+        fetchCategories();
+    }, []);
 
     const colors = [
         "#F59E0B", // amber
@@ -34,14 +31,18 @@ const ExploreByCategory = () => {
 
     return (
         <section className="bg-[#fff4f4] py-10">
-            <div className=" mx-auto px-8 md:px-20 pb-8 flex flex-col-reverse md:flex-row items-start md:items-center justify-between gap-6">
+            <div className="mx-auto px-8 md:px-20 pb-8 flex flex-col-reverse md:flex-row items-start md:items-center justify-between gap-6">
 
                 {/* Left: Pills */}
                 <div className="flex flex-wrap gap-6 max-w-4xl">
                     {categories.map((cat, i) => (
-                        <button
-                            key={i}
-                            className="flex items-center gap-2 px-4 py-2 rounded-full border border-gray-300 bg-white
+                        <Link
+                            key={cat._id}
+                            href={{
+                                pathname: "/product",
+                                query: { category: cat._id },
+                            }}
+                            className="group flex items-center gap-2 px-4 py-2 rounded-full border border-gray-300 bg-white
                          text-base font-medium hover:border-pink-400 transition"
                         >
                             <span
@@ -49,21 +50,19 @@ const ExploreByCategory = () => {
                                 style={{ backgroundColor: colors[i % colors.length] }}
                             />
                             {cat.categoryName}
-                        </button>
+                        </Link>
                     ))}
                 </div>
 
                 {/* Right: Title */}
                 <div className="text-right text-5xl pl-4">
-                    <p className=" text-gray-700">Explore by</p>
-                    <h2 className="font-bold text-gray-900">
-                        Category
-                    </h2>
+                    <p className="text-gray-700">Explore by</p>
+                    <h2 className="font-bold text-gray-900">Category</h2>
                 </div>
 
             </div>
         </section>
-    )
-}
+    );
+};
 
-export default ExploreByCategory
+export default ExploreByCategory;

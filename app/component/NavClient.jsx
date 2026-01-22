@@ -59,10 +59,20 @@ const NavClient = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   const filteredProducts = searchValue
-    ? allProducts.filter((p) =>
-      p.name.toLowerCase().includes(searchValue.toLowerCase())
-    ).slice(0, 6)
+    ? allProducts
+      .filter((p) => {
+        const query = searchValue.toLowerCase();
+
+        return (
+          p.name?.toLowerCase().includes(query) ||
+          p.category_id?.categoryName?.toLowerCase().includes(query) ||
+          p.subcategory?.toLowerCase().includes(query) ||
+          p.brand_id?.brandName?.toLowerCase().includes(query)
+        );
+      })
+      .slice(0, 8)
     : [];
+
 
   const handleSearch = () => {
     if (!searchValue.trim()) return;
@@ -172,8 +182,9 @@ const NavClient = () => {
                 placeholder="Search products..."
                 value={searchValue}
                 onChange={(e) => {
-                  setSearchValue(e.target.value);
-                  setShowSuggestions(true);
+                  const value = e.target.value;
+                  setSearchValue(value);
+                  setShowSuggestions(!!value.trim());
                 }}
                 onFocus={() => setShowSuggestions(true)}
                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
@@ -188,7 +199,7 @@ const NavClient = () => {
 
               {/* Live Suggestions */}
               {showSuggestions && filteredProducts.length > 0 && (
-                <div className="absolute top-full left-0 w-full bg-white shadow-lg rounded-md mt-1 z-50">
+                <div className="absolute top-full left-0 w-full bg-white shadow-lg rounded-md mt-1 z-50 max-h-80 overflow-auto">
                   {filteredProducts.map((item) => (
                     <Link
                       key={item._id}
@@ -196,7 +207,11 @@ const NavClient = () => {
                       onClick={() => setShowSuggestions(false)}
                       className="block px-4 py-2 text-sm hover:bg-pink-50"
                     >
-                      {item.name}
+                      <p className="font-medium">{item.name}</p>
+                      <p className="text-xs text-gray-500">
+                        {item.category_id?.categoryName} •{" "}
+                        {item.brand_id?.brandName}
+                      </p>
                     </Link>
                   ))}
                 </div>
