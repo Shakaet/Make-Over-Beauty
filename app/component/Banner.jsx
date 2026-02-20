@@ -1,10 +1,9 @@
-"use client"
-import React, { useEffect, useRef, useState } from 'react'
-import img1 from "@/public/images/ban2.jpg"
-import img2 from "@/public/images/ban3.jpg"
-import { siteSettingApi } from '../api/siteSettingApi'
-import Image from 'next/image'
-
+"use client";
+import React, { useEffect, useRef, useState } from "react";
+import img1 from "@/public/images/ban2.jpg";
+import img2 from "@/public/images/ban3.jpg";
+import { siteSettingApi } from "../api/siteSettingApi";
+import Image from "next/image";
 
 const SLIDES = [
   {
@@ -39,14 +38,13 @@ const SLIDES = [
     cta: "Shop now",
     align: "left",
   },
+];
 
-]
-
-const AUTOPLAY_MS = 5500
+const AUTOPLAY_MS = 5500;
 
 const Banner = () => {
-  const [index, setIndex] = useState(0)
-  const timerRef = useRef(null)
+  const [index, setIndex] = useState(0);
+  const timerRef = useRef(null);
   const [siteSettings, setSiteSettings] = useState(null);
 
   // Fetch existing settings
@@ -57,7 +55,7 @@ const Banner = () => {
   const fetchSettings = async () => {
     try {
       const data = await siteSettingApi.getAll();
-      const siteData = data.data[0]
+      const siteData = data.data[0];
       setSiteSettings(siteData);
     } catch (error) {
       console.error("Error fetching site settings:", error);
@@ -66,13 +64,12 @@ const Banner = () => {
 
   // autoplay
   useEffect(() => {
-    timerRef.current && clearInterval(timerRef.current)
+    timerRef.current && clearInterval(timerRef.current);
     timerRef.current = setInterval(() => {
-      setIndex((i) => (i + 1) % SLIDES.length)
-    }, AUTOPLAY_MS)
-    return () => timerRef.current && clearInterval(timerRef.current)
-  }, [])
-
+      setIndex((i) => (i + 1) % SLIDES.length);
+    }, AUTOPLAY_MS);
+    return () => timerRef.current && clearInterval(timerRef.current);
+  }, []);
 
   return (
     <section className="bg-[var(--blush)] pb-4 px-2">
@@ -85,8 +82,9 @@ const Banner = () => {
             {siteSettings?.sections.map((s, i) => (
               <div
                 key={i}
-                className={`min-w-full h-full relative md:flex ${s.align === "left" ? "md:flex-row" : "md:flex-row-reverse"
-                  }`}
+                className={`min-w-full h-full relative md:flex ${
+                  s.align === "left" ? "md:flex-row" : "md:flex-row-reverse"
+                }`}
               >
                 {/* IMAGE */}
                 <div className={`relative w-full h-full md:w-1/2`}>
@@ -99,7 +97,7 @@ const Banner = () => {
                     alt={s.title || "Banner Image"}
                     fill
                     className="object-cover object-center"
-                  // sizes="(max-width: 768px) 100vw, 50vw"
+                    // sizes="(max-width: 768px) 100vw, 50vw"
                   />
                 </div>
 
@@ -127,8 +125,9 @@ const Banner = () => {
                     </p>
 
                     <a
-                      href='/product'
-                      className="inline-flex items-center bg-[var(--pink)] rounded-full text-white px-4 py-2 text-sm sm:text-base hover:bg-black/80 transition">
+                      href="/product"
+                      className="inline-flex items-center bg-[var(--pink)] rounded-full text-white px-4 py-2 text-sm sm:text-base hover:bg-black/80 transition"
+                    >
                       {s.cta}
                     </a>
                   </div>
@@ -152,6 +151,6 @@ const Banner = () => {
       </div>
     </section>
   );
-}
+};
 
-export default Banner
+export default Banner;

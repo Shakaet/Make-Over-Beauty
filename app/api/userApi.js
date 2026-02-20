@@ -2,50 +2,62 @@ export const userApi = {
   // Get all users
   getAllUsers: async () => {
     try {
-      const response = await api.get('/api/users');
+      const response = await api.get(
+        "https://bloomingbeauty.vercel.app/api/users",
+      );
       return response.data;
     } catch (error) {
-      throw error.response?.data || { message: 'Failed to fetch users' };
+      throw error.response?.data || { message: "Failed to fetch users" };
     }
   },
 
   // Get single user by email
   getUserByEmail: async (email) => {
     try {
-      const response = await api.get(`/api/users/${email}`);
+      const response = await api.get(
+        `https://bloomingbeauty.vercel.app/api/users/${email}`,
+      );
       return response.data;
     } catch (error) {
-      throw error.response?.data || { message: 'Failed to fetch user' };
+      throw error.response?.data || { message: "Failed to fetch user" };
     }
   },
 
   // Get all managers
   getAllManagers: async () => {
     try {
-      const response = await api.get('/api/users/allmanager');
+      const response = await api.get(
+        "https://bloomingbeauty.vercel.app/api/users/allmanager",
+      );
       return response.data;
     } catch (error) {
-      throw error.response?.data || { message: 'Failed to fetch managers' };
+      throw error.response?.data || { message: "Failed to fetch managers" };
     }
   },
 
   // Get manager access
   getManagerAccess: async (email) => {
     try {
-      const response = await api.get(`/api/users/manager/access/${email}`);
+      const response = await api.get(
+        `https://bloomingbeauty.vercel.app/api/users/manager/access/${email}`,
+      );
       return response.data;
     } catch (error) {
-      throw error.response?.data || { message: 'Failed to fetch manager access' };
+      throw (
+        error.response?.data || { message: "Failed to fetch manager access" }
+      );
     }
   },
 
   // Delete user
   deleteUser: async (id) => {
     try {
-      const response = await api.delete(`/api/users/${id}`);
+      const response = await api.delete(
+        `https://bloomingbeauty.vercel.app/api/users/${id}`,
+      );
       return response.data;
     } catch (error) {
-      throw error.response?.data || { message: 'Failed to delete user' };
+      throw error.response?.data || { message: "Failed to delete user" };
     }
   },
 
@@ -53,9 +65,15 @@ export const userApi = {
   checkUserRole: async (email) => {
     try {
       const [customer, admin, manager] = await Promise.all([
-        api.get(`/api/users/getCustomer/${email}`),
-        api.get(`/api/users/getadmin/${email}`),
-        api.get(`/api/users/getmanager/${email}`),
+        api.get(
+          `https://bloomingbeauty.vercel.app/api/users/getCustomer/${email}`,
+        ),
+        api.get(
+          `https://bloomingbeauty.vercel.app/api/users/getadmin/${email}`,
+        ),
+        api.get(
+          `https://bloomingbeauty.vercel.app/api/users/getmanager/${email}`,
+        ),
       ]);
 
       return {
@@ -64,7 +82,7 @@ export const userApi = {
         isManager: manager.data.manager,
       };
     } catch (error) {
-      throw error.response?.data || { message: 'Failed to check user role' };
+      throw error.response?.data || { message: "Failed to check user role" };
     }
-  }
+  },
 };
