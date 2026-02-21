@@ -1,26 +1,34 @@
-'use client'
-import Link from 'next/link'
-import React, { useContext, useEffect, useState } from 'react'
-import { Context } from '../provider/AuthProvider'
-import CartDrawer from './CartDrawer'
-import { LogOut, SearchIcon, User, ChevronDown, Menu, ShoppingCart, Phone } from 'lucide-react'
+"use client";
+import Link from "next/link";
+import React, { useContext, useEffect, useState } from "react";
+import { Context } from "../provider/AuthProvider";
+import CartDrawer from "./CartDrawer";
+import {
+  LogOut,
+  SearchIcon,
+  User,
+  ChevronDown,
+  Menu,
+  ShoppingCart,
+  Phone,
+} from "lucide-react";
 
-import logo from "@/public/images/logoup9.png"
-import Image from 'next/image'
-import MobileBottomBar from './MobileBottomBar'
-import Banner from './Banner'
-import { useProduct } from '../hooks/useProducts'
-import { useCategories } from '../hooks/useCategories'
-import useAddToCart from '../hooks/useAddToCart'
+import logo from "@/public/images/logoup9.png";
+import Image from "next/image";
+import MobileBottomBar from "./MobileBottomBar";
+import Banner from "./Banner";
+import { useProduct } from "../hooks/useProducts";
+import { useCategories } from "../hooks/useCategories";
+import useAddToCart from "../hooks/useAddToCart";
 
 const NavClient = () => {
-  const { cart, loadCart } = useAddToCart()
-  const { user, signOuts } = useContext(Context)
-  const [isOpen, setIsOpen] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [mounted, setMounted] = useState(false)
-  const [mobileOpen, setMobileOpen] = useState(false)
-  const [categoryOpen, setCategoryOpen] = useState(false)
+  const { cart, loadCart } = useAddToCart();
+  const { user, signOuts } = useContext(Context);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [categoryOpen, setCategoryOpen] = useState(false);
   const { categories } = useCategories();
   const [activeCategory, setActiveCategory] = useState(null);
 
@@ -32,36 +40,32 @@ const NavClient = () => {
 
   useEffect(() => {
     const onScroll = () => {
-      setIsScrolled(window.scrollY > 10)
-    }
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+      setIsScrolled(window.scrollY > 10);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
-  const toggleDrawer = () => setIsOpen(prev => !prev)
+  const toggleDrawer = () => setIsOpen((prev) => !prev);
 
-  const {
-    allProducts,
-    fetchAllProducts,
-    setSearchTerm,
-  } = useProduct();
+  const { allProducts, fetchAllProducts, setSearchTerm } = useProduct();
 
   useEffect(() => {
-    fetchAllProducts()
-  }, [])
+    fetchAllProducts();
+  }, []);
 
   const [searchValue, setSearchValue] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   const filteredProducts = searchValue
-    ? allProducts.filter((p) =>
-      p.name.toLowerCase().includes(searchValue.toLowerCase())
-    ).slice(0, 6)
+    ? allProducts
+        .filter((p) => p.name.toLowerCase().includes(searchValue.toLowerCase()))
+        .slice(0, 6)
     : [];
 
   const handleSearch = () => {
@@ -75,7 +79,6 @@ const NavClient = () => {
       <nav className="relative bg-[var(--blush)] z-50">
         <div className="mx-auto px-6 md:px-12">
           <div className="flex justify-between items-center h-20">
-
             {/* Logo */}
             <Link href="/" className="flex-shrink-0">
               <Image
@@ -89,7 +92,9 @@ const NavClient = () => {
 
             {/* Center Menu */}
             <ul className="hidden md:flex items-center gap-8 text-sm font-medium text-[var(--pink)]">
-              <li><Link href="/product">Products</Link></li>
+              <li>
+                <Link href="/product">Products</Link>
+              </li>
 
               {/* Categories */}
               <li
@@ -106,64 +111,73 @@ const NavClient = () => {
                 >
                   <Menu className="w-4 h-4" />
                   Categories
-                  <ChevronDown className="w-4 h-4" />
+                  <ChevronDown
+                    className={`w-4 h-4 transition-transform duration-300 ${
+                      categoryOpen ? "rotate-180" : ""
+                    }`}
+                  />
                 </button>
 
-
-                {categoryOpen && (
-                  <div className="absolute left-1/2 -translate-x-1/2 top-full mt-4 w-[700px] bg-white shadow-2xl rounded-xl p-8">
-                    <div className="grid grid-cols-2 gap-6">
-
-                      {/* Skin Category */}
-                      <div>
-                        <h3 className="font-semibold mb-3 border-b pb-2">Product Category</h3>
-                        <div className="max-h-72 overflow-y-auto custom-scrollbar">
-                          {categories.map((cat) => (
-                            <Link
-                              key={cat._id}
-                              href={{
-                                pathname: "/product",
-                                query: { category: cat._id },
-                              }}
-                              onMouseEnter={() => setActiveCategory(cat)}
-                              className="block text-sm py-1 hover:text-pink-500"
-                            >
-                              {cat.categoryName}
-                            </Link>
-                          ))}
-
-                        </div>
-                      </div>
-
-                      {/* Product Sub-Category */}
-                      <div>
-                        <h3 className="font-semibold mb-3 border-b pb-2">
-                          {activeCategory?.categoryName || "Sub Categories"}
-                        </h3>
-                        {activeCategory?.subCategories?.map((sub) => (
+                {/* Dropdown Modal with Smooth Animation */}
+                <div
+                  className={`absolute left-1/2 -translate-x-1/2 top-full mt-4 w-[700px] bg-white shadow-2xl rounded-xl p-8 transition-all duration-300 ease-out ${
+                    categoryOpen
+                      ? "opacity-100 visible translate-y-0 scale-100"
+                      : "opacity-0 invisible -translate-y-4 scale-95"
+                  }`}
+                >
+                  <div className="grid grid-cols-2 gap-6">
+                    {/* Skin Category */}
+                    <div>
+                      <h3 className="font-semibold mb-3 border-b pb-2">
+                        Product Category
+                      </h3>
+                      <div className="max-h-72 overflow-y-auto custom-scrollbar">
+                        {categories.map((cat) => (
                           <Link
-                            key={sub._id}
+                            key={cat._id}
                             href={{
                               pathname: "/product",
-                              query: {
-                                category: activeCategory._id,
-                                subcategory: sub.name,
-                              },
+                              query: { category: cat._id },
                             }}
+                            onMouseEnter={() => setActiveCategory(cat)}
                             className="block text-sm py-1 hover:text-pink-500"
                           >
-                            {sub.name}
+                            {cat.categoryName}
                           </Link>
                         ))}
                       </div>
                     </div>
+
+                    {/* Product Sub-Category */}
+                    <div>
+                      <h3 className="font-semibold mb-3 border-b pb-2">
+                        {activeCategory?.categoryName || "Sub Categories"}
+                      </h3>
+                      {activeCategory?.subCategories?.map((sub) => (
+                        <Link
+                          key={sub._id}
+                          href={{
+                            pathname: "/product",
+                            query: {
+                              category: activeCategory._id,
+                              subcategory: sub.name,
+                            },
+                          }}
+                          className="block text-sm py-1 hover:text-pink-500"
+                        >
+                          {sub.name}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
-                )}
+                </div>
               </li>
 
-              <li><Link href="/offers">Offers</Link></li>
+              <li>
+                <Link href="/offers">Offers</Link>
+              </li>
             </ul>
-
 
             {/* Search */}
             <div className="hidden md:flex flex-1 max-w-md mx-8 relative">
@@ -203,7 +217,6 @@ const NavClient = () => {
               )}
             </div>
 
-
             {/* Right */}
             <div className="flex items-center gap-4">
               {!user ? (
@@ -215,8 +228,12 @@ const NavClient = () => {
                 </Link>
               ) : (
                 <>
-                  <Link href="/dashboard"><User /></Link>
-                  <button onClick={signOuts}><LogOut /></button>
+                  <Link href="/dashboard">
+                    <User />
+                  </Link>
+                  <button onClick={signOuts}>
+                    <LogOut />
+                  </button>
                 </>
               )}
               {/* Floating Cart Icon */}
@@ -225,7 +242,7 @@ const NavClient = () => {
                 onClick={toggleDrawer}
                 className="relative hover:opacity-80 p-1 cursor-pointer hidden md:flex"
               >
-                <div className='flex items-center gap-2 rounded-full shadow-lg px-3 py-1 bg-[var(--pink)] text-white'>
+                <div className="flex items-center gap-2 rounded-full shadow-lg px-3 py-1 bg-[var(--pink)] text-white">
                   <svg
                     width="22"
                     height="22"
@@ -255,18 +272,16 @@ const NavClient = () => {
 
       {/* Scrollbar */}
       <style jsx global>{`
-      .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-      .custom-scrollbar::-webkit-scrollbar-thumb {
-        background: #ec4899;
-        border-radius: 10px;
-      }
-    `}</style>
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #ec4899;
+          border-radius: 10px;
+        }
+      `}</style>
     </>
   );
+};
 
-}
-
-
-
-
-export default NavClient
+export default NavClient;

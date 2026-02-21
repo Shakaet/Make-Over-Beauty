@@ -2,12 +2,12 @@
 
 import { useContext, useEffect, useState } from "react";
 import { X, Trash2 } from "lucide-react";
-import api from "../libs/axios";
+// import api from "../libs/axios";
 import toast from "react-hot-toast";
 import useAddToCart from "@/app/hooks/useAddToCart";
 import { Context } from "../provider/AuthProvider";
 import { useRouter } from "next/navigation";
-import { createOrder } from "../api/orderApi";
+// import { createOrder } from "../api/orderApi";
 
 export default function CartDrawer({ isOpen, toggleDrawer }) {
   const { cart, loadCart } = useAddToCart();
@@ -104,9 +104,9 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
   };
 
   // ---------------------------
-  //  PLACE ORDER (MAIN FIX)
+  //  WHATSAPP REDIRECT
   // ---------------------------
-  const placeOrder = async () => {
+  const handleWhatsAppCheckout = () => {
     if (!user) {
       toast(
         <div className="text-red-500 text-lg font-semibold px-2">
@@ -117,50 +117,134 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
       return;
     }
 
+    if (cart.length === 0) {
+      toast.error("Your cart is empty!");
+      return;
+    }
+
+    const phoneNumber = "8801780326279"; // WhatsApp number with country code
+    const baseUrl = "https://www.bloomingbeautybymoon.com/product/products/";
+
+    // Build product details message
+    let message = `🛒 *New Order Request*\n`;
+    message += `━━━━━━━━━━━━━━━━━━━━\n`;
+    message += `👤 *Customer:* ${user.name || user.email}\n`;
+    message += `📧 *Email:* ${user.email}\n\n`;
+    message += `📦 *Order Details:*\n`;
+    message += `━━━━━━━━━━━━━━━━━━━━\n`;
+
+    cart.forEach((item, index) => {
+      const productUrl = `${baseUrl}${item.productId}`;
+      message += `\n${index + 1}. *${item.name}*\n`;
+      message += `   🔗 ${productUrl}\n`;
+      message += `   💰 Price: ৳${item.price}\n`;
+      message += `   📊 Quantity: ${item.quantity}\n`;
+      message += `   💵 Subtotal: ৳${item.price * item.quantity}\n`;
+    });
+
+    const subtotal = cart.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0,
+    );
+
+    message += `\n━━━━━━━━━━━━━━━━━━━━\n`;
+    message += `💰 *Subtotal:* ৳${subtotal}\n`;
+
+    if (appliedCoupon) {
+      const discountAmount = (subtotal * appliedCoupon.percentage) / 100;
+      message += `🎟️ *Coupon:* ${appliedCoupon.code} (-${appliedCoupon.percentage}%)\n`;
+      message += `💸 *Discount:* -৳${discountAmount.toFixed(2)}\n`;
+      message += `━━━━━━━━━━━━━━━━━━━━\n`;
+      message += `✅ *Total:* ৳${(subtotal - discountAmount).toFixed(2)}\n`;
+    } else {
+      message += `━━━━━━━━━━━━━━━━━━━━\n`;
+      message += `✅ *Total:* ৳${subtotal}\n`;
+    }
+
+    message += `\n━━━━━━━━━━━━━━━━━━━━\n`;
+    message += `🙏 Thank you for your order!`;
+
+    // Encode message for URL
+    const encodedMessage = encodeURIComponent(message);
+
+    // Create WhatsApp URL
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+    // Open WhatsApp in new tab
+    window.open(whatsappUrl, "_blank");
+
+    // Close drawer
     toggleDrawer();
 
-    setLoading(true);
-    try {
-      const items = cart.map((item) => ({
-        productId: item.productId,
-        quantity: item.quantity,
-        price: item.price,
-      }));
+    // Clear cart after redirect
+    localStorage.removeItem("tempCart");
+    window.dispatchEvent(new Event("cartUpdated"));
+    setDiscount(0);
+    setAppliedCoupon(null);
+    setCoupon("");
 
-      const subtotal = items.reduce(
-        (sum, item) => sum + item.price * item.quantity,
-        0,
-      );
-      const couponCode = appliedCoupon?.code || "";
-      const discountPercent = appliedCoupon?.percentage || 0;
-      const totalAmount = subtotal - (subtotal * discountPercent) / 100;
-
-      // Use API service instead of calling api.post directly
-      await createOrder({
-        email: user.email,
-        subtotal,
-        couponCode,
-        discountPercent,
-        totalAmount,
-        items,
-      });
-
-      alert("Order placed successfully!");
-
-      // Clear cart
-      localStorage.removeItem("tempCart");
-      window.dispatchEvent(new Event("cartUpdated"));
-      setDiscount(0);
-      setAppliedCoupon(null);
-      setCoupon("");
-    } catch (err) {
-      toast.error(err?.response?.data?.message || err.message);
-    } finally {
-      setLoading(false);
-    }
+    toast.success("Redirecting to WhatsApp...");
   };
 
+  // ---------------------------
+  //  PLACE ORDER (COMMENTED OUT)
+  // ---------------------------
+  // const placeOrder = async () => {
+  //   if (!user) {
+  //     toast(
+  //       <div className="text-red-500 text-lg font-semibold px-2">
+  //         Please login first!
+  //       </div>,
+  //     );
+  //     router.push("/my-account");
+  //     return;
+  //   }
+
+  //   toggleDrawer();
+
+  //   setLoading(true);
+  //   try {
+  //     const items = cart.map((item) => ({
+  //       productId: item.productId,
+  //       quantity: item.quantity,
+  //       price: item.price,
+  //     }));
+
+  //     const subtotal = items.reduce(
+  //       (sum, item) => sum + item.price * item.quantity,
+  //       0,
+  //     );
+  //     const couponCode = appliedCoupon?.code || "";
+  //     const discountPercent = appliedCoupon?.percentage || 0;
+  //     const totalAmount = subtotal - (subtotal * discountPercent) / 100;
+
+  //     // Use API service instead of calling api.post directly
+  //     await createOrder({
+  //       email: user.email,
+  //       subtotal,
+  //       couponCode,
+  //       discountPercent,
+  //       totalAmount,
+  //       items,
+  //     });
+
+  //     alert("Order placed successfully!");
+
+  //     // Clear cart
+  //     localStorage.removeItem("tempCart");
+  //     window.dispatchEvent(new Event("cartUpdated"));
+  //     setDiscount(0);
+  //     setAppliedCoupon(null);
+  //     setCoupon("");
+  //   } catch (err) {
+  //     toast.error(err?.response?.data?.message || err.message);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   // Apply coupon
+
   const applyCoupon = async () => {
     const code = coupon.trim();
     // if (code) return toast.error("Please enter coupon");
@@ -309,10 +393,7 @@ export default function CartDrawer({ isOpen, toggleDrawer }) {
             </button>
 
             <button
-              onClick={() => {
-                toggleDrawer();
-                placeOrder();
-              }}
+              onClick={handleWhatsAppCheckout}
               disabled={cart.length === 0 || loading}
               className={`w-full ${
                 user
