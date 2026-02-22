@@ -41,7 +41,7 @@ api.interceptors.response.use(
       } catch (refreshError) {
         // Refresh failed, redirect to login
         localStorage.removeItem('accessToken');
-        window.location.href = '/login';
+        window.location.href = '/my-account';
         return Promise.reject(refreshError);
       }
     }

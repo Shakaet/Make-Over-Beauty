@@ -51,12 +51,11 @@ const AuthProvider = ({ children }) => {
     }
 
     // Register using Firebase auth
-    const createRegistered = (email, password) =>
-        createUserWithEmailAndPassword(auth, email, password);
+    const createRegistered = (email, password) => {
+        router.push("/");
+        return createUserWithEmailAndPassword(auth, email, password);
+    };
 
-    // Login Firebase
-    // const loginSetup = (email, password) =>
-    //     signInWithEmailAndPassword(auth, email, password);
     const loginSetup = async (email, password) => {
         try {
             const firebaseResult = await signInWithEmailAndPassword(auth, email, password);

@@ -45,7 +45,7 @@ export default function UsersPage() {
     useEffect(() => {
         if (!authLoading) {
             if (!user) {
-                router.push('/login');
+                router.push('/my-account');
             } else if (role !== 'admin') {
                 router.push('/dashboard');
             }
@@ -111,7 +111,7 @@ export default function UsersPage() {
                 if (err.response.status === 401) {
                     errorMessage = 'Authentication expired. Please log in again.';
                     localStorage.removeItem('accessToken');
-                    router.push('/login');
+                    router.push('/my-account');
                 } else if (err.response.status === 403) {
                     errorMessage = 'You do not have permission to view users.';
                 } else if (err.response.status === 404) {
@@ -258,7 +258,7 @@ export default function UsersPage() {
                     <h2 className="text-2xl font-bold text-gray-800 mb-2">Authentication Required</h2>
                     <p className="text-gray-600 mb-6">Please log in to access this page</p>
                     <Link
-                        href="/login"
+                        href="/my-account"
                         className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
                     >
                         Go to Login
@@ -384,7 +384,7 @@ export default function UsersPage() {
                                     <button
                                         onClick={() => {
                                             localStorage.removeItem('accessToken');
-                                            router.push('/login');
+                                            router.push('/my-account');
                                         }}
                                         className="px-4 py-2 border border-red-300 text-red-700 rounded-lg hover:bg-red-50 transition-colors duration-200"
                                     >
