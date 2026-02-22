@@ -62,7 +62,7 @@ export const useProduct = () => {
         };
 
         const res = await getAllProducts(params);
-
+        // setProducts(prev => [res.data, ...prev.slice(0, 7)]);
         setProducts(res.data || []);
         setTotalPages(res.totalPages);
         setTotalProducts(res.totalProducts);
@@ -87,13 +87,13 @@ export const useProduct = () => {
     try {
       setLoading(true);
       const response = await createProduct(productData, images);
-      console.log("Create response:", response); // Log the response
-      if (response.success) {
-        fetchProducts();
-        fetchAllProducts();
-        return { success: true, message: response.message };
-      }
-      return { success: false, message: response.message };
+      //  console.log("Create response:", response); // Log the response
+
+      await fetchProducts({ page: 1 });
+      setCurrentPage(1);
+      await fetchAllProducts();
+      return { success: true };
+
     } catch (error) {
       console.error("Error creating product:", error);
       return { success: false, message: error.message };

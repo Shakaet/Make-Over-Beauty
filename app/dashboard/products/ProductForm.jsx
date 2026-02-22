@@ -266,7 +266,7 @@ export const ProductForm = ({
                     {/* Pricing Section */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div>
-                            <label className="block text-pink-900 mb-2 font-semibold">Discount Price *</label>
+                            <label className="block text-pink-900 mb-2 font-semibold">Discount Price</label>
                             <input
                                 type="number"
                                 step="0.01"
@@ -277,7 +277,7 @@ export const ProductForm = ({
                             />
                         </div>
                         <div>
-                            <label className="block text-pink-900 mb-2 font-semibold">Original Price</label>
+                            <label className="block text-pink-900 mb-2 font-semibold">Original Price *</label>
                             <input
                                 type="number"
                                 step="0.01"

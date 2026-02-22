@@ -7,6 +7,7 @@ import { ProductFilter } from './ProductFilter';
 import { ProductForm } from './ProductForm';
 import { categoryApi } from '@/app/api/categoryApi';
 import { brandApi } from '@/app/api/brandApi';
+import toast from 'react-hot-toast';
 
 const ProductDashboard = () => {
     const {
@@ -225,14 +226,15 @@ const ProductDashboard = () => {
         let result;
         if (modalMode === 'create') {
             result = await handleCreate(payload, images);
+            toast.success('Product created successfully!');
         } else {
             result = await handleUpdate(selectedProduct._id, payload, images);
+            toast.success('Product updated successfully!');
         }
 
-        if (result.success) {
-            setShowModal(false);
-            resetForm();
-        }
+        setShowModal(false);
+        resetForm();
+
     };
     const confirmDelete = (productId) => {
         setDeleteProductId(productId);
