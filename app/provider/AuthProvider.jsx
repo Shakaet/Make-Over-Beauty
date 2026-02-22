@@ -89,17 +89,17 @@ const AuthProvider = ({ children }) => {
     const fetchRole = async (email) => {
         try {
             const customer = await axios.get(
-                `https://beauty-server-nine.vercel.app/api/users/getCustomer/${email}`
+                `https://bloomingbeauty.vercel.app/api/users/getCustomer/${email}`
             );
             if (customer.data.customer === true) return "customer";
 
             const admin = await axios.get(
-                `https://beauty-server-nine.vercel.app/api/users/getadmin/${email}`
+                `https://bloomingbeauty.vercel.app/api/users/getadmin/${email}`
             );
             if (admin.data.admin === true) return "admin";
 
             // const manager = await axios.get(
-            //     `https://beauty-server-nine.vercel.app/api/users/getmanager/${email}`
+            //     `https://bloomingbeauty.vercel.app/api/users/getmanager/${email}`
             // );
             // if (manager.data.manager === true) return "manager";
 

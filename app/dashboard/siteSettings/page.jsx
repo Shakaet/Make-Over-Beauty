@@ -115,7 +115,7 @@ export default function SiteSettings() {
             console.log('Sending data:', dataObj);
             console.log('Image files:', Object.keys(imageFiles));
 
-            const response = await fetch(`https://beauty-server-nine.vercel.app/api/site-setting`, {
+            const response = await fetch(`https://bloomingbeauty.vercel.app/api/site-setting`, {
                 method: 'PATCH',
                 body: formDataToSend
             });

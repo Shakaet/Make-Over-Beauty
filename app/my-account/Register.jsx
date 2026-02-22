@@ -83,7 +83,7 @@ const Register = () => {
               .then(()=>{
               //  toast.success("Profile Updated")
               console.log(safeData)
-               return axios.post("https://beauty-server-nine.vercel.app/api/users", safeData)
+               return axios.post("hhttps://bloomingbeauty.vercel.app/api/users", safeData)
               })
             })
             .then((res)=>{

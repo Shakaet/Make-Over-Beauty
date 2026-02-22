@@ -28,7 +28,7 @@ api.interceptors.response.use(
       try {
         // Attempt to refresh token
         const refreshResponse = await axios.post(
-          'https://beauty-server-nine.vercel.app/api/auth/refresh-token',
+          'https://bloomingbeauty.vercel.app/api/auth/refresh-token',
           {},
           { withCredentials: true }
         );

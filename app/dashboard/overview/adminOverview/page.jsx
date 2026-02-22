@@ -65,7 +65,7 @@ export default function AdminDashboardPage() {
                 try {
                     const token = localStorage.getItem('accessToken');
                     const res = await axios.get(
-                        'https://beauty-server-nine.vercel.app/api/users',
+                        'https://bloomingbeauty.vercel.app/api/users',
                         {
                             headers: token ? { Authorization: `Bearer ${token}` } : {}
                         }

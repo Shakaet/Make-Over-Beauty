@@ -73,7 +73,7 @@ export default function UsersPage() {
                     // Approach 2: Direct axios call with token
                     const token = localStorage.getItem('accessToken');
                     const response = await axios.get(
-                        'https://beauty-server-nine.vercel.app/api/users',
+                        'https://bloomingbeauty.vercel.app/api/users',
                         {
                             headers: token ? { Authorization: `Bearer ${token}` } : {},
                             timeout: 10000
@@ -84,7 +84,7 @@ export default function UsersPage() {
 
                     try {
                         const response = await axios.get(
-                            'https://beauty-server-nine.vercel.app/api/users',
+                            'https://bloomingbeauty.vercel.app/api/users',
                             { timeout: 10000 }
                         );
                         usersData = response.data.data || response.data;
