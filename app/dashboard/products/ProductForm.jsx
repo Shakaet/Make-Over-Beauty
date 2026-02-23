@@ -53,7 +53,7 @@ export const ProductForm = ({
                                 (imgField, idx) => (
                                     <div key={imgField}>
                                         <label className="block text-pink-900 mb-2 font-semibold text-sm">
-                                            Image {idx + 1} {modalMode === "create" && "*"}
+                                            Image {idx + 1} {modalMode === "create" && idx === 0 && "*"}
                                         </label>
                                         <input
                                             type="file"
@@ -193,10 +193,11 @@ export const ProductForm = ({
                         <label className="block text-pink-900 mb-2 font-semibold">Description *</label>
                         <textarea
                             name="description"
+                            type="text"
                             value={formData.description}
                             onChange={handleInputChange}
                             required
-                            rows={3}
+                            rows={8}
                             className="w-full px-4 py-3 bg-white border border-pink-200 rounded-xl resize-none focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/30 transition-all"
                         />
                     </div>
