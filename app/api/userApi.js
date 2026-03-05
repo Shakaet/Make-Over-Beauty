@@ -1,10 +1,12 @@
+// app/api/userApi.js
+// import api from "./axiosInstance"; // Make sure this path points to your axios config file
+
 export const userApi = {
   // Get all users
   getAllUsers: async () => {
     try {
-      const response = await api.get(
-        "https://bloomingbeauty.vercel.app/api/users",
-      );
+      // ✅ FIX: Removed full URL, using relative path
+      const response = await api.get("/users");
       return response.data;
     } catch (error) {
       throw error.response?.data || { message: "Failed to fetch users" };
@@ -14,9 +16,7 @@ export const userApi = {
   // Get single user by email
   getUserByEmail: async (email) => {
     try {
-      const response = await api.get(
-        `https://bloomingbeauty.vercel.app/api/users/${email}`,
-      );
+      const response = await api.get(`/users/${email}`);
       return response.data;
     } catch (error) {
       throw error.response?.data || { message: "Failed to fetch user" };
@@ -26,21 +26,37 @@ export const userApi = {
   // Get all managers
   getAllManagers: async () => {
     try {
-      const response = await api.get(
-        "https://bloomingbeauty.vercel.app/api/users/allmanager",
-      );
+      const response = await api.get("/users/allmanager");
       return response.data;
     } catch (error) {
-      throw error.response?.data || { message: "Failed to fetch managers" };
+      // ✅ Better Error Logging
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.error(
+          "Backend Error:",
+          error.response.status,
+          error.response.data,
+        );
+        throw error.response.data;
+      } else if (error.request) {
+        // The request was made but no response was received
+        // This usually means CORS issue or Backend is down
+        console.error("Network Error:", error.message);
+        throw {
+          message:
+            "Network Error: Cannot connect to backend. Check CORS settings.",
+        };
+      } else {
+        throw { message: "Request failed" };
+      }
     }
   },
 
   // Get manager access
   getManagerAccess: async (email) => {
     try {
-      const response = await api.get(
-        `https://bloomingbeauty.vercel.app/api/users/manager/access/${email}`,
-      );
+      const response = await api.get(`/users/manager/access/${email}`);
       return response.data;
     } catch (error) {
       throw (
@@ -52,9 +68,7 @@ export const userApi = {
   // Delete user
   deleteUser: async (id) => {
     try {
-      const response = await api.delete(
-        `https://bloomingbeauty.vercel.app/api/users/${id}`,
-      );
+      const response = await api.delete(`/users/${id}`);
       return response.data;
     } catch (error) {
       throw error.response?.data || { message: "Failed to delete user" };
@@ -65,15 +79,9 @@ export const userApi = {
   checkUserRole: async (email) => {
     try {
       const [customer, admin, manager] = await Promise.all([
-        api.get(
-          `https://bloomingbeauty.vercel.app/api/users/getCustomer/${email}`,
-        ),
-        api.get(
-          `https://bloomingbeauty.vercel.app/api/users/getadmin/${email}`,
-        ),
-        api.get(
-          `https://bloomingbeauty.vercel.app/api/users/getmanager/${email}`,
-        ),
+        api.get(`/users/getCustomer/${email}`),
+        api.get(`/users/getadmin/${email}`),
+        api.get(`/users/getmanager/${email}`),
       ]);
 
       return {
@@ -83,6 +91,32 @@ export const userApi = {
       };
     } catch (error) {
       throw error.response?.data || { message: "Failed to check user role" };
+    }
+  },
+
+  // Update manager permissions
+  updateManagerAccess: async (id, permissions) => {
+    try {
+      const response = await api.patch(
+        `/users/update-access/${id}`,
+        permissions,
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: "Failed to update access" };
+    }
+  },
+
+  // Invite Moderator (from previous steps)
+  inviteModerator: async (email, permissions) => {
+    try {
+      const response = await api.post("/users/invite-moderator", {
+        email,
+        permissions,
+      });
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: "Failed to send invite" };
     }
   },
 };

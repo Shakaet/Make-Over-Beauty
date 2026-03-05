@@ -1,475 +1,354 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useContext } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect, useContext } from "react";
+import { motion } from "framer-motion";
 import {
-    Search,
-    Filter,
-    Users,
-    RefreshCw,
-    Download,
-    Shield,
-    Building,
-    User as UserIcon,
-    AlertCircle,
-    Lock,
-    WifiOff,
-    Server
-} from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import axios from 'axios';
-import UserCard from './UserCard';
-import { Context } from '@/app/provider/AuthProvider';
-import { userApi } from '@/app/api/userApi';
+  Search,
+  Filter,
+  Users as UsersIcon,
+  RefreshCw,
+  Shield,
+  User as UserIcon,
+  Lock,
+  AlertCircle,
+} from "lucide-react";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import UserCard from "./UserCard"; // Make sure this path is correct
+import { Context } from "@/app/provider/AuthProvider";
 
 export default function UsersPage() {
-    const { user, role, loading: authLoading } = useContext(Context);
-    const router = useRouter();
+  const { user, loading: authLoading } = useContext(Context);
+  const router = useRouter();
 
-    const [users, setUsers] = useState([]);
-    const [filteredUsers, setFilteredUsers] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [roleFilter, setRoleFilter] = useState('all');
-    const [stats, setStats] = useState({
-        total: 0,
-        customers: 0,
-        managers: 0,
-        admins: 0
-    });
-    const [apiStatus, setApiStatus] = useState('checking');
+  const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [roleFilter, setRoleFilter] = useState("all");
+  const [stats, setStats] = useState({
+    total: 0,
+    customers: 0,
+    admins: 0,
+    managers: 0,
+  });
 
-    // Redirect if not authenticated or not admin
-    useEffect(() => {
-        if (!authLoading) {
-            if (!user) {
-                router.push('/my-account');
-            } else if (role !== 'admin') {
-                router.push('/dashboard');
-            }
-        }
-    }, [user, role, authLoading, router]);
+  // ---------------------------------------------------------
+  // 1. Main Function: Verify Access & Fetch Data
+  // ---------------------------------------------------------
+  useEffect(() => {
+    const verifyAndFetch = async () => {
+      // 1. Wait for Auth Context to finish loading
+      if (authLoading) return;
 
-    const fetchUsers = async () => {
-        if (!user || role !== 'admin') return;
+      // 2. If no Firebase user, redirect to login
+      if (!user) {
+        router.push("/my-account");
+        return;
+      }
 
+      // 3. Fetch Users from Backend
+      try {
         setLoading(true);
         setError(null);
 
-        try {
+        // Get the Firebase token
+        const token = user.accessToken || localStorage.getItem("accessToken");
 
-            // Try multiple approaches to fetch users
-            let usersData;
-
-            try {
-                // Approach 1: Using the userApi (with auth headers)
-                const data = await userApi.getAllUsers();
-                usersData = data.data || data;
-            } catch (apiError) {
-
-                try {
-                    // Approach 2: Direct axios call with token
-                    const token = localStorage.getItem('accessToken');
-                    const response = await axios.get(
-                        'https://bloomingbeauty.vercel.app/api/users',
-                        {
-                            headers: token ? { Authorization: `Bearer ${token}` } : {},
-                            timeout: 10000
-                        }
-                    );
-                    usersData = response.data.data || response.data;
-                } catch (directError) {
-
-                    try {
-                        const response = await axios.get(
-                            'https://bloomingbeauty.vercel.app/api/users',
-                            { timeout: 10000 }
-                        );
-                        usersData = response.data.data || response.data;
-                    } catch (publicError) {
-                        throw new Error('All fetch methods failed');
-                    }
-                }
-            }
-
-            if (!usersData || !Array.isArray(usersData)) {
-                throw new Error('Invalid data format received from server');
-            }
-
-            setUsers(usersData);
-            setFilteredUsers(usersData);
-            updateStats(usersData);
-            setError(null);
-
-        } catch (err) {
-
-            let errorMessage = 'Failed to fetch users';
-
-            if (err.response) {
-                if (err.response.status === 401) {
-                    errorMessage = 'Authentication expired. Please log in again.';
-                    localStorage.removeItem('accessToken');
-                    router.push('/my-account');
-                } else if (err.response.status === 403) {
-                    errorMessage = 'You do not have permission to view users.';
-                } else if (err.response.status === 404) {
-                    errorMessage = 'Users endpoint not found.';
-                } else {
-                    errorMessage = `Server error: ${err.response.status}`;
-                }
-            } else if (err.request) {
-                errorMessage = 'No response from server. Please check your connection.';
-            } else {
-                errorMessage = err.message || 'Unknown error occurred';
-            }
-
-            setError(errorMessage);
-
-            // Set empty state for UI
-            setUsers([]);
-            setFilteredUsers([]);
-            updateStats([]);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const updateStats = (userList) => {
-        const stats = {
-            total: userList.length,
-            customers: userList.filter(u => u.role === 'customer').length,
-            //    managers: userList.filter(u => u.role === 'manager').length,
-            admins: userList.filter(u => u.role === 'admin').length
-        };
-        setStats(stats);
-    };
-
-    const handleDelete = async (userId) => {
-        if (!user || role !== 'admin') {
-            alert('Unauthorized action');
-            return;
+        if (!token) {
+          throw new Error("Authentication token not found.");
         }
 
-        try {
-            await userApi.deleteUser(userId);
-            const updatedUsers = users.filter(user => user._id !== userId);
-            setUsers(updatedUsers);
-            setFilteredUsers(updatedUsers);
-            updateStats(updatedUsers);
-        } catch (err) {
-            throw new Error(err.message || 'Delete failed');
-        }
-    };
-
-    const handleSearch = (term) => {
-        setSearchTerm(term);
-        let filtered = users;
-
-        if (term) {
-            filtered = filtered.filter(user =>
-                user.email?.toLowerCase().includes(term.toLowerCase()) ||
-                user.name?.toLowerCase().includes(term.toLowerCase())
-            );
-        }
-
-        if (roleFilter !== 'all') {
-            filtered = filtered.filter(user => user.role === roleFilter);
-        }
-
-        setFilteredUsers(filtered);
-    };
-
-    const handleRoleFilter = (role) => {
-        setRoleFilter(role);
-        let filtered = users;
-
-        if (role !== 'all') {
-            filtered = filtered.filter(user => user.role === role);
-        }
-
-        if (searchTerm) {
-            filtered = filtered.filter(user =>
-                user.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                user.name?.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-        }
-
-        setFilteredUsers(filtered);
-    };
-
-    useEffect(() => {
-        if (user && role === 'admin') {
-            fetchUsers();
-        }
-    }, [user, role]);
-
-    const StatCard = ({ icon: Icon, label, value, color, loading }) => (
-        <motion.div
-            whileHover={{ scale: 1.05 }}
-            className={`${color} rounded-2xl p-6 shadow-sm border border-gray-100`}
-        >
-            <div className="flex items-center justify-between">
-                <div>
-                    <p className="text-sm font-medium text-gray-600">{label}</p>
-                    {loading ? (
-                        <div className="h-8 w-16 bg-gray-200 animate-pulse rounded mt-2"></div>
-                    ) : (
-                        <p className="text-3xl font-bold mt-2">{value}</p>
-                    )}
-                </div>
-                <div className="p-3 bg-white rounded-xl">
-                    <Icon className="w-6 h-6" />
-                </div>
-            </div>
-        </motion.div>
-    );
-
-    // Loading state
-    if (authLoading || (loading && users.length === 0)) {
-        return (
-            <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6">
-                <div className="max-w-7xl mx-auto">
-                    <div className="animate-pulse">
-                        <div className="h-8 bg-gray-200 rounded-lg w-64 mb-8"></div>
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-                            {[...Array(4)].map((_, i) => (
-                                <div key={i} className="h-32 bg-gray-200 rounded-2xl"></div>
-                            ))}
-                        </div>
-                        <div className="space-y-4">
-                            {[...Array(3)].map((_, i) => (
-                                <div key={i} className="h-32 bg-gray-200 rounded-2xl"></div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
+        // Fetch all users from your API
+        const res = await axios.get(
+          "https://bloomingbeauty.vercel.app/api/users/",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
         );
+
+        const usersList = res.data.data || [];
+
+        // 4. Check if the current logged-in user is an Admin
+        // We find the user in the list that matches the logged-in email
+        const currentUserData = usersList.find((u) => u.email === user.email);
+
+        if (!currentUserData || currentUserData.role !== "admin") {
+          // If not admin, kick them out
+          console.log("Access Denied: User is not admin");
+          router.push("/dashboard");
+          return;
+        }
+
+        // 5. If Admin, populate the state
+        setUsers(usersList);
+        setFilteredUsers(usersList);
+        updateStats(usersList);
+      } catch (err) {
+        console.error("Fetch Error:", err);
+        const msg =
+          err.response?.data?.message || err.message || "Failed to fetch users";
+        setError(msg);
+
+        // If 401 or 403, force re-login
+        if (err.response?.status === 401 || err.response?.status === 403) {
+          localStorage.removeItem("accessToken");
+          router.push("/my-account");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    verifyAndFetch();
+  }, [user, authLoading, router]);
+
+  // ---------------------------------------------------------
+  // 2. Update Stats Helper
+  // ---------------------------------------------------------
+  const updateStats = (userList) => {
+    setStats({
+      total: userList.length,
+      customers: userList.filter((u) => u.role === "customer").length,
+      admins: userList.filter((u) => u.role === "admin").length,
+      managers: userList.filter((u) => u.role === "manager").length,
+    });
+  };
+
+  // ---------------------------------------------------------
+  // 3. Delete Handler
+  // ---------------------------------------------------------
+  const handleDelete = async (userId) => {
+    if (!confirm("Are you sure you want to delete this user?")) return;
+
+    try {
+      const token = user.accessToken || localStorage.getItem("accessToken");
+
+      // API Call to Delete
+      await axios.delete(
+        `https://bloomingbeauty.vercel.app/api/users/${userId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+
+      // Update UI State
+      const updatedUsers = users.filter((u) => u._id !== userId);
+      setUsers(updatedUsers);
+      setFilteredUsers(updatedUsers);
+      updateStats(updatedUsers);
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to delete user");
+    }
+  };
+
+  // ---------------------------------------------------------
+  // 4. Search & Filter Logic
+  // ---------------------------------------------------------
+  useEffect(() => {
+    let filtered = users;
+
+    // Filter by Search Term
+    if (searchTerm) {
+      filtered = filtered.filter(
+        (u) =>
+          u.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          u.username?.toLowerCase().includes(searchTerm.toLowerCase()),
+      );
     }
 
-    // Unauthorized access
-    if (!user) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
-                <div className="text-center">
-                    <Lock className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                    <h2 className="text-2xl font-bold text-gray-800 mb-2">Authentication Required</h2>
-                    <p className="text-gray-600 mb-6">Please log in to access this page</p>
-                    <Link
-                        href="/my-account"
-                        className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
-                    >
-                        Go to Login
-                    </Link>
-                </div>
-            </div>
-        );
+    // Filter by Role Dropdown
+    if (roleFilter !== "all") {
+      filtered = filtered.filter((u) => u.role === roleFilter);
     }
 
-    if (role !== 'admin') {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
-                <div className="text-center">
-                    <Shield className="w-16 h-16 text-red-400 mx-auto mb-4" />
-                    <h2 className="text-2xl font-bold text-gray-800 mb-2">Access Denied</h2>
-                    <p className="text-gray-600 mb-6">You don't have permission to access this page</p>
-                    <Link
-                        href="/dashboard"
-                        className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
-                    >
-                        Go to Dashboard
-                    </Link>
-                </div>
-            </div>
-        );
-    }
+    setFilteredUsers(filtered);
+  }, [searchTerm, roleFilter, users]);
 
+  // ---------------------------------------------------------
+  // 5. UI Render
+  // ---------------------------------------------------------
+
+  const StatCard = ({ icon: Icon, label, value, color }) => (
+    <motion.div
+      whileHover={{ scale: 1.03 }}
+      className={`${color} rounded-2xl p-6 shadow-sm border border-white/50`}
+    >
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-sm font-medium text-gray-600 opacity-80">
+            {label}
+          </p>
+          <p className="text-3xl font-bold mt-1 text-gray-800">{value}</p>
+        </div>
+        <div className="p-3 bg-white/60 rounded-xl shadow-sm">
+          <Icon className="w-6 h-6 text-gray-700" />
+        </div>
+      </div>
+    </motion.div>
+  );
+
+  // Global Loading State (Auth or Data)
+  if (authLoading || loading) {
     return (
-        <div className="min-h-screen bg-gradient-to-br from-[#fff6f0] to-[#fff0e8] p-4 md:p-8">
-            <div className="max-w-7xl mx-auto">
-                {/* Header */}
-                <motion.div
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mb-8"
-                >
-                    <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
-                        <div>
-                            <h1 className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-fuchsia-600">
-                                User Management
-                            </h1>
-                            <p className="text-[var(--pink)] pt-2">
-                                Manage and track all users in one place
-                            </p>
-                        </div>
-
-                    </div>
-
-                    {/* Stats Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-                        <StatCard
-                            icon={Users}
-                            label="Total Users"
-                            value={stats.total}
-                            color="bg-gradient-to-br from-pink-100 to-pink-200"
-                            loading={loading}
-                        />
-                        <StatCard
-                            icon={UserIcon}
-                            label="Customers"
-                            value={stats.customers}
-                            color="bg-gradient-to-br from-rose-100 to-rose-200"
-                            loading={loading}
-                        />
-                        <StatCard
-                            icon={Shield}
-                            label="Admins"
-                            value={stats.admins}
-                            color="bg-gradient-to-br from-pink-200 to-pink-300"
-                            loading={loading}
-                        />
-                    </div>
-
-                    {/* Controls */}
-                    <div className="flex flex-col md:flex-row gap-4 mb-6">
-                        <div className="flex-1 relative">
-                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-pink-400 w-5 h-5" />
-                            <input
-                                type="text"
-                                placeholder="Search users by name or email..."
-                                value={searchTerm}
-                                onChange={(e) => handleSearch(e.target.value)}
-                                disabled={loading || users.length === 0}
-                                className="w-full pl-12 pr-4 py-3 bg-white border border-pink-300 rounded-xl focus:ring-2 focus:ring-pink-400 outline-none transition disabled:opacity-50"
-                            />
-                        </div>
-
-                        <div className="flex items-center space-x-2 px-4 py-3 bg-white border border-pink-300 rounded-xl">
-                            <Filter className="w-5 h-5 text-pink-400" />
-                            <select
-                                value={roleFilter}
-                                onChange={(e) => handleRoleFilter(e.target.value)}
-                                disabled={loading || users.length === 0}
-                                className="bg-transparent outline-none text-pink-700"
-                            >
-                                <option value="all">All Roles</option>
-                                <option value="customer">Customers</option>
-                                <option value="admin">Admins</option>
-                            </select>
-                        </div>
-                    </div>
-                </motion.div>
-
-                {/* Error Message */}
-                {/* {error && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="mb-6 p-6 bg-red-50 border border-red-200 rounded-xl text-red-700"
-                    >
-                        <div className="flex items-start">
-                            <AlertCircle className="w-6 h-6 mr-3 flex-shrink-0 mt-0.5" />
-                            <div className="flex-1">
-                                <h3 className="font-bold text-lg mb-2">Unable to Load Users</h3>
-                                <p className="mb-3">{error}</p>
-                                <div className="flex flex-wrap gap-3">
-                                    <button
-                                        onClick={fetchUsers}
-                                        className="px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors duration-200"
-                                    >
-                                        Try Again
-                                    </button>
-                                    <button
-                                        onClick={() => {
-                                            localStorage.removeItem('accessToken');
-                                            router.push('/my-account');
-                                        }}
-                                        className="px-4 py-2 border border-red-300 text-red-700 rounded-lg hover:bg-red-50 transition-colors duration-200"
-                                    >
-                                        Re-login
-                                    </button>
-                                    <button
-                                        onClick={() => {
-                                            console.clear();
-                                            console.log('Debug Info:', {
-                                                user: user?.email,
-                                                role,
-                                                tokenExists: !!localStorage.getItem('accessToken'),
-                                                apiStatus,
-                                                usersCount: users.length,
-                                                error
-                                            });
-                                            alert('Debug info logged to console');
-                                        }}
-                                        className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200"
-                                    >
-                                        Debug Info
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </motion.div>
-                )} */}
-
-                {/* Users Grid */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                >
-                    {loading ? (
-                        <div className="text-center py-16">
-                            <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-4"></div>
-                            <p className="text-gray-600">Loading users...</p>
-                        </div>
-                    ) : filteredUsers.length === 0 ? (
-                        <div className="text-center py-16 bg-white rounded-2xl border border-pink-200">
-                            <Users className="w-16 h-16 text-pink-300 mx-auto mb-4" />
-                            <h3 className="text-xl font-semibold text-pink-700 mb-2">
-                                No users found
-                            </h3>
-                            <p className="text-pink-500 mb-4">
-                                Try adjusting your filters or refresh
-                            </p>
-                            <button
-                                onClick={fetchUsers}
-                                className="px-4 py-2 bg-[var(--pink)] text-white rounded-lg hover:bg-pink-700 transition"
-                            >
-                                Refresh Users
-                            </button>
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-1 gap-4">
-                            {filteredUsers.map((userData, index) => (
-                                <UserCard
-                                    key={userData._id || index}
-                                    user={userData}
-                                    onDelete={handleDelete}
-                                    index={index}
-                                    currentUserEmail={user?.email}
-                                />
-                            ))}
-                        </div>
-                    )}
-                </motion.div>
-
-                {/* Footer */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.4 }}
-                    className="mt-8 pt-6 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center text-sm text-gray-600"
-                >
-                    <div className="mt-8 pt-6 border-t border-pink-200 flex justify-between text-sm text-[var(--pink)]">
-                        <div>
-                            Showing <span className="font-semibold">{filteredUsers.length}</span> of{' '}
-                            <span className="font-semibold">{users.length}</span> users
-                        </div>
-                    </div>
-                </motion.div>
-            </div>
-        </div >
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6">
+        <div className="max-w-7xl mx-auto animate-pulse space-y-6">
+          <div className="h-10 bg-gray-200 rounded w-1/4"></div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="h-28 bg-gray-200 rounded-2xl"></div>
+            ))}
+          </div>
+          <div className="h-14 bg-gray-200 rounded-xl"></div>
+          <div className="space-y-3">
+            {[...Array(5)].map((_, i) => (
+              <div key={i} className="h-24 bg-gray-200 rounded-2xl"></div>
+            ))}
+          </div>
+        </div>
+      </div>
     );
+  }
+
+  // If user is not logged in (handled by redirect, but good for safety)
+  if (!user) return null;
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#fff6f0] to-[#fff0e8] p-4 md:p-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8"
+        >
+          <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
+            <div>
+              <h1 className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-rose-600 to-fuchsia-600">
+                User Management
+              </h1>
+              <p className="text-rose-400 pt-2">
+                Manage and track all users in one place
+              </p>
+            </div>
+            <button
+              onClick={() => window.location.reload()} // Simple refresh to re-trigger useEffect
+              className="mt-4 md:mt-0 flex items-center gap-2 px-4 py-2 bg-white border border-rose-200 rounded-xl text-rose-600 hover:bg-rose-50 transition shadow-sm"
+            >
+              <RefreshCw size={16} />
+              Refresh
+            </button>
+          </div>
+
+          {/* Stats Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <StatCard
+              icon={UsersIcon}
+              label="Total Users"
+              value={stats.total}
+              color="bg-gradient-to-br from-pink-100 to-pink-50"
+            />
+            <StatCard
+              icon={UserIcon}
+              label="Customers"
+              value={stats.customers}
+              color="bg-gradient-to-br from-rose-100 to-rose-50"
+            />
+            <StatCard
+              icon={Shield}
+              label="Admins"
+              value={stats.admins}
+              color="bg-gradient-to-br from-purple-100 to-purple-50"
+            />
+            <StatCard
+              icon={Shield}
+              label="Managers"
+              value={stats.managers}
+              color="bg-gradient-to-br from-blue-100 to-blue-50"
+            />
+          </div>
+
+          {/* Controls */}
+          <div className="flex flex-col md:flex-row gap-4 mb-6">
+            <div className="flex-1 relative">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-rose-400 w-5 h-5" />
+              <input
+                type="text"
+                placeholder="Search by name or email..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-12 pr-4 py-3 bg-white border border-rose-200 rounded-xl focus:ring-2 focus:ring-rose-400 outline-none transition shadow-sm"
+              />
+            </div>
+
+            <div className="flex items-center space-x-2 px-4 py-3 bg-white border border-rose-200 rounded-xl shadow-sm">
+              <Filter className="w-5 h-5 text-rose-400" />
+              <select
+                value={roleFilter}
+                onChange={(e) => setRoleFilter(e.target.value)}
+                className="bg-transparent outline-none text-gray-700 font-medium"
+              >
+                <option value="all">All Roles</option>
+                <option value="customer">Customers</option>
+                <option value="admin">Admins</option>
+                <option value="manager">Managers</option>
+              </select>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Error Message */}
+        {error && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-600 flex items-center gap-3"
+          >
+            <AlertCircle className="w-5 h-5" />
+            <span>{error}</span>
+          </motion.div>
+        )}
+
+        {/* Users Grid */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.1 }}
+        >
+          {filteredUsers.length === 0 ? (
+            <div className="text-center py-16 bg-white rounded-2xl border border-rose-100 shadow-sm">
+              <UsersIcon className="w-16 h-16 text-rose-200 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                No users found
+              </h3>
+              <p className="text-gray-400">
+                Try adjusting your search or filter.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-4">
+              {filteredUsers.map((userData, index) => (
+                <UserCard
+                  key={userData._id || index}
+                  user={userData}
+                  onDelete={handleDelete}
+                  index={index}
+                  currentUserEmail={user?.email}
+                />
+              ))}
+            </div>
+          )}
+        </motion.div>
+
+        {/* Footer */}
+        <div className="mt-8 pt-6 border-t border-rose-100 flex justify-between text-sm text-rose-400">
+          <span>
+            Showing <strong>{filteredUsers.length}</strong> of{" "}
+            <strong>{users.length}</strong> users
+          </span>
+        </div>
+      </div>
+    </div>
+  );
 }

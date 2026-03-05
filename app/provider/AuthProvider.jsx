@@ -1,13 +1,13 @@
 "use client";
 
 import {
-    createUserWithEmailAndPassword,
-    GoogleAuthProvider,
-    onAuthStateChanged,
-    signInWithEmailAndPassword,
-    signInWithPopup,
-    signOut,
-    updateProfile
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+  updateProfile,
 } from "firebase/auth";
 import React, { createContext, useEffect, useState } from "react";
 import auth from "../firebase/firebase.init";
@@ -18,131 +18,179 @@ import axios from "axios";
 export let Context = createContext();
 
 const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);       // Firebase user
-    const [role, setRole] = useState(null);       // customer / manager / admin
-    const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null); // Firebase user object
+  const [dbUser, setDbUser] = useState(null); // Backend user object (contains permissions/role)
+  const [loading, setLoading] = useState(true);
 
-    const router = useRouter();
-    const provider = new GoogleAuthProvider();
+  const router = useRouter();
+  const provider = new GoogleAuthProvider();
 
-    // Google SignIn
-    //const googleSign = () => signInWithPopup(auth, provider);
-    const googleSign = async () => {
-        try {
-            const result = await signInWithPopup(auth, provider);
+  // ---------------------------------------------------------
+  // 1. HELPER: Fetch User Data from Backend
+  // ---------------------------------------------------------
+  const fetchUserData = async (email) => {
+    try {
+      // PREFERRED: Try to fetch the full profile from the /profile endpoint
+      // (You need to add this route to your backend as discussed previously)
+      const profileRes = await axios.get(
+        `https://bloomingbeauty.vercel.app/api/users/profile/${email}`,
+      );
 
-            // Get JWT tokens after Google sign in
-            if (result.user?.email) {
-                try {
-                    const jwtResponse = await authApi.login(result.user.email, "google-oauth");
-                    if (jwtResponse.data?.accessToken) {
-                        localStorage.setItem("accessToken", jwtResponse.data.accessToken);
-                    }
-                } catch (err) {
-                    console.log("JWT fetch after Google sign in:", err);
-                }
-            }
-
-            return result;
-        } catch (error) {
-            console.error("Google sign in error:", error);
-            throw error;
-        }
+      if (profileRes.data) {
+        return profileRes.data; // Returns { role, product_access, blog_access, ... }
+      }
+    } catch (err) {
+      // Fallback: If /profile doesn't exist, try the specific boolean endpoints
+      console.log(
+        "Profile fetch failed, falling back to role checks...",
+        err.message,
+      );
     }
 
-    // Register using Firebase auth
-    const createRegistered = (email, password) => {
-        router.push("/");
-        return createUserWithEmailAndPassword(auth, email, password);
-    };
+    // FALLBACK LOGIC (Determine role via specific endpoints)
+    try {
+      const admin = await axios.get(
+        `https://bloomingbeauty.vercel.app/api/users/getadmin/${email}`,
+      );
+      if (admin.data.admin) return { role: "admin" };
 
-    const loginSetup = async (email, password) => {
+      const manager = await axios.get(
+        `https://bloomingbeauty.vercel.app/api/users/getmanager/${email}`,
+      );
+      if (manager.data.manager) return { role: "manager" };
+
+      const customer = await axios.get(
+        `https://bloomingbeauty.vercel.app/api/users/getCustomer/${email}`,
+      );
+      if (customer.data.customer) return { role: "customer" };
+
+      return { role: "customer" }; // Default fallback
+    } catch (error) {
+      console.error("Error fetching role fallback:", error);
+      return null;
+    }
+  };
+
+  // ---------------------------------------------------------
+  // 2. AUTH ACTIONS
+  // ---------------------------------------------------------
+
+  // Google SignIn
+  const googleSign = async () => {
+    setLoading(true);
+    try {
+      const result = await signInWithPopup(auth, provider);
+
+      if (result.user?.email) {
         try {
-            const firebaseResult = await signInWithEmailAndPassword(auth, email, password);
+          // Get JWT tokens
+          const jwtResponse = await authApi.login(
+            result.user.email,
+            "google-oauth",
+          );
+          if (jwtResponse.data?.accessToken) {
+            localStorage.setItem("accessToken", jwtResponse.data.accessToken);
+          }
 
-            const jwtResponse = await authApi.login(email, password);
-
-            if (jwtResponse?.data?.accessToken) {
-                localStorage.setItem("accessToken", jwtResponse.data.accessToken);
-            }
-
-            return firebaseResult;
-        } catch (error) {
-            console.error("Login error:", error);
-            throw error;
-        }
-    };
-
-
-    // Logout
-    const signOuts = () => {
-        setRole(null);
-        router.push("/");
-        return signOut(auth);
-    };
-
-    const updateUserProfile = (user, profileUpdates) =>
-        updateProfile(user, profileUpdates);
-
-    // Fetch user role from backend
-    const fetchRole = async (email) => {
-        try {
-            const customer = await axios.get(
-                `https://bloomingbeauty.vercel.app/api/users/getCustomer/${email}`
-            );
-            if (customer.data.customer === true) return "customer";
-
-            const admin = await axios.get(
-                `https://bloomingbeauty.vercel.app/api/users/getadmin/${email}`
-            );
-            if (admin.data.admin === true) return "admin";
-
-            // const manager = await axios.get(
-            //     `https://bloomingbeauty.vercel.app/api/users/getmanager/${email}`
-            // );
-            // if (manager.data.manager === true) return "manager";
-
-            return null;
+          // Fetch Backend User Data immediately
+          const backendUser = await fetchUserData(result.user.email);
+          setDbUser(backendUser);
         } catch (err) {
-            console.log("Role fetch error:", err);
-            return null;
+          console.log("JWT/Backend fetch after Google sign in:", err);
         }
-    };
+      }
+      setLoading(false);
+      return result;
+    } catch (error) {
+      setLoading(false);
+      console.error("Google sign in error:", error);
+      throw error;
+    }
+  };
 
-    // Check auth state
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-            setUser(currentUser);
+  // Register using Firebase auth
+  const createRegistered = (email, password) => {
+    setLoading(true);
+    // Note: You might want to create the user in your DB here too
+    const promise = createUserWithEmailAndPassword(auth, email, password);
+    promise.finally(() => setLoading(false));
+    return promise;
+  };
 
-            if (currentUser?.email) {
-                const r = await fetchRole(currentUser.email);
-                setRole(r);
-            } else {
-                setRole(null);
-            }
+  const loginSetup = async (email, password) => {
+    setLoading(true);
+    try {
+      const firebaseResult = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
 
-            setLoading(false);
-        });
+      const jwtResponse = await authApi.login(email, password);
 
-        return () => unsubscribe();
-    }, []);
+      if (jwtResponse?.data?.accessToken) {
+        localStorage.setItem("accessToken", jwtResponse.data.accessToken);
+      }
 
-    const val = {
-        createRegistered,
-        loginSetup,
-        signOuts,
-        googleSign,
-        updateUserProfile,
-        user,
-        role,
-        loading,
-    };
+      // Fetch Backend User Data immediately
+      const backendUser = await fetchUserData(email);
+      setDbUser(backendUser);
 
-    return (
-        <Context.Provider value={val}>
-            {children}
-        </Context.Provider>
-    );
+      setLoading(false);
+      return firebaseResult;
+    } catch (error) {
+      setLoading(false);
+      console.error("Login error:", error);
+      throw error;
+    }
+  };
+
+  // Logout
+  const signOuts = () => {
+    setDbUser(null);
+    setUser(null);
+    localStorage.removeItem("accessToken");
+    router.push("/");
+    return signOut(auth);
+  };
+
+  const updateUserProfile = (user, profileUpdates) =>
+    updateProfile(user, profileUpdates);
+
+  // ---------------------------------------------------------
+  // 3. AUTH STATE OBSERVER
+  // ---------------------------------------------------------
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setUser(currentUser);
+
+      if (currentUser?.email) {
+        // If logged in, fetch the role and permissions from backend
+        const backendData = await fetchUserData(currentUser.email);
+        setDbUser(backendData);
+      } else {
+        setDbUser(null);
+      }
+
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const val = {
+    createRegistered,
+    loginSetup,
+    signOuts,
+    googleSign,
+    updateUserProfile,
+    user, // Firebase User
+    dbUser, // Backend User (Needed for Sidebar)
+    role: dbUser?.role || null, // Helper for quick role access
+    loading,
+  };
+
+  return <Context.Provider value={val}>{children}</Context.Provider>;
 };
 
 export default AuthProvider;

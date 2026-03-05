@@ -1,53 +1,58 @@
-import axios from 'axios';
+import axios from "axios";
 
+// HARDCODE THE URL TO FIX THE ISSUE NOW
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BASE_API,
+  baseURL: "https://bloomingbeauty.vercel.app/api",
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
-// Add token to requests
+// Interceptor to add token
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('accessToken');
+  const token = localStorage.getItem("accessToken");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
 
-// Handle token expiration
-api.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
+export default api;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-
-      try {
-        // Attempt to refresh token
-        const refreshResponse = await axios.post(
-          'https://bloomingbeauty.vercel.app/api/auth/refresh-token',
-          {},
-          { withCredentials: true }
+export const userApi = {
+  getAllManagers: async () => {
+    try {
+      const response = await api.get("/users/allmanager");
+      return response.data;
+    } catch (error) {
+      // If error.response exists, log the real data
+      if (error.response) {
+        console.error(
+          "Backend Response Error:",
+          error.response.status,
+          error.response.data,
         );
-
-        if (refreshResponse.data?.accessToken) {
-          localStorage.setItem('accessToken', refreshResponse.data.accessToken);
-          originalRequest.headers.Authorization = `Bearer ${refreshResponse.data.accessToken}`;
-          return api(originalRequest);
-        }
-      } catch (refreshError) {
-        // Refresh failed, redirect to login
-        localStorage.removeItem('accessToken');
-        window.location.href = '/my-account';
-        return Promise.reject(refreshError);
+        throw error.response.data;
+      } else {
+        // This is the "Network Error" / CORS zone
+        console.error("Network/CORS Error:", error.message);
+        throw {
+          message:
+            "Cannot connect to backend. Check if server is running and CORS is enabled.",
+        };
       }
     }
+  },
 
-    return Promise.reject(error);
-  }
-);
-
-export default api;
+  updateManagerAccess: async (id, permissions) => {
+    try {
+      const response = await api.patch(
+        `/users/update-access/${id}`,
+        permissions,
+      );
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || { message: "Update failed" };
+    }
+  },
+};

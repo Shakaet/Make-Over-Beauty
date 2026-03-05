@@ -37,7 +37,9 @@ const ProductDetailPage = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await api.get(`/api/products/product/${id}`);
+        const res = await api.get(
+          `https://bloomingbeauty.vercel.app/api/products/product/${id}`,
+        );
         const data = res.data.data;
 
         if (data) {
@@ -45,7 +47,9 @@ const ProductDetailPage = () => {
           setMainImage(data.imagePrimary);
 
           try {
-            const relatedRes = await api.get(`/api/products/all-products`);
+            const relatedRes = await api.get(
+              `https://bloomingbeauty.vercel.app/api/products/all-products`,
+            );
             const all = relatedRes.data.data;
             const relatedItems = all
               .filter((p) => p.category === data.category && p._id !== data._id)
@@ -117,14 +121,16 @@ const ProductDetailPage = () => {
               />
               <button
                 onClick={() => setIsWishlisted(!isWishlisted)}
-                className={`absolute top-5 right-5 w-11 h-11 rounded-full flex items-center justify-center shadow-md transition-all ${isWishlisted
+                className={`absolute top-5 right-5 w-11 h-11 rounded-full flex items-center justify-center shadow-md transition-all ${
+                  isWishlisted
                     ? "bg-red-500 text-white"
                     : "bg-white text-gray-700 hover:text-red-500"
-                  }`}
+                }`}
               >
                 <Heart
-                  className={`w-6 h-6 ${isWishlisted ? "fill-white" : "fill-transparent"
-                    } transition`}
+                  className={`w-6 h-6 ${
+                    isWishlisted ? "fill-white" : "fill-transparent"
+                  } transition`}
                 />
               </button>
             </div>
@@ -149,10 +155,11 @@ const ProductDetailPage = () => {
                     <SwiperSlide key={i}>
                       <button
                         onClick={() => setMainImage(img)}
-                        className={`w-24 h-24 rounded-xl overflow-hidden border-2 ${mainImage === img
+                        className={`w-24 h-24 rounded-xl overflow-hidden border-2 ${
+                          mainImage === img
                             ? "border-[#E8D8C0] shadow-lg scale-105"
                             : "border-gray-200 hover:border-gray-400"
-                          } transition-transform duration-200`}
+                        } transition-transform duration-200`}
                       >
                         <img
                           src={img}
@@ -303,14 +310,16 @@ const ProductDetailPage = () => {
             <div className="flex items-center justify-between text-sm pt-4 border-t border-gray-200">
               <button
                 onClick={() => setIsWishlisted(!isWishlisted)}
-                className={`flex items-center gap-2 font-medium transition ${isWishlisted
+                className={`flex items-center gap-2 font-medium transition ${
+                  isWishlisted
                     ? "text-red-500"
                     : "text-gray-600 hover:text-red-400"
-                  }`}
+                }`}
               >
                 <Heart
-                  className={`w-4 h-4 ${isWishlisted ? "fill-red-500" : "fill-transparent"
-                    }`}
+                  className={`w-4 h-4 ${
+                    isWishlisted ? "fill-red-500" : "fill-transparent"
+                  }`}
                 />
                 {isWishlisted ? "Added to Wishlist" : "Add to Wishlist"}
               </button>
@@ -328,10 +337,11 @@ const ProductDetailPage = () => {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-8 py-3 text-sm font-medium capitalize border-b-2 transition-all ${activeTab === tab
+                className={`px-8 py-3 text-sm font-medium capitalize border-b-2 transition-all ${
+                  activeTab === tab
                     ? "border-[#E8D8C0] text-gray-900"
                     : "border-transparent text-gray-500 hover:text-gray-700"
-                  }`}
+                }`}
               >
                 {tab}
               </button>
